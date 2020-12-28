@@ -34,7 +34,7 @@ class TrangChuFragment : Fragment() {
         registerObservers()
         setupRecycleView()
         viewModel.getMenuList()
-        viewModel.getHotChannels()
+        viewModel.getData()
     }
 
     private fun registerObservers()
@@ -57,9 +57,9 @@ class TrangChuFragment : Fragment() {
                 Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
             }
 
-            viewModel.hotChannels.observe(viewLifecycleOwner)
+            viewModel.data.observe(viewLifecycleOwner)
             {
-                data.hotChannels = it
+                data = it
                 resetData()
             }
         }

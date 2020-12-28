@@ -1,5 +1,6 @@
 package app.vtcnews.android.repos
 
+import app.vtcnews.android.model.HotArticle
 import app.vtcnews.android.model.HotChannel
 import app.vtcnews.android.network.ArticleService
 import app.vtcnews.android.network.Resource
@@ -11,10 +12,9 @@ import javax.inject.Singleton
 class ArticleRepo @Inject constructor(
     private val articleService: ArticleService
 ) {
+    suspend fun getHotChannels() : Resource<List<HotChannel>> =
+        performNetworkCall { articleService.getHotChannels() }
 
-
-    suspend fun getHotChannels() : Resource<List<HotChannel>>
-    {
-        return performNetworkCall { articleService.getHotChannels() }
-    }
+    suspend fun getHotArticles() : Resource<List<HotArticle>> =
+        performNetworkCall { articleService.getHotArticles() }
 }

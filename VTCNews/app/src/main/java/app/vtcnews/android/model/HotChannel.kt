@@ -38,7 +38,7 @@ data class HotChannel(
     val seoKeyword: String,
 
     @Json(name = "SEODesciption")
-    val seoDesciption: String,
+    val seoDesciption: String? = null,
 
     @Json(name = "Image")
     val image: Long,

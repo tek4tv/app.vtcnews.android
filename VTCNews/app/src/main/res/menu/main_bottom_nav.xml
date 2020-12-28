@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="@string/trang_chu" />
+    <item android:title="@string/tin_moi" />
+    <item android:title="@string/video" />
+    <item android:title="@string/audio" />
+    <item android:title="@string/chia_se" />
+</menu>

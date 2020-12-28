@@ -3,4 +3,16 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="chuyen_de_nong">Chuyên đề nóng</string>
+
+    <string name="years_before">%d năm trước</string>
+    <string name="months_before">%d tháng trước</string>
+    <string name="days_before">%d ngày trước</string>
+    <string name="hours_before">%d giờ trước</string>
+    <string name="minutes_before">%d phút trước</string>
+    
+    <string name="trang_chu">Trang chủ</string>
+    <string name="tin_moi">Tin mới</string>
+    <string name="video">Video</string>
+    <string name="audio">Audio</string>
+    <string name="chia_se">Chia sẻ</string>
 </resources>
