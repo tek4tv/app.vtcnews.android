@@ -1,6 +1,7 @@
 package app.vtcnews.android.di
 
 import app.vtcnews.android.network.ArticleService
+import app.vtcnews.android.network.Audio.AllPodcastService
 import app.vtcnews.android.network.MenuService
 import app.vtcnews.android.network.VideoService
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -23,7 +24,6 @@ object NetworkModule {
         Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
             .build()
-
 
     @Provides
     @Singleton
@@ -48,4 +48,9 @@ object NetworkModule {
     @Singleton
     fun provideVideoService(retrofit: Retrofit) : VideoService =
         retrofit.create(VideoService::class.java)
+		
+	@Provides
+    @Singleton	
+    fun provideAudioService(retrofit: Retrofit) : AllPodcastService =
+        retrofit.create(AllPodcastService::class.java)
 }
