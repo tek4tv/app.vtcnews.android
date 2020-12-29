@@ -47,8 +47,7 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/txt_hot_article_category"
         app:layout_constraintStart_toEndOf="@+id/txt_hot_article_category"
-        app:layout_constraintTop_toTopOf="@+id/txt_hot_article_category"
-        app:srcCompat="@drawable/ic_camera_24" />
+        app:layout_constraintTop_toTopOf="@+id/txt_hot_article_category" />
 
     <TextView
         android:id="@+id/txt_hot_article_date"

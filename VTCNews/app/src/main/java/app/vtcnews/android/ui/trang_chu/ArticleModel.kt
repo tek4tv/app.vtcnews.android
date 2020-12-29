@@ -25,15 +25,18 @@ abstract class ArticleModel : EpoxyModelWithHolder<HotArticleViewHolder>() {
 
             txtTitle.text = article.title
 
-            if(article.isPhotoArticle == 1L)
-            {
-                imgMedia.visibility = View.VISIBLE
-                imgMedia.setImageResource(R.drawable.ic_camera_24)
-            }
-            if(article.isVideoArticle == 1L)
-            {
-                imgMedia.visibility = View.VISIBLE
-                imgMedia.setImageResource(R.drawable.ic_videocam_24)
+            when {
+                article.isPhotoArticle == 1L -> {
+                    imgMedia.visibility = View.VISIBLE
+                    imgMedia.setImageResource(R.drawable.ic_camera_24)
+                }
+                article.isVideoArticle == 1L -> {
+                    imgMedia.visibility = View.VISIBLE
+                    imgMedia.setImageResource(R.drawable.ic_videocam_24)
+                }
+                else -> {
+                    imgMedia.visibility = View.GONE
+                }
             }
 
             txtCategory.text = article.categoryName
