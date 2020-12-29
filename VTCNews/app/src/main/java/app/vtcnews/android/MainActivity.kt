@@ -2,7 +2,9 @@ package app.vtcnews.android
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
+import android.view.MenuItem
 import app.vtcnews.android.databinding.ActivityMainBinding
 import app.vtcnews.android.ui.trang_chu.TrangChuFragment
 import dagger.hilt.android.AndroidEntryPoint

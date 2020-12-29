@@ -7,7 +7,7 @@ import com.airbnb.epoxy.TypedEpoxyController
 class TrangChuController : TypedEpoxyController<TrangChuData>() {
     override fun buildModels(data: TrangChuData?) {
 
-        if(data == null || data.hotArticles.isEmpty() || data.hotChannels.isEmpty()) return
+        if (data == null || data.hotArticles.isEmpty() || data.hotChannels.isEmpty()) return
 
         hotArticleHeader {
             id("hotArticleHeader")
@@ -28,16 +28,13 @@ class TrangChuController : TypedEpoxyController<TrangChuData>() {
 
         var firstArticles = listOf<Article>()
         var remainArticle = data.articlesSuggestionsHome
-        if(data.articlesSuggestionsHome.isNotEmpty() && data.articlesSuggestionsHome.size > 6)
-        {
+        if (data.articlesSuggestionsHome.isNotEmpty() && data.articlesSuggestionsHome.size > 6) {
             firstArticles = data.articlesSuggestionsHome.take(6)
             remainArticle = data.articlesSuggestionsHome.drop(6)
         }
 
-        if(firstArticles.isNotEmpty())
-        {
-            for(i in 0..2)
-            {
+        if (firstArticles.isNotEmpty()) {
+            for (i in 0..2) {
                 article {
                     id(firstArticles[i].id)
                     article(firstArticles[i])
@@ -45,10 +42,14 @@ class TrangChuController : TypedEpoxyController<TrangChuData>() {
             }
         }
 
-        if(firstArticles.isNotEmpty())
-        {
-            for(i in 3..5)
-            {
+        if (data.videos.isNotEmpty())
+            videoSection {
+                id("videos")
+                videoList(data.videos)
+            }
+
+        if (firstArticles.isNotEmpty()) {
+            for (i in 3..5) {
                 article {
                     id(firstArticles[i].id)
                     article(firstArticles[i])

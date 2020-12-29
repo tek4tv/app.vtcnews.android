@@ -28,6 +28,7 @@ class TrangChuFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentTrangChuBinding.inflate(layoutInflater, container, false)
+
         return binding.root
     }
 
@@ -38,6 +39,9 @@ class TrangChuFragment : Fragment() {
         setupTab()
         viewModel.getMenuList()
         viewModel.getData()
+        binding.tabMenus.post {
+            binding.tabMenus.scrollTo(0,0)
+        }
     }
 
     private fun registerObservers() {
@@ -76,9 +80,7 @@ class TrangChuFragment : Fragment() {
     }
 
     private fun setupTab() {
-        binding.tabMenus.post {
-            binding.tabMenus.setScrollPosition(0,0f,true)
-        }
+
         binding.tabMenus.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 if(tab?.position == 0) return

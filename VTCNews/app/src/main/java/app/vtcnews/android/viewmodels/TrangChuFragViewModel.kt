@@ -4,18 +4,17 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.vtcnews.android.model.Article
-import app.vtcnews.android.model.HotChannel
-import app.vtcnews.android.model.MenuItem
-import app.vtcnews.android.model.TrangChuData
+import app.vtcnews.android.model.*
 import app.vtcnews.android.network.Resource
 import app.vtcnews.android.repos.ArticleRepo
 import app.vtcnews.android.repos.MenuRepo
+import app.vtcnews.android.repos.VideoRepo
 import kotlinx.coroutines.launch
 
 class TrangChuFragViewModel @ViewModelInject constructor(
     private val menuRepo: MenuRepo,
-    private val articleRepo: ArticleRepo
+    private val articleRepo: ArticleRepo,
+    private val videoRepo: VideoRepo
 ) : ViewModel() {
     val menuList = MutableLiveData<List<MenuItem>>()
     val error = MutableLiveData<String>()
@@ -51,10 +50,21 @@ class TrangChuFragViewModel @ViewModelInject constructor(
                 is Resource.Error -> error.value = res.message
             }
 
+            var videos = listOf<Video>()
+            if(videoRepo.videoList.isNotEmpty()) videos = videoRepo.videoList.take(5)
+            else
+            {
+                when (val res = videoRepo.getVideos()) {
+                    is Resource.Success -> videos = res.data.take(5)
+                    is Resource.Error -> error.value = res.message
+                }
+            }
+
             data.value = TrangChuData(
                 hotChannels = hotChannels,
                 hotArticles = hotArticles,
-                articlesSuggestionsHome = articleSuggestionHome
+                articlesSuggestionsHome = articleSuggestionHome,
+                videos = videos
             )
         }
     }

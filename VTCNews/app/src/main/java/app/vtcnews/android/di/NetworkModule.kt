@@ -2,6 +2,7 @@ package app.vtcnews.android.di
 
 import app.vtcnews.android.network.ArticleService
 import app.vtcnews.android.network.MenuService
+import app.vtcnews.android.network.VideoService
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -42,4 +43,9 @@ object NetworkModule {
     @Singleton
     fun provideArticleService(retrofit: Retrofit) : ArticleService =
         retrofit.create(ArticleService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideVideoService(retrofit: Retrofit) : VideoService =
+        retrofit.create(VideoService::class.java)
 }
