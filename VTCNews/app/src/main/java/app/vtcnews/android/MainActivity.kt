@@ -20,6 +20,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_holder, TrangChuFragment.newInstance())
+            .addToBackStack(null)
+            .commit()
 
         binding.mainBottomNav.setOnNavigationItemSelectedListener {
             if (it.itemId == R.id.menuAudio) {
