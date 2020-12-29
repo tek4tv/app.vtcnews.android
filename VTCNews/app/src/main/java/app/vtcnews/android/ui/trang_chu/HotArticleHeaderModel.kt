@@ -5,12 +5,12 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import app.vtcnews.android.R
-import app.vtcnews.android.model.HotArticle
+import app.vtcnews.android.model.Article
 import app.vtcnews.android.ui.KotlinEpoxyHolder
 import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.abs
@@ -18,12 +18,11 @@ import kotlin.math.abs
 @EpoxyModelClass(layout = R.layout.hot_artice_header)
 abstract class HotArticleHeaderModel : EpoxyModelWithHolder<HotArticleViewHolder>() {
     @EpoxyAttribute
-    lateinit var hotArticle: HotArticle
+    lateinit var hotArticle: Article
 
     override fun bind(holder: HotArticleViewHolder) {
-        val picasso = Picasso.get()
         holder.apply {
-            picasso
+            Glide.with(img)
                 .load(hotArticle.image169_Large)
                 .into(img)
 

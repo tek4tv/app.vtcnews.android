@@ -11,6 +11,7 @@ import app.vtcnews.android.R
 import app.vtcnews.android.databinding.FragmentTrangChuBinding
 import app.vtcnews.android.model.TrangChuData
 import app.vtcnews.android.viewmodels.TrangChuFragViewModel
+import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -73,6 +74,25 @@ class TrangChuFragment : Fragment() {
     private fun resetData()
     {
         controller.setData(data)
+    }
+
+    private fun setUpTab()
+    {
+        binding.tabMenus.addOnTabSelectedListener(object  : TabLayout.OnTabSelectedListener{
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                if(tab == null) return
+
+
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+
+            }
+        })
     }
 
     companion object {

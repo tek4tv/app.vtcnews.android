@@ -1,6 +1,6 @@
 package app.vtcnews.android.repos
 
-import app.vtcnews.android.model.HotArticle
+import app.vtcnews.android.model.Article
 import app.vtcnews.android.model.HotChannel
 import app.vtcnews.android.network.ArticleService
 import app.vtcnews.android.network.Resource
@@ -15,6 +15,9 @@ class ArticleRepo @Inject constructor(
     suspend fun getHotChannels() : Resource<List<HotChannel>> =
         performNetworkCall { articleService.getHotChannels() }
 
-    suspend fun getHotArticles() : Resource<List<HotArticle>> =
+    suspend fun getHotArticles() : Resource<List<Article>> =
         performNetworkCall { articleService.getHotArticles() }
+
+    suspend fun getArticleSuggestionHome() : Resource<List<Article>> =
+        performNetworkCall { articleService.getArticleSuggestionHome() }
 }

@@ -2,45 +2,41 @@ package app.vtcnews.android.ui.trang_chu
 
 import android.content.res.Resources
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import app.vtcnews.android.R
-import app.vtcnews.android.model.HotArticle
-import app.vtcnews.android.ui.KotlinEpoxyHolder
+import app.vtcnews.android.model.Article
 import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.bumptech.glide.Glide
-import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.abs
 
 @EpoxyModelClass(layout = R.layout.hot_artice)
-abstract class HotArticleModel : EpoxyModelWithHolder<HotArticleViewHolder>() {
+abstract class ArticleModel : EpoxyModelWithHolder<HotArticleViewHolder>() {
     @EpoxyAttribute
-    lateinit var hotArticle: HotArticle
+    lateinit var article: Article
 
     override fun bind(holder: HotArticleViewHolder) {
         holder.apply {
-            Picasso.get()
-                .load(hotArticle.image169)
+            Glide.with(img)
+                .load(article.image169)
                 .into(img)
 
-            txtTitle.text = hotArticle.title
+            txtTitle.text = article.title
 
-            if(hotArticle.isPhotoArticle == 1L)
+            if(article.isPhotoArticle == 1L)
             {
                 imgMedia.visibility = View.VISIBLE
                 imgMedia.setImageResource(R.drawable.ic_camera_24)
             }
-            if(hotArticle.isVideoArticle == 1L)
+            if(article.isVideoArticle == 1L)
             {
                 imgMedia.visibility = View.VISIBLE
                 imgMedia.setImageResource(R.drawable.ic_videocam_24)
             }
 
-            txtCategory.text = hotArticle.categoryName
+            txtCategory.text = article.categoryName
 
             txtDate.text = getDateDiff(txtDate.context.applicationContext.resources)
         }
@@ -48,7 +44,7 @@ abstract class HotArticleModel : EpoxyModelWithHolder<HotArticleViewHolder>() {
 
     private fun getDateDiff(resource: Resources): String {
         val dateFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-        val date = dateFormatter.parse(hotArticle.publishedDate)
+        val date = dateFormatter.parse(article.publishedDate)
         val diff = abs(Date().time - date!!.time)
         val diffMinutes: Long = diff / (60 * 1000)
         val diffHours: Long = diff / (60 * 60 * 1000)

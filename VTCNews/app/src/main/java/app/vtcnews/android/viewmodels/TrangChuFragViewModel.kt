@@ -4,7 +4,7 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.vtcnews.android.model.HotArticle
+import app.vtcnews.android.model.Article
 import app.vtcnews.android.model.HotChannel
 import app.vtcnews.android.model.MenuItem
 import app.vtcnews.android.model.TrangChuData
@@ -39,13 +39,23 @@ class TrangChuFragViewModel @ViewModelInject constructor(
                 is Resource.Error -> error.value = res.message
             }
 
-            var hotArticles = listOf<HotArticle>()
+            var hotArticles = listOf<Article>()
             when (val res = articleRepo.getHotArticles()) {
                 is Resource.Success -> hotArticles = res.data
                 is Resource.Error -> error.value = res.message
             }
 
-            data.value = TrangChuData(hotChannels = hotChannels, hotArticles = hotArticles)
+            var articleSuggestionHome = listOf<Article>()
+            when (val res = articleRepo.getArticleSuggestionHome()) {
+                is Resource.Success -> articleSuggestionHome = res.data
+                is Resource.Error -> error.value = res.message
+            }
+
+            data.value = TrangChuData(
+                hotChannels = hotChannels,
+                hotArticles = hotArticles,
+                articlesSuggestionsHome = articleSuggestionHome
+            )
         }
     }
 

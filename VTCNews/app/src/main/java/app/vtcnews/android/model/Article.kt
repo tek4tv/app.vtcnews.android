@@ -2,7 +2,7 @@ package app.vtcnews.android.model
 
 import com.squareup.moshi.Json
 
-data class HotArticle (
+data class Article (
     @Json(name = "Id")
     val id: Long,
 
@@ -73,7 +73,7 @@ data class HotArticle (
     val imageThumb: Any? = null,
 
     @Json(name = "image16_9_large")
-    val image169_Large: String,
+    val image169_Large: String? = null,
 
     @Json(name = "image16_9")
     val image169: String
