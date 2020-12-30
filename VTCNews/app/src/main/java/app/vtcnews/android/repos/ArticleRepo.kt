@@ -12,17 +12,19 @@ import javax.inject.Singleton
 class ArticleRepo @Inject constructor(
     private val articleService: ArticleService
 ) {
-    suspend fun getHotChannels() : Resource<List<HotChannel>> =
+    suspend fun getHotChannels(): Resource<List<HotChannel>> =
         performNetworkCall { articleService.getHotChannels() }
 
-    suspend fun getHotArticles() : Resource<List<Article>> =
+    suspend fun getHotArticles(): Resource<List<Article>> =
         performNetworkCall { articleService.getHotArticles() }
 
-    suspend fun getArticleSuggestionHome() : Resource<List<Article>> =
+    suspend fun getArticleSuggestionHome(): Resource<List<Article>> =
         performNetworkCall { articleService.getArticleSuggestionHome() }
 
-    suspend fun getArticleByCategory(page : Int, categoryId : Int) : Resource<List<Article>>
-    {
+    suspend fun getArticleByCategory(page: Int, categoryId: Int): Resource<List<Article>> {
         return performNetworkCall { articleService.getArticleByCategory(page, categoryId) }
     }
+
+    suspend fun getTrendingArticles(page: Int): Resource<List<Article>> =
+       performNetworkCall { articleService.getTrendingArticles(page) }
 }

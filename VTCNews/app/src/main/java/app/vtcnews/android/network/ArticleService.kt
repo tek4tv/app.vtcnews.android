@@ -21,4 +21,7 @@ interface ArticleService {
         @Path("page") page: Int,
         @Path("categoryId") categoryId: Int
     ): Response<List<Article>>
+
+    @GET("home/news/trending/{page}")
+    suspend fun getTrendingArticles(@Path("page") page : Int) : Response<List<Article>>
 }

@@ -10,7 +10,7 @@ import androidx.paging.liveData
 import app.vtcnews.android.paging.CategoryArticlePagingSource
 import app.vtcnews.android.repos.ArticleRepo
 
-class SubCategoryDetailViewModel @ViewModelInject constructor(
+class PagingArticleFragmentViewModel @ViewModelInject constructor(
     private val articleRepo: ArticleRepo
 ) : ViewModel() {
     var categoryId = 0

@@ -8,9 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import app.vtcnews.android.databinding.FragmentArticlesBinding
-import app.vtcnews.android.viewmodels.SubCategoryDetailViewModel
+import app.vtcnews.android.viewmodels.PagingArticleFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -20,7 +19,7 @@ private const val ARG_CATEGORY_ID = "param1"
 class ArticlesFragment : Fragment() {
     private var categoryId: Int = 0
     private lateinit var binding : FragmentArticlesBinding
-    private val viewModel by viewModels<SubCategoryDetailViewModel>()
+    private val viewModel by viewModels<PagingArticleFragmentViewModel>()
     private val pagingAdapter = ArticleAdapter()
 
 
