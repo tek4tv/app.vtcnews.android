@@ -24,5 +24,4 @@ class MenuRepo @Inject constructor(private val menuService: MenuService) {
 
         return response
     }
-
 }

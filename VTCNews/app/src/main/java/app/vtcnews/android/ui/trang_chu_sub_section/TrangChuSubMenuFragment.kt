@@ -6,20 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import app.vtcnews.android.R
-import app.vtcnews.android.databinding.FragmentTrangChuBinding
 import app.vtcnews.android.databinding.FragmentTrangChuSubSectionBinding
-import app.vtcnews.android.viewmodels.TrangChuSubSectionViewModel
+import app.vtcnews.android.viewmodels.TrangChuSubMenuViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
 private const val ARG_PARAM1 = "param1"
 
 @AndroidEntryPoint
-class TrangChuSubSectionFragment : Fragment() {
+class TrangChuSubMenuFragment : Fragment() {
 
     private var parentMenuId: Int = 0
-    private val viewModel by viewModels<TrangChuSubSectionViewModel>()
+    private val viewModel by viewModels<TrangChuSubMenuViewModel>()
     private lateinit var vpAdapter : SubMenuStateAdapter
     private lateinit var binding : FragmentTrangChuSubSectionBinding
 
@@ -67,7 +65,7 @@ class TrangChuSubSectionFragment : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance(parentMenuId:Int) =
-            TrangChuSubSectionFragment().apply {
+            TrangChuSubMenuFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_PARAM1, parentMenuId)
                 }

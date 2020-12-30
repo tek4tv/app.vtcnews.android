@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class TrangChuSubSectionViewModel @ViewModelInject constructor(
+class TrangChuSubMenuViewModel @ViewModelInject constructor(
     private val menuRepo: MenuRepo
 ) : ViewModel() {
     val menuItem  = MutableLiveData<List<MenuItem>>()

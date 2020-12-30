@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.trang_chu_sub_section.TrangChuSubSectionFragment" >
+    tools:context=".ui.trang_chu_sub_section.TrangChuSubMenuFragment" >
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_menu_item"
