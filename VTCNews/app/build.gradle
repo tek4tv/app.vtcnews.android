@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "app.vtcnews.android"
-        minSdkVersion 24
+        minSdkVersion 22
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -81,6 +81,8 @@ dependencies {
 
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
+    //showmore
+    implementation  'com.borjabravo:readmoretextview:2.1.0'
 
     def epoxyVersion = '4.3.1'
     //epoxy

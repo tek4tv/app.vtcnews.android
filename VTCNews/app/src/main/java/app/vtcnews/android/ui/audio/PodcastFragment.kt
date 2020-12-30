@@ -10,16 +10,22 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import app.vtcnews.android.R
 import app.vtcnews.android.databinding.LayoutPodcastBinding
+import app.vtcnews.android.databinding.LayoutPodcastBindingImpl
+import app.vtcnews.android.repos.AudioRepo
+import app.vtcnews.android.viewmodels.AudioHomeFragViewModel
+import com.google.android.material.tabs.TabLayoutMediator
+import com.squareup.picasso.Picasso
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class PodcastFragment : Fragment() {
-
-
-    //    fun newInstance() = ChildFragment()
     companion object {
         fun newInstance(trangThai: String, id: Long) =
             PodcastFragment().apply {
@@ -29,114 +35,134 @@ class PodcastFragment : Fragment() {
                 }
             }
     }
-
+    private val viewModel: AudioHomeFragViewModel by viewModels()
     lateinit var binding: LayoutPodcastBinding
+    @Inject
+    lateinit var audioRepo : AudioRepo
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        binding = LayoutPodcastBinding.inflate(layoutInflater,container,false)
         val view = inflater.inflate(R.layout.layout_podcast, container, false)
-        val tvHeader = view.findViewById<TextView>(R.id.tvHeader)
-        val icHeader = view.findViewById<ImageView>(R.id.icHeader)
-        val btLoadMore = view.findViewById<AppCompatButton>(R.id.btLoadMore)
-        val tvEpDes = view.findViewById<TextView>(R.id.tvEpDescrip)
+
 
         when (arguments?.getString("trangthai")) {
             "Podcast" -> {
-                view.setBackgroundColor(
+                binding.backgroundPC.setBackgroundColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.podcast
                     )
                 )
-                tvHeader.setText("Podcast")
-                tvHeader.setTextColor(
+                binding.tvHeader.text = "Podcast"
+                binding.tvHeader.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.colorTitle
                     )
                 )
-                icHeader.setImageResource(R.drawable.icpc)
-                btLoadMore.setBackgroundResource(R.drawable.custombuttonpodc)
-                tvEpDes.setText("tập")
+                binding.icHeader.setImageResource(R.drawable.icpc)
+                binding.btLoadMore.setBackgroundResource(R.drawable.custombuttonpodc)
+                binding.tvEpDescrip.text = "tập"
 
             }
             "Sách nói" -> {
-                view.setBackgroundColor(
+                binding.backgroundPC.setBackgroundColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.sachnoi
                     )
                 )
-                tvHeader.setText("Sách nói")
-                tvHeader.setTextColor(
+                binding.tvHeader.text = "Sách nói"
+                binding.tvHeader.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.white
                     )
                 )
-                icHeader.setImageResource(R.drawable.icbook)
-                btLoadMore.setBackgroundResource(R.drawable.custombuttonbook)
-                tvEpDes.setText("tập")
+                binding.icHeader.setImageResource(R.drawable.icbook)
+                binding.btLoadMore.setBackgroundResource(R.drawable.custombuttonbook)
+                binding.tvEpDescrip.text = "tập"
             }
             "Âm nhạc" -> {
-                view.setBackgroundColor(
+                binding.backgroundPC.setBackgroundColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.amnhac
                     )
                 )
-                tvHeader.setText("Âm nhạc")
-                tvHeader.setTextColor(
+                binding.tvHeader.text = "Âm nhạc"
+                binding.tvHeader.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.white
                     )
                 )
-                icHeader.setImageResource(R.drawable.icmusic)
-                btLoadMore.setBackgroundResource(R.drawable.custombuttonam)
-                tvEpDes.setText("ca khúc")
+                binding.icHeader.setImageResource(R.drawable.icmusic)
+                binding.btLoadMore.setBackgroundResource(R.drawable.custombuttonam)
+                binding.tvEpDescrip.text = "ca khúc"
             }
         }
-        return view
+        return binding.root
 
 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.getChannelPodcast(requireArguments().getLong("idchannel"))
 
+        setUpob()
+        setUpObser()
 
-        val layoutManager = GridLayoutManager(context, 2)
-        val rv_xemthem = view.findViewById<RecyclerView>(R.id.rv_xemthem)
-        rv_xemthem.layoutManager = layoutManager
-
-
-        //click chi tiet audio
-//        itemAudioAdapter.clickListen = {
-//            activity!!.supportFragmentManager.beginTransaction()
-//                .replace(
-//                    R.id.frame_main,
-//                    FragmentChiTietAudio.newInstance()
-//                )
-//                .addToBackStack(null).commit()
-//        }
-
-
-        val btLoadMore = view.findViewById<AppCompatButton>(R.id.btLoadMore)
-
-        btLoadMore.setOnClickListener(View.OnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(
+        binding.btLoadMore.setOnClickListener(View.OnClickListener {
+            parentFragmentManager.beginTransaction()
+                .add(
                     R.id.fragment_holder,
                     FragmentLoadMoreAudio.newInstance(
                         arguments?.getString("trangthai")!!,
                         arguments?.getLong("idchannel")!!
                     )
                 )
-                .addToBackStack("sss").commit()
+                .addToBackStack(null).commit()
         })
+    }
+
+    fun setUpObser()
+    {   val layoutManager = GridLayoutManager(context, 2)
+
+        viewModel.listAlbumPaging.observe(viewLifecycleOwner)
+        {
+            val adapter = ItemAudioAdapter(it.drop(1).take(4))
+            if (it.isNotEmpty()) {
+                Picasso.get().load(it[0].image360360).into(binding.ivHeader)
+                binding.tvTitle.setText(it[0].name)
+                binding.rvXemthem.layoutManager = layoutManager
+                binding.rvXemthem.adapter = adapter
+                adapter.clickListen = {
+                    requireActivity().supportFragmentManager.beginTransaction()
+                        .add(
+                            R.id.fragment_holder,
+                            FragmentChiTietAudio.newInstance(it.id)
+                        )
+                        .addToBackStack(null).commit()
+                }
+            }
+        }
+    }
+    fun setUpob()
+    {
+        val adapter = LoadMoreVPAdapter(requireActivity())
+        viewModel.listChannelPodCast.observe(viewLifecycleOwner)
+        {
+            it.forEach{
+                viewModel.getAlbumPaging(it.id)
+            }
+
+        }
+
     }
 
 

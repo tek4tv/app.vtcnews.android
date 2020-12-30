@@ -21,14 +21,22 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_holder, TrangChuFragment.newInstance())
+            .add(R.id.fragment_holder, TrangChuFragment.newInstance())
             .addToBackStack(null)
             .commit()
 
         binding.mainBottomNav.setOnNavigationItemSelectedListener {
+            val audioFragment = AudioHomeFragment.newInstance()
             if (it.itemId == R.id.menuAudio) {
+                if (audioFragment != null) {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_holder, audioFragment).addToBackStack(null).commit()
+                }
+            }
+            if (it.itemId == R.id.menuTrangChu) {
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_holder, AudioHomeFragment.newInstance()).addToBackStack(null).commit()
+                    .replace(R.id.fragment_holder, TrangChuFragment.newInstance())
+                    .addToBackStack(null).commit()
             }
             true
         }

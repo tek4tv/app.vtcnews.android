@@ -1,5 +1,7 @@
 package app.vtcnews.android.network.Audio
 
+import app.vtcnews.android.model.Audio.AlbumDetail
+import app.vtcnews.android.model.Audio.AlbumPaging
 import app.vtcnews.android.model.Audio.AllPodCast
 import app.vtcnews.android.model.Audio.ChannelPodcast
 import retrofit2.Response
@@ -12,4 +14,10 @@ interface AllPodcastService {
 
     @GET("podcast/ChannelByPodcast/{Id}")
     suspend fun getChannelPodcast(@Path("Id")id:Long):Response<List<ChannelPodcast>>
+
+    @GET("podcast/GetAlbumPaging/chanId/{ChannelId}/pageIndex/1")
+    suspend fun getAlbumPaging(@Path("ChannelId")channelid:Long) : Response<List<AlbumPaging>>
+
+    @GET("podcast/AlbumDetail/{Id}")
+    suspend fun getAlbumDetail(@Path("Id")id:Long) : Response<AlbumDetail>
 }

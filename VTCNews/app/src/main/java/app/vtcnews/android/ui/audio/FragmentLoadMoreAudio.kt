@@ -19,7 +19,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class FragmentLoadMoreAudio :Fragment() {
     lateinit var binding: ActivityLoadmoreBinding
-    //lateinit var adapter : AudioVPHomeAdapter
     val viewModel: AudioHomeFragViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,7 +33,6 @@ class FragmentLoadMoreAudio :Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getChannelPodcast(requireArguments().getLong("idchannel"))
 
-        val listTitle: MutableList<String> = ArrayList()
         setUpob()
 
     }
@@ -43,10 +41,11 @@ class FragmentLoadMoreAudio :Fragment() {
         val adapter = LoadMoreVPAdapter(requireActivity())
         viewModel.listChannelPodCast.observe(viewLifecycleOwner)
         {
-            it.forEach{
+            it.drop(1).forEach{
+                viewModel.getAlbumPaging(it.id)
                 adapter.addFrag(
                     FragmentLoadMoreChild.newInstance(
-                        arguments?.getString("trangthai")!!
+                        arguments?.getString("trangthai")!!,it.id
                     )
                 )
                 TabLayoutMediator( binding.tabLoadMore ,binding.vpLoadMore ) { tab, position ->

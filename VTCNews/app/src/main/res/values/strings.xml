@@ -15,4 +15,8 @@
     <string name="video">Video</string>
     <string name="audio">Audio</string>
     <string name="chia_se">Chia sẻ</string>
+
+    //chitietalbum podcast
+    <string name="text_readmore"> Xem thêm</string>
+    <string name="text_hide"> Ẩn bớt</string>
 </resources>

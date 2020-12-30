@@ -6,11 +6,13 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/backgroundPC"
+        android:fillViewport="true"
         android:background="@color/podcast">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -42,7 +44,7 @@
                 <!-- header-->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_280sdp"
+                    android:layout_height="@dimen/_360sdp"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_10sdp"
                     app:cardCornerRadius="@dimen/_6sdp">
@@ -56,18 +58,14 @@
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
-                            android:layout_weight="2">
+                            android:layout_weight="2.5">
 
                             <ImageView
+                                android:scaleType="fitXY"
                                 android:id="@+id/ivHeader"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_alignParentEnd="true"
-                                android:layout_alignParentBottom="true"
-                                android:layout_marginEnd="-202dp"
-                                android:layout_marginBottom="-118dp"
-                                android:adjustViewBounds="true"
-                                android:scaleType="fitStart" />
+                                 />
 
                             <ImageView
                                 android:layout_width="@dimen/_60sdp"
@@ -115,12 +113,11 @@
                             android:layout_height="0dp"
                             android:layout_marginStart="@dimen/_10sdp"
                             android:layout_marginEnd="@dimen/_10sdp"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical"
+                            android:layout_weight="0.5"
+                            android:layout_marginTop="@dimen/_10sdp"
                             android:maxLines="2"
-                            android:text="Không gia đình - Hector Malot"
                             android:textColor="@color/colorTitle"
-                            android:textSize="@dimen/_20sdp"
+                            android:textSize="@dimen/_15sdp"
                             android:textStyle="bold" />
                     </LinearLayout>
 
@@ -129,6 +126,7 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_xemthem"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
