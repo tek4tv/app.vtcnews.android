@@ -56,6 +56,7 @@ class ArticlesFragment : Fragment() {
     }
 
     companion object {
+        //-1 for trending article
         @JvmStatic
         fun newInstance(categoryId: Int) =
             ArticlesFragment().apply {

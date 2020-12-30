@@ -8,6 +8,7 @@ import android.view.MenuItem
 import app.vtcnews.android.databinding.ActivityMainBinding
 import app.vtcnews.android.ui.audio.AudioHomeFragment
 import app.vtcnews.android.ui.trang_chu.TrangChuFragment
+import app.vtcnews.android.ui.trang_chu_sub_section.ArticlesFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,9 +34,15 @@ class MainActivity : AppCompatActivity() {
                         .replace(R.id.fragment_holder, audioFragment).addToBackStack(null).commit()
                 }
             }
-            if (it.itemId == R.id.menuTrangChu) {
+            else if (it.itemId == R.id.menuTrangChu) {
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.fragment_holder, TrangChuFragment.newInstance())
+                    .addToBackStack(null).commit()
+            }
+            else if(it.itemId == R.id.menuTrending)
+            {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_holder, ArticlesFragment.newInstance(-1))
                     .addToBackStack(null).commit()
             }
             true
