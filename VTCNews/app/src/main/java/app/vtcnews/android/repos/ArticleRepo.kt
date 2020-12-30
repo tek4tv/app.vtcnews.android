@@ -20,4 +20,9 @@ class ArticleRepo @Inject constructor(
 
     suspend fun getArticleSuggestionHome() : Resource<List<Article>> =
         performNetworkCall { articleService.getArticleSuggestionHome() }
+
+    suspend fun getArticleByCategory(page : Int, categoryId : Int) : Resource<List<Article>>
+    {
+        return performNetworkCall { articleService.getArticleByCategory(page, categoryId) }
+    }
 }

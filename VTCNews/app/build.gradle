@@ -85,6 +85,7 @@ dependencies {
     def epoxyVersion = '4.3.1'
     //epoxy
     implementation "com.airbnb.android:epoxy:$epoxyVersion"
+    implementation 'com.airbnb.android:epoxy-paging:4.3.1'
     kapt "com.airbnb.android:epoxy-processor:$epoxyVersion"
 
     //ktx
@@ -95,4 +96,8 @@ dependencies {
     //glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
+
+    //paging
+    def paging_version = "3.0.0-alpha11"
+    implementation "androidx.paging:paging-runtime:$paging_version"
 }

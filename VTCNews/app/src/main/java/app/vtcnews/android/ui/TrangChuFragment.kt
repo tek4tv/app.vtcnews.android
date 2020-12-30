@@ -10,7 +10,7 @@ import androidx.fragment.app.viewModels
 import app.vtcnews.android.R
 import app.vtcnews.android.databinding.FragmentTrangChuBinding
 import app.vtcnews.android.model.TrangChuData
-import app.vtcnews.android.ui.trang_chu_sub_section.TrangChuSubSectionFragment
+import app.vtcnews.android.ui.trang_chu_sub_section.TrangChuSubMenuFragment
 import app.vtcnews.android.viewmodels.TrangChuFragViewModel
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -89,7 +89,7 @@ class TrangChuFragment : Fragment() {
                 parentFragmentManager.beginTransaction()
                     .replace(
                         R.id.fragment_holder,
-                        TrangChuSubSectionFragment.newInstance(viewModel.menuList.value!![tab.position].id)
+                        TrangChuSubMenuFragment.newInstance(viewModel.menuList.value!![tab.position].id)
                     )
                     .addToBackStack("open_sub_menu")
                     .commit()

@@ -12,10 +12,9 @@ class SubMenuStateAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
         notifyDataSetChanged()
     }
 
-
     override fun getItemCount(): Int = menuList.size
 
     override fun createFragment(position: Int): Fragment {
-        return SubSectionDetailFragment.newInstance("a","a")
+        return ArticlesFragment.newInstance(menuList[position].id)
     }
 }
