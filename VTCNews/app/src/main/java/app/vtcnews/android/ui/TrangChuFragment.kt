@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import app.vtcnews.android.R
 import app.vtcnews.android.databinding.FragmentTrangChuBinding
 import app.vtcnews.android.model.TrangChuData
@@ -14,6 +15,7 @@ import app.vtcnews.android.ui.trang_chu_sub_section.TrangChuSubMenuFragment
 import app.vtcnews.android.viewmodels.TrangChuFragViewModel
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class TrangChuFragment : Fragment() {
@@ -41,6 +43,12 @@ class TrangChuFragment : Fragment() {
         viewModel.getData()
         binding.tabMenus.post {
             binding.tabMenus.scrollTo(0,0)
+        }
+
+        binding.root.post {
+            binding.root.post {
+                binding.tabMenus.setScrollPosition(0,0f,true)
+            }
         }
     }
 

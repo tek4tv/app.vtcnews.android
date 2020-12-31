@@ -19,4 +19,16 @@
     //chitietalbum podcast
     <string name="text_readmore"> Xem thêm</string>
     <string name="text_hide"> Ẩn bớt</string>
+
+    <string name="open_drawer">Opened drawer</string>
+    <string name="close_drawer">Closed drawer</string>
+
+    //nav drawer footer
+    <string name="vtc_name">BÁO ĐIỆN TỬ VTC NEWS</string>
+    <string name="cqcq">CQCQ: Đài Truyền hình KTS VTC</string>
+    <string name="tong_bt">Tổng biên tập: </string>
+    <string name="tong_bt_name">Ngô Văn Hải</string>
+    <string name="vtc_addr">Tầng 12A, Tòa nhà 18 Tam Trinh, Hai Bà Trưng, TP.Hà Nội.</string>
+    <string name="vtc_tel">024.3632.1588</string>
+    <string name="vtc_email">toasoan@vtc.gov.vn</string>
 </resources>

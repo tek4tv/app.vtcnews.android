@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/item_nav_drawer_trang_chu"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="@string/trang_chu" />
+    <item
+        android:id="@+id/item_nav_drawer_trending"
+        android:title="@string/tin_moi" />
+    <item android:title="@string/video" />
+    <item
+        android:id="@+id/item_nav_drawer_audio"
+        android:title="@string/audio" />
+
+    <group
+        android:id="@+id/nav_drawer_footer">
+        <item
+            android:id="@+id/footer"
+            app:actionLayout="@layout/nav_drawer_footer"/>
+    </group>
+</menu>

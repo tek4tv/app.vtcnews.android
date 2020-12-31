@@ -76,5 +76,8 @@ data class Article (
     val image169_Large: String? = null,
 
     @Json(name = "image16_9")
-    val image169: String
+    val image169: String? = null,
+
+    @Json(name = "imagecrop")
+    val imageCrop: String? = null
 )

@@ -5,7 +5,9 @@
         android:id="@+id/menuTrangChu"
         android:icon="@drawable/ic_baseline_home_24"
         android:title="@string/trang_chu" />
-    <item android:title="@string/tin_moi" />
+    <item
+        android:id="@+id/menuTrending"
+        android:title="@string/tin_moi" />
     <item android:title="@string/video" />
     <item
         android:id="@+id/menuAudio"

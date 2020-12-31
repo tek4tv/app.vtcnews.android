@@ -9,10 +9,10 @@ data class ArticleDetail(
     val detailData: DetailData,
 
     @Json(name = "ListCategoryDetail")
-    val listCategoryDetail: List<ListCategoryDetail>,
+    val listCategoryDetail: List<CategoryDetail>,
 
     @Json(name = "ListTag")
-    val listTag: List<ListTag>,
+    val listTag: List<Tag>,
 
     @Json(name = "SourceInfo")
     val sourceInfo: SourceInfo,
@@ -20,10 +20,16 @@ data class ArticleDetail(
     val articleStructure: String,
     val folderStructure: Any? = null,
     val breakcrumbStructure: String,
-    val videoStructure: Any? = null
+    val videoStructure: Any? = null,
+
+    @Json(name = "ListArticleRelated")
+    val relatedArticleList: List<Article>,
+
+    @Json(name = "image16_9")
+    val image169: String? = null
 )
 
-data class DetailData (
+data class DetailData(
     val tags: List<Any?>,
 
     @Json(name = "Id")
@@ -155,7 +161,7 @@ data class DetailData (
     val seoSlug: String
 )
 
-data class ListCategoryDetail (
+data class CategoryDetail(
     @Json(name = "Id")
     val id: Long,
 
@@ -190,7 +196,7 @@ data class ListCategoryDetail (
     val domain: Any? = null
 )
 
-data class ListTag (
+data class Tag(
     @Json(name = "TagId")
     val tagID: Long,
 
@@ -201,7 +207,7 @@ data class ListTag (
     val tagTitleWithoutUnicode: String
 )
 
-data class SourceInfo (
+data class SourceInfo(
     @Json(name = "Id")
     val id: Long,
 
