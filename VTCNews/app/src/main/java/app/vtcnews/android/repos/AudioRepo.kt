@@ -1,10 +1,7 @@
 package app.vtcnews.android.repos
 
 import androidx.lifecycle.MutableLiveData
-import app.vtcnews.android.model.Audio.AlbumDetail
-import app.vtcnews.android.model.Audio.AlbumPaging
-import app.vtcnews.android.model.Audio.AllPodCast
-import app.vtcnews.android.model.Audio.ChannelPodcast
+import app.vtcnews.android.model.Audio.*
 import app.vtcnews.android.network.Audio.AllPodcastService
 import app.vtcnews.android.network.Resource
 import app.vtcnews.android.network.performNetworkCall
@@ -17,6 +14,7 @@ class AudioRepo @Inject constructor(private val audioService: AllPodcastService)
 
     val listAllPodCast = MutableLiveData<List<AllPodCast>>()
     var listChannelPodcast = listOf<ChannelPodcast>()
+    var listAlbumDetail = listOf<ListPodcast>()
 
     suspend fun getAllPodcast(): Resource<List<AllPodCast>> = performNetworkCall {
         audioService.getAllPodcast()
@@ -41,8 +39,15 @@ class AudioRepo @Inject constructor(private val audioService: AllPodcastService)
     }
 
     suspend fun getAlbumDetail(id: Long):
-            Resource<AlbumDetail> = performNetworkCall {
-        audioService.getAlbumDetail(id)
+            Resource<AlbumDetail>{
+        val res = performNetworkCall {
+            audioService.getAlbumDetail(id)
+        }
+
+        if(res is Resource.Success)
+            listAlbumDetail = res.data.items
+
+        return res
     }
 }
 

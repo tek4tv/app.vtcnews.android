@@ -19,7 +19,7 @@ class ListChapterAdapter(private val listChapter: List<ListPodcast>) :
 
     var currImg : ImageView? = null
 
-    var clickListen: (ListPodcast) -> Unit = {}
+    var clickListen: (ListPodcast, Int) -> Unit = { listPodcast: ListPodcast, i: Int -> }
 
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         val ivChapter: ImageView = v.findViewById(R.id.ivChapter)
@@ -45,7 +45,7 @@ class ListChapterAdapter(private val listChapter: List<ListPodcast>) :
         Picasso.get().load(audio.image182182).fit().into(holder.ivChapter)
         holder.ivIsPlayChapter.isVisible = false
         holder.itemChapter.setOnClickListener(View.OnClickListener {
-            clickListen.invoke(audio)
+            clickListen.invoke(audio, position)
             currImg?.isVisible = false
             holder.ivIsPlayChapter.isVisible = true
             currImg = holder.ivIsPlayChapter

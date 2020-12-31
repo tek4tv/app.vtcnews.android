@@ -48,6 +48,8 @@ class PodcastFragment : Fragment() {
         val view = inflater.inflate(R.layout.layout_podcast, container, false)
 
 
+
+
         when (arguments?.getString("trangthai")) {
             "Podcast" -> {
                 binding.backgroundPC.setBackgroundColor(

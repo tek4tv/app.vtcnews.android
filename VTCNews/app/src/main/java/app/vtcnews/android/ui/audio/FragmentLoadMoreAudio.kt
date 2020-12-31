@@ -17,7 +17,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class FragmentLoadMoreAudio :Fragment() {
+class FragmentLoadMoreAudio : Fragment() {
     lateinit var binding: ActivityLoadmoreBinding
     val viewModel: AudioHomeFragViewModel by viewModels()
     override fun onCreateView(
@@ -25,7 +25,7 @@ class FragmentLoadMoreAudio :Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = ActivityLoadmoreBinding.inflate(layoutInflater,container,false)
+        binding = ActivityLoadmoreBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
@@ -36,20 +36,20 @@ class FragmentLoadMoreAudio :Fragment() {
         setUpob()
 
     }
-    fun setUpob()
-    {
+
+    fun setUpob() {
         val adapter = LoadMoreVPAdapter(requireActivity())
         viewModel.listChannelPodCast.observe(viewLifecycleOwner)
         {
-            it.drop(1).forEach{
-                viewModel.getAlbumPaging(it.id)
+            it.forEach { channel ->
+                viewModel.getAlbumPaging(channel.id)
                 adapter.addFrag(
                     FragmentLoadMoreChild.newInstance(
-                        arguments?.getString("trangthai")!!,it.id
+                        arguments?.getString("trangthai")!!, channel.id
                     )
                 )
-                TabLayoutMediator( binding.tabLoadMore ,binding.vpLoadMore ) { tab, position ->
-                    tab.text = it.name
+                TabLayoutMediator(binding.tabLoadMore, binding.vpLoadMore) { tab, position ->
+                    tab.text = it[position].name
                 }.attach()
             }
 
@@ -58,7 +58,7 @@ class FragmentLoadMoreAudio :Fragment() {
     }
 
     companion object {
-        fun newInstance(trangThai: String,id:Long) =
+        fun newInstance(trangThai: String, id: Long) =
             FragmentLoadMoreAudio().apply {
                 arguments = Bundle().apply {
                     putString("trangthai", trangThai)

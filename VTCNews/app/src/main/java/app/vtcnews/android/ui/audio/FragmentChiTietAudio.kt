@@ -12,6 +12,7 @@ import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.vtcnews.android.R
 import app.vtcnews.android.databinding.FragmentChitietAudioBinding
+import app.vtcnews.android.model.Audio.ListPodcast
 import app.vtcnews.android.viewmodels.AudioHomeFragViewModel
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,12 +58,13 @@ class FragmentChiTietAudio : Fragment() {
             binding.rvListChapter.adapter = listChapterAdapter
             binding.rvListChapter.layoutManager = layoutManager
 
-            listChapterAdapter.clickListen = {
+            listChapterAdapter.clickListen = { listPodcast: ListPodcast, i: Int ->
                 requireActivity().supportFragmentManager.beginTransaction()
                     .replace(
                         R.id.frame_player_podcast,
-                        FragmentPlayerAudio.newInstance(it.fileURL,it.name)
+                        FragmentPlayerAudio.newInstance(listPodcast.fileURL,listPodcast.name,listPodcast.image182182,i)
                     ).commit()
+
             }
 
         }

@@ -1,5 +1,7 @@
 package app.vtcnews.android.ui.audio
 
+import android.media.AudioManager
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -56,18 +58,28 @@ class FragmentLoadMoreChild : Fragment() {
         viewModel.getAlbumPaging(requireArguments().getLong("id"))
         setUpObser()
 
+
+
     }
     fun setUpObser()
 
-    {   val layoutManager = GridLayoutManager(context, 2)
+    {   val layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL,false)
         viewModel.listAlbumPaging.observe(viewLifecycleOwner)
         {
             val adapter = ItemAudioAdapter(it.drop(1))
             if (it.isNotEmpty()) {
-                binding.tvTitle.setText(it[0].name)
+                binding.tvTitle.text = it[0].name
                 Picasso.get().load(it[0].image360360).into(binding.ivHeader)
                 binding.rvXemthem.adapter = adapter
                 binding.rvXemthem.layoutManager = layoutManager
+                adapter.clickListen = {
+                    requireActivity().supportFragmentManager.beginTransaction()
+                        .add(
+                            R.id.fragment_holder,
+                            FragmentChiTietAudio.newInstance(it.id)
+                        )
+                        .addToBackStack(null).commit()
+                }
             }
         }
 
