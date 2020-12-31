@@ -3,6 +3,7 @@ package app.vtcnews.android
 import android.content.res.Configuration
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.util.Log
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
@@ -26,6 +27,19 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
+
+        supportFragmentManager.apply {
+            addOnBackStackChangedListener{
+                if(fragments.isEmpty()) return@addOnBackStackChangedListener
+                when(fragments[0])
+                {
+                    is TrangChuFragment -> binding.mainBottomNav.selectedItemId = R.id.menuTrangChu
+                    is ArticlesFragment -> binding.mainBottomNav.selectedItemId = R.id.menuTrending
+                    is AudioHomeFragment -> binding.mainBottomNav.selectedItemId = R.id.menuAudio
+                    else -> Log.d("MainActivity","Unknown Fragment type!")
+                }
+            }
+        }
 
         supportFragmentManager.beginTransaction()
             .add(R.id.fragment_holder, TrangChuFragment.newInstance())
