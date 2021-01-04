@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import app.vtcnews.android.R
 import app.vtcnews.android.databinding.FragmentTrangChuBinding
 import app.vtcnews.android.model.TrangChuData
+import app.vtcnews.android.ui.article_detail_fragment.ArticleDetailFragment
 import app.vtcnews.android.ui.trang_chu_sub_section.TrangChuSubMenuFragment
 import app.vtcnews.android.viewmodels.TrangChuFragViewModel
 import com.google.android.material.tabs.TabLayout
@@ -36,7 +37,7 @@ class TrangChuFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        registerObservers()
+
         setupRecycleView()
         setupTab()
         viewModel.getMenuList()
@@ -50,6 +51,7 @@ class TrangChuFragment : Fragment() {
                 binding.tabMenus.setScrollPosition(0,0f,true)
             }
         }
+        registerObservers()
     }
 
     private fun registerObservers() {
@@ -80,6 +82,12 @@ class TrangChuFragment : Fragment() {
     }
 
     private fun setupRecycleView() {
+        controller.articleClickListener = {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_holder,ArticleDetailFragment.newInstance(it.id))
+                .addToBackStack(null)
+                .commit()
+        }
         binding.rvTrangchu.setController(controller)
     }
 

@@ -10,6 +10,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.core.view.get
 import app.vtcnews.android.databinding.ActivityMainBinding
 import app.vtcnews.android.ui.audio.AudioHomeFragment
 import app.vtcnews.android.ui.trang_chu.TrangChuFragment
@@ -30,13 +31,14 @@ class MainActivity : AppCompatActivity() {
 
         supportFragmentManager.apply {
             addOnBackStackChangedListener{
-                if(fragments.isEmpty()) return@addOnBackStackChangedListener
-                when(fragments[0])
-                {
-                    is TrangChuFragment -> binding.mainBottomNav.selectedItemId = R.id.menuTrangChu
-                    is ArticlesFragment -> binding.mainBottomNav.selectedItemId = R.id.menuTrending
-                    is AudioHomeFragment -> binding.mainBottomNav.selectedItemId = R.id.menuAudio
-                    else -> Log.d("MainActivity","Unknown Fragment type!")
+                fragments.lastOrNull()?.let {curFragment ->
+                    when(curFragment)
+                    {
+                        is TrangChuFragment -> binding.mainBottomNav.menu[0].isChecked = true
+                        is ArticlesFragment -> binding.mainBottomNav.menu[1].isChecked = true
+                        is AudioHomeFragment -> binding.mainBottomNav.menu[3].isChecked = true
+                        else -> Log.d("MainActivity","Unknown Fragment type!")
+                    }
                 }
             }
         }

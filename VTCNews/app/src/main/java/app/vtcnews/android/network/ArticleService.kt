@@ -1,6 +1,7 @@
 package app.vtcnews.android.network
 
 import app.vtcnews.android.model.Article
+import app.vtcnews.android.model.ArticleDetail
 import app.vtcnews.android.model.HotChannel
 import retrofit2.Response
 import retrofit2.http.GET
@@ -23,5 +24,8 @@ interface ArticleService {
     ): Response<List<Article>>
 
     @GET("home/news/trending/{page}")
-    suspend fun getTrendingArticles(@Path("page") page : Int) : Response<List<Article>>
+    suspend fun getTrendingArticles(@Path("page") page: Int): Response<List<Article>>
+
+    @GET("home/news/detail/{article_id}")
+    suspend fun getArticleDetail(@Path("article_id") articleId: Int) : Response<ArticleDetail>
 }

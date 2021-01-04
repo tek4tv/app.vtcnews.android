@@ -81,7 +81,7 @@ data class DetailData(
     val countComment: Long,
 
     @Json(name = "ImageFacebookUrl")
-    val imageFacebookURL: String,
+    val imageFacebookURL: String? = null,
 
     @Json(name = "CateSEOSlug")
     val cateSEOSlug: String,
@@ -102,7 +102,7 @@ data class DetailData(
     val locationLongitude: Any? = null,
 
     @Json(name = "Author")
-    val author: String,
+    val author: String? = null,
 
     @Json(name = "Type")
     val type: Long,
@@ -111,7 +111,7 @@ data class DetailData(
     val likeCount: Long,
 
     @Json(name = "NoteSignature")
-    val noteSignature: String,
+    val noteSignature: String? = null,
 
     @Json(name = "AmpStatus")
     val ampStatus: Boolean,

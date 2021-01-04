@@ -18,8 +18,12 @@ abstract class ArticleModel : EpoxyModelWithHolder<HotArticleViewHolder>() {
     @EpoxyAttribute
     lateinit var article: Article
 
+    @EpoxyAttribute
+    lateinit var articleClickListener : (Article) -> Unit
+
     override fun bind(holder: HotArticleViewHolder) {
         holder.apply {
+
             Glide.with(img)
                 .load(article.image169)
                 .into(img)
@@ -42,7 +46,11 @@ abstract class ArticleModel : EpoxyModelWithHolder<HotArticleViewHolder>() {
 
             txtCategory.text = article.categoryName
 
-            txtDate.text = getDateDiff(article, txtDate.context.applicationContext.resources)
+            txtDate.text = getDateDiff(article.publishedDate, txtDate.context.applicationContext.resources)
+
+            holder.root.setOnClickListener {
+                articleClickListener.invoke(article)
+            }
         }
     }
 }
