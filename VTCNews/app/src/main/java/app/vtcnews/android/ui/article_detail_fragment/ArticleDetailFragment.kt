@@ -34,7 +34,7 @@ class ArticleDetailFragment : Fragment() {
         arguments?.let {
             articleId = it.getInt(ARG_PARAM1)
         }
-        viewModel.articleId = this.articleId
+        viewModel.articleId = 588860//this.articleId
     }
 
     override fun onCreateView(
@@ -76,6 +76,9 @@ class ArticleDetailFragment : Fragment() {
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun displayContent(data: String) {
+        val videoReg = Regex("<div.*?class=\"video-element\".*?><\\/div>")
+        val t = videoReg.find(data)?.value!!
+
         val imgReg = Regex("<img .*?>")
         val srcReg = Regex("data-src=\".*?\"")
         val altReg = Regex(" alt=\".*?\"")
