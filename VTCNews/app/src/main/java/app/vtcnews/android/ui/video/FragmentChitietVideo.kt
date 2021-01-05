@@ -44,6 +44,7 @@ class FragmentChitietVideo : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = VideoFragmentMotionPlayerBinding.inflate(layoutInflater, container, false)
+
         return binding.root
     }
 

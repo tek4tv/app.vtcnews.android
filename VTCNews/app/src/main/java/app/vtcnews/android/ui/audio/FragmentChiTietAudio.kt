@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -59,6 +60,15 @@ class FragmentChiTietAudio : Fragment() {
             binding.rvListChapter.layoutManager = layoutManager
 
             listChapterAdapter.clickListen = { listPodcast: ListPodcast, i: Int ->
+
+                val frame_player =
+                    requireActivity().findViewById<FrameLayout>(R.id.frame_player_podcast)
+                val frame_hoder = requireActivity().findViewById<FrameLayout>(R.id.fragment_holder)
+                val params = frame_player.layoutParams
+                params.width = FrameLayout.LayoutParams.MATCH_PARENT
+                params.height = FrameLayout.LayoutParams.WRAP_CONTENT
+                frame_player.layoutParams = params
+
                 requireActivity().supportFragmentManager.beginTransaction()
                     .replace(
                         R.id.frame_player_podcast,
