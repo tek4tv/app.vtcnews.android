@@ -139,7 +139,7 @@ class FragmentChitietVideo : Fragment() {
                 requireActivity().supportFragmentManager.beginTransaction()
                     .replace(
                         R.id.fragment_holder,
-                        FragmentChitietVideo.newInstance(article.title,article.id,article.categoryID)
+                        FragmentChitietVideo.newInstance(article.title,article.id as Long,article.categoryID)
                     ).commit()
                 Log.i("idaDetail", "" + article.id)
 
