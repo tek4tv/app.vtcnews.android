@@ -58,11 +58,11 @@
             android:id="@+id/frame_player_podcast"
             android:layout_width="0dp"
             android:layout_height="@dimen/_50sdp"
-            app:layout_constraintBottom_toBottomOf="@+id/fragment_holder"
+            app:layout_constraintBottom_toTopOf="@id/main_bottom_nav"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
-
         </FrameLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView

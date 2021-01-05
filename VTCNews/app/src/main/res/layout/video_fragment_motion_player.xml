@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<app.vtcnews.android.ui.article_detail_fragment.PlayerScreenMotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    app:layoutDescription="@xml/play_screen_motion_scene"
+    tools:showPaths="true">
+
+    <LinearLayout
+       android:background="@color/white"
+        android:id="@+id/player_background_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" />
+
+    <app.vtcnews.android.ui.article_detail_fragment.CustomPlayerView
+        android:id="@+id/video_view"
+        android:layout_width="230dp"
+        android:layout_height="@dimen/_170sdp"
+        android:background="@color/black"
+        android:scaleType="centerCrop"
+        app:buffered_color="#ffffff"
+        app:fastforward_increment="5000"
+        app:played_color="#ff1111"
+        app:rewind_increment="5000"
+        app:scrubber_color="#ff3333"
+        app:surface_type="texture_view"
+        app:unplayed_color="#ff888888" />
+
+    <ScrollView
+        android:id="@+id/svVideo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/video_view">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvTitleVideo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:padding="@dimen/_10sdp"
+                android:text="Ngăm vẻ đẹp của trái đất qua 100GB ảnh của NASA"
+                android:textColor="@color/colorTitle"
+                android:textSize="@dimen/_15sdp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvTimeDiff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:padding="@dimen/_8sdp"
+                    android:text="12' trước"
+                    android:textSize="@dimen/_10sdp" />
+
+                <TextView
+                    android:id="@+id/tvCategoryVideo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="Chính trị xã hội"
+                    android:textColor="@color/vtcBackground"
+                    android:textSize="@dimen/_10sdp" />
+
+
+            </LinearLayout>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvVideoNext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:nestedScrollingEnabled="true" />
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+    <ImageButton
+        android:id="@+id/btn_play_pause_mini"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:src="@drawable/ic_baseline_pause_24"
+        tools:layout_editor_absoluteX="46dp"
+        tools:layout_editor_absoluteY="59dp" />
+
+    <TextView
+        android:id="@+id/txt_video_title_mini"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:maxWidth="100dp"
+        android:text="hgkjsaghkjsgkashfkadslfhkadsjfffffffffffffffffffffff"
+        tools:layout_editor_absoluteX="221dp"
+        tools:layout_editor_absoluteY="246dp" />
+
+    <ImageButton
+        android:id="@+id/close_mini_player"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        app:srcCompat="@drawable/ic_baseline_close_24" />
+
+</app.vtcnews.android.ui.article_detail_fragment.PlayerScreenMotionLayout>
+

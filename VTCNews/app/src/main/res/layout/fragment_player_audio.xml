@@ -38,9 +38,9 @@
             android:layout_weight="1.5"
             android:ellipsize="marquee"
             android:marqueeRepeatLimit="marquee_forever"
-            android:padding="@dimen/_10sdp"
             android:scrollHorizontally="true"
             android:singleLine="true"
+            android:padding="@dimen/_10sdp"
             android:textColor="@color/text_color_titlelistchitiet"
             android:textSize="@dimen/_12sdp" />
 
