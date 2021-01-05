@@ -20,7 +20,7 @@ interface ArticleService {
     @GET("home/news/ArticleCategoryPaging/{page}/{categoryId}")
     suspend fun getArticleByCategory(
         @Path("page") page: Int,
-        @Path("categoryId") categoryId: Int
+        @Path("categoryId") categoryId: Long
     ): Response<List<Article>>
 
     @GET("home/news/trending/{page}")

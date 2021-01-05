@@ -12,7 +12,7 @@ class CategoryArticlePagingSource (
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Article> {
         val page = params.key ?: 1
 
-        return when (val res = articleRepo.getArticleByCategory(page, categoryId)) {
+        return when (val res = articleRepo.getArticleByCategory(page, categoryId.toLong())) {
             is Resource.Success -> LoadResult.Page(
                 data = res.data,
                 prevKey = if (page == 1) null else page - 1,

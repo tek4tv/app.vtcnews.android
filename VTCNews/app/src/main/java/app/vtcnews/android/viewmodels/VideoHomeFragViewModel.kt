@@ -43,7 +43,7 @@ class VideoHomeFragViewModel @ViewModelInject constructor(
             }
         }
     }
-    fun getVideoByCategory(page : Int, id:Int)
+    fun getVideoByCategory(page : Int, id:Long)
     {
         viewModelScope.launch {
             when (val res:app.vtcnews.android.network.Resource<List<Article>> = articleRepo.getArticleByCategory(page,id))

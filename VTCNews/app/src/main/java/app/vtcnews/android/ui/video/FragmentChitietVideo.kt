@@ -108,7 +108,7 @@ class FragmentChitietVideo : Fragment() {
         binding.tvTitleVideo.setText(requireArguments().getString("title"))
         dataListNextVideoObser()
         dataVideoDetailObser()
-        viewModel.getVideoByCategory(1,40)
+        viewModel.getVideoByCategory(1,requireArguments().getLong("categoryid"))
 
     }
 
