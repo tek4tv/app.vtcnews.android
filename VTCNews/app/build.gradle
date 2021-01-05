@@ -102,4 +102,10 @@ dependencies {
     //paging
     def paging_version = "3.0.0-alpha11"
     implementation "androidx.paging:paging-runtime:$paging_version"
+
+    //ExoPlayer
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.12.2'
+    implementation 'com.google.android.exoplayer:exoplayer-dash:2.12.2'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.12.2'
+    implementation 'com.google.android.exoplayer:exoplayer:2.12.2'
 }

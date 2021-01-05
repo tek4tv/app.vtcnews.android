@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/pvVideo"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_170sdp" />
+
+        <ScrollView
+            android:scrollbars="none"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvTitleVideo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:padding="@dimen/_10sdp"
+                    android:text="Ngăm vẻ đẹp của trái đất qua 100GB ảnh của NASA"
+                    android:textColor="@color/colorTitle"
+                    android:textSize="@dimen/_15sdp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvTimeDiff"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:padding="@dimen/_8sdp"
+                        android:text="12' trước"
+                        android:textSize="@dimen/_10sdp" />
+
+                    <TextView
+                        android:id="@+id/tvCategoryVideo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Chính trị xã hội"
+                        android:textColor="@color/vtcBackground"
+                        android:textSize="@dimen/_10sdp" />
+
+
+                </LinearLayout>
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvVideoNext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:nestedScrollingEnabled="true" />
+
+
+            </LinearLayout>
+
+        </ScrollView>
+    </LinearLayout>
+
+</layout>

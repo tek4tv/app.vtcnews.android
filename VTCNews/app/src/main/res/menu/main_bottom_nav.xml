@@ -9,6 +9,7 @@
         android:id="@+id/menuTrending"
         android:title="@string/tin_moi" />
     <item
+        android:id="@+id/menuVideo"
         android:title="@string/video" />
     <item
         android:id="@+id/menuAudio"

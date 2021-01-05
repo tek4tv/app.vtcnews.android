@@ -2,14 +2,13 @@ package app.vtcnews.android.ui.trang_chu_sub_section
 
 import android.content.res.Resources
 import app.vtcnews.android.R
-import app.vtcnews.android.model.Article
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.abs
 
-fun getDateDiff(article: Article, resource: Resources): String {
+fun getDateDiff(date: String, resource: Resources): String {
     val dateFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-    val date = dateFormatter.parse(article.publishedDate)
+    val date = dateFormatter.parse(date)
     val diff = abs(Date().time - date!!.time)
     val diffMinutes: Long = diff / (60 * 1000)
     val diffHours: Long = diff / (60 * 60 * 1000)

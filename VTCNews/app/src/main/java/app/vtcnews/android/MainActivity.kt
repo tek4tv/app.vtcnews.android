@@ -14,6 +14,7 @@ import app.vtcnews.android.databinding.ActivityMainBinding
 import app.vtcnews.android.ui.audio.AudioHomeFragment
 import app.vtcnews.android.ui.trang_chu.TrangChuFragment
 import app.vtcnews.android.ui.trang_chu_sub_section.ArticlesFragment
+import com.example.vtclive.Video.FragmentVideoPage
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,21 +30,19 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
 
         supportFragmentManager.apply {
-            addOnBackStackChangedListener{
-                if(fragments.isEmpty()) return@addOnBackStackChangedListener
-                when(fragments[0])
-                {
+            addOnBackStackChangedListener {
+                if (fragments.isEmpty()) return@addOnBackStackChangedListener
+                when (fragments[0]) {
                     is TrangChuFragment -> binding.mainBottomNav.selectedItemId = R.id.menuTrangChu
                     is ArticlesFragment -> binding.mainBottomNav.selectedItemId = R.id.menuTrending
                     is AudioHomeFragment -> binding.mainBottomNav.selectedItemId = R.id.menuAudio
-                    else -> Log.d("MainActivity","Unknown Fragment type!")
+                    else -> Log.d("MainActivity", "Unknown Fragment type!")
                 }
             }
         }
 
         supportFragmentManager.beginTransaction()
             .add(R.id.fragment_holder, TrangChuFragment.newInstance())
-            .addToBackStack(null)
             .commit()
 
         binding.mainBottomNav.setOnNavigationItemSelectedListener {
@@ -58,6 +57,9 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.menuAudio -> {
                     switchToAudio()
+                }
+                R.id.menuVideo -> {
+                    switchToVideo()
                 }
             }
             true
@@ -87,12 +89,14 @@ class MainActivity : AppCompatActivity() {
 
         binding.root.addDrawerListener(toggle)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        binding.toolbar.setNavigationIcon(R.drawable.ic_nav_drawer_24)
+        //binding.toolbar.setNavigationIcon(R.drawable.ic_nav_drawer_24)
+        supportActionBar?.setHomeButtonEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        toggle.syncState()
 
         binding.mainNavDrawer.setNavigationItemSelectedListener {
 
-            when(it.itemId)
-            {
+            when (it.itemId) {
                 R.id.item_nav_drawer_trang_chu -> {
                     switchToTrangChu()
                     binding.mainBottomNav.selectedItemId = R.id.menuTrangChu
@@ -141,6 +145,16 @@ class MainActivity : AppCompatActivity() {
             .addToBackStack(null)
             .commit()
         curFrag = "audio"
+    }
+
+    fun switchToVideo() {
+        if (curFrag == "video") return
+
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_holder, FragmentVideoPage.newInstance())
+            .addToBackStack(null)
+            .commit()
+        curFrag = "video"
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

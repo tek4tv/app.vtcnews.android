@@ -3,9 +3,10 @@
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_320sdp">
+        android:layout_height="@dimen/_280sdp">
 
         <LinearLayout
+            android:id="@+id/itemVideo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -14,7 +15,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="2.5">
+                android:layout_weight="3">
 
                 <ImageView
                     android:id="@+id/ivVideo"
@@ -34,15 +35,17 @@
                 android:id="@+id/tvTitleVideo"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_weight="0.5"
                 android:ellipsize="end"
+                android:textStyle="bold"
                 android:maxLines="2"
-                android:padding="@dimen/_10sdp"
+                android:padding="@dimen/_5sdp"
                 android:text="Ngăm vẻ đẹp của trái đất qua 100GB ảnh của NASA"
                 android:textColor="@color/colorTitle"
-                android:textSize="@dimen/_20sdp" />
+                android:textSize="@dimen/_15sdp" />
 
             <LinearLayout
+                android:padding="@dimen/_5sdp"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="0.5"
@@ -52,7 +55,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:padding="@dimen/_8sdp"
                     android:id="@+id/tvTimeDiff"
                     android:text="12' trước"
                     android:textSize="@dimen/_15sdp" />
@@ -67,6 +69,14 @@
                     android:textSize="@dimen/_15sdp" />
 
             </LinearLayout>
+            <View
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@color/text_color_titlelistchitiet" />
 
 
         </LinearLayout>
