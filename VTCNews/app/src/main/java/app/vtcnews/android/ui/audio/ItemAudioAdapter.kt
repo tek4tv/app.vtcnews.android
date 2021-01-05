@@ -43,7 +43,6 @@ class ItemAudioAdapter(private val listAudio: List<AlbumPaging>) :
 
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
         val ivItem: ImageView = v.findViewById(R.id.ivItem)
-        val tvEpisode: TextView = v.findViewById(R.id.tv_episode)
         val tvTitleItem: TextView = v.findViewById(R.id.tvTitleItem)
         val itemAudio: LinearLayout = v.findViewById(R.id.itemAudio)
         override fun onClick(p0: View?) {

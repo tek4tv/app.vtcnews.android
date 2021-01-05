@@ -33,12 +33,32 @@
                     android:scaleType="fitXY" />
 
                 <ImageView
+                    android:id="@+id/icItem"
                     android:layout_width="@dimen/_30sdp"
                     android:layout_height="@dimen/_30sdp"
                     android:layout_centerInParent="true"
                     android:src="@drawable/iconw" />
 
-                <RelativeLayout
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tvTitleItem"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_weight="0.5"
+                android:gravity="center_vertical"
+                android:maxLines="2"
+                android:text="Không gia đình - Hector Malot"
+                android:textColor="@color/colorTitle"
+                android:textSize="@dimen/_8sdp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>
+<!--<RelativeLayout
                     android:layout_width="@dimen/_35sdp"
                     android:layout_height="@dimen/_15sdp"
                     android:layout_alignParentBottom="true"
@@ -66,23 +86,4 @@
                         android:textColor="@color/white"
                         android:textSize="@dimen/_8sdp" />
 
-                </RelativeLayout>
-            </RelativeLayout>
-
-            <TextView
-                android:id="@+id/tvTitleItem"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_weight="0.5"
-                android:gravity="center_vertical"
-                android:maxLines="2"
-                android:text="Không gia đình - Hector Malot"
-                android:textColor="@color/colorTitle"
-                android:textSize="@dimen/_8sdp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-    </com.google.android.material.card.MaterialCardView>
-
-</LinearLayout>
+                </RelativeLayout>-->

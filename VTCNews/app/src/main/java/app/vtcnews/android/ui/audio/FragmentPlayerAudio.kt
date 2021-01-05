@@ -61,18 +61,19 @@ class FragmentPlayerAudio : Fragment() {
             ibPlay.setOnClickListener(View.OnClickListener {
                 if (mediaPlayer.isPlaying) {
                     mediaPlayer.pause()
-                    ibPlay.setImageResource(R.drawable.ic_pause)
+                    ibPlay.setImageResource(R.drawable.ic_play_arrow)
+
                 } else {
                     mediaPlayer.start()
-                    ibPlay.setImageResource(R.drawable.ic_play_arrow)
+                    ibPlay.setImageResource(R.drawable.ic_pause)
                 }
             })
             val list = audioRepo.listAlbumDetail
             currntPos = requireArguments().getInt("curent")
             ibNext.setOnClickListener(View.OnClickListener {
                 mediaPlayer.stop()
-                if (currntPos >= list.size-1) {
-                    currntPos = list.size-1
+                if (currntPos >= list.size - 1) {
+                    currntPos = list.size - 1
                 } else {
                     currntPos++
                 }
@@ -117,6 +118,7 @@ class FragmentPlayerAudio : Fragment() {
                     putInt("curent", position)
                 }
             }
+
         fun newInstance() = FragmentPlayerAudio()
     }
 

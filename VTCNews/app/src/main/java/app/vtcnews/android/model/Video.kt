@@ -78,3 +78,16 @@ data class Video (
     @Json(name = "image16_9")
     val image169: String
 )
+data class VideoDetail(
+    @Json(name = "Id")
+    val id: Long ,
+
+    @Json(name = "ArticleId")
+    val articleID: Long ,
+
+    @Json(name = "FileId")
+    val fileID: Long ,
+
+    @Json(name = "VideoURL")
+    val videoURL: String
+)

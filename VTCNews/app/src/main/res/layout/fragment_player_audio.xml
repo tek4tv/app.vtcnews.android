@@ -20,8 +20,7 @@
                 android:id="@+id/ivChapter"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                />
+                android:scaleType="fitXY" />
 
             <ImageView
                 android:id="@+id/ivIsPlayChapter"
@@ -44,36 +43,40 @@
             android:singleLine="true"
             android:textColor="@color/text_color_titlelistchitiet"
             android:textSize="@dimen/_12sdp" />
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="horizontal"
             android:weightSum="3">
+
             <ImageButton
                 android:id="@+id/ibPre"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:background="@null"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_skip_previous"/>
+                android:src="@drawable/ic_skip_previous" />
+
             <ImageButton
                 android:id="@+id/ibPlay"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:background="@null"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_play_arrow"/>
+                android:src="@drawable/ic_pause" />
+
             <ImageButton
                 android:id="@+id/ibNext"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:background="@null"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_skip_next"/>
+                android:src="@drawable/ic_skip_next" />
 
         </LinearLayout>
 

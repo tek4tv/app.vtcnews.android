@@ -116,7 +116,7 @@ class PodcastFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getChannelPodcast(requireArguments().getLong("idchannel"))
 
-        setUpob()
+        //setUpob()
         setUpObser()
 
         binding.btLoadMore.setOnClickListener(View.OnClickListener {
@@ -133,39 +133,37 @@ class PodcastFragment : Fragment() {
     }
 
     fun setUpObser()
-    {   val layoutManager = GridLayoutManager(context, 2)
-
-        viewModel.listAlbumPaging.observe(viewLifecycleOwner)
-        {
-            val adapter = ItemAudioAdapter(it.drop(1).take(4))
-            if (it.isNotEmpty()) {
-                Picasso.get().load(it[0].image360360).into(binding.ivHeader)
-                binding.tvTitle.setText(it[0].name)
-                binding.rvXemthem.layoutManager = layoutManager
-                binding.rvXemthem.adapter = adapter
-                adapter.clickListen = {
-                    requireActivity().supportFragmentManager.beginTransaction()
-                        .add(
-                            R.id.fragment_holder,
-                            FragmentChiTietAudio.newInstance(it.id)
-                        )
-                        .addToBackStack(null).commit()
-                }
-            }
-        }
-    }
-    fun setUpob()
     {
         val adapter = LoadMoreVPAdapter(requireActivity())
         viewModel.listChannelPodCast.observe(viewLifecycleOwner)
-        {
-            it.forEach{
-                viewModel.getAlbumPaging(it.id)
+        {listChannerPodcast ->
+            listChannerPodcast.forEach{channelPodcast ->
+                viewModel.getAlbumPaging(channelPodcast.id)
+                viewModel.listAlbumPaging.observe(viewLifecycleOwner)
+                {
+                    val layoutManager = GridLayoutManager(context, 2)
+                    val adapter = ItemAudioAdapter(it.drop(1).take(4))
+                    if (it.isNotEmpty()) {
+                        Picasso.get().load(it[0].image360360).into(binding.ivHeader)
+                        binding.tvTitle.setText(it[0].name)
+                        binding.rvXemthem.layoutManager = layoutManager
+                        binding.rvXemthem.adapter = adapter
+                        adapter.clickListen = {
+                            requireActivity().supportFragmentManager.beginTransaction()
+                                .add(
+                                    R.id.fragment_holder,
+                                    FragmentChiTietAudio.newInstance(it.id)
+                                )
+                                .addToBackStack(null).commit()
+                        }
+                    }
+                }
             }
 
         }
 
     }
+
 
 
 }

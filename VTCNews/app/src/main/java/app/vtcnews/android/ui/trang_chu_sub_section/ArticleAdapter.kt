@@ -64,7 +64,7 @@ class ArticleHolder(private val binding: ArticeItemBinding) :
 
         txtCategory.text = article.categoryName
 
-        txtDate.text = getDateDiff(article, txtDate.context.applicationContext.resources)
+        txtDate.text = getDateDiff(article.publishedDate, txtDate.context.applicationContext.resources)
     }
 
     companion object {
