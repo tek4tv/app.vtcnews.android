@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <ConstraintSet android:id="@+id/start" >
+        <Constraint
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/player_background_view"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/video_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone" />
+        <Constraint
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:id="@+id/video_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/player_background_view" />
+        <Constraint
+            app:layout_editor_absoluteY="246dp"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/txt_video_title_mini" />
+        <Constraint
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/close_mini_player" />
+        <Constraint
+            app:layout_editor_absoluteY="59dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/btn_play_pause_mini" />
+        <Constraint
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/img_thumb"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+        <Constraint
+
+            android:id="@+id/detail_layout"
+            android:layout_height="0dp"
+            android:layout_width="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/img_thumb"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </ConstraintSet>
+    <ConstraintSet android:id="@+id/end" >
+        <Constraint
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:id="@+id/player_background_view"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+        <Constraint
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/player_background_view"
+            android:layout_width="140dp"
+            android:id="@+id/video_view"
+            app:layout_constraintTop_toTopOf="@+id/player_background_view"
+            app:layout_constraintStart_toStartOf="@id/player_background_view" />
+        <Constraint
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            app:layout_constraintStart_toEndOf="@+id/video_view"
+            app:layout_constraintEnd_toStartOf="@+id/btn_play_pause_mini"
+            android:id="@+id/txt_video_title_mini"
+            app:layout_constraintBottom_toBottomOf="@id/player_background_view"
+            app:layout_constraintTop_toTopOf="@id/player_background_view"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"/>
+        <Constraint
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            app:layout_constraintEnd_toStartOf="@+id/close_mini_player"
+            android:id="@+id/btn_play_pause_mini"
+            app:layout_constraintBottom_toBottomOf="@+id/player_background_view"
+            app:layout_constraintTop_toTopOf="@+id/player_background_view"
+            android:layout_marginEnd="16dp"/>
+        <Constraint
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@+id/player_background_view"
+            android:layout_width="wrap_content"
+            android:id="@+id/close_mini_player"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_play_pause_mini"
+            app:layout_constraintTop_toTopOf="@+id/btn_play_pause_mini"
+            android:layout_marginEnd="16dp"/>
+
+        <Constraint
+
+            android:id="@+id/detail_layout"
+            android:layout_height="0dp"
+            android:layout_width="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </ConstraintSet>
+
+    <Transition
+        app:constraintSetStart="@+id/start"
+        app:constraintSetEnd="@+id/end"
+        app:motionInterpolator="easeInOut"
+        app:duration="100">
+        <KeyFrameSet >
+            <KeyPosition
+                app:motionTarget="@+id/video_view"
+                app:framePosition="80"
+                app:keyPositionType="deltaRelative"
+                app:curveFit="linear"
+                app:percentWidth="0"
+                app:percentX="0"
+                app:percentY="0.8" />
+            <KeyAttribute
+                app:motionTarget="@+id/btn_play_pause_mini"
+                app:framePosition="90"
+                android:alpha="0" />
+            <KeyAttribute
+                app:motionTarget="@+id/txt_video_title_mini"
+                app:framePosition="90"
+                android:alpha="0" />
+            <KeyAttribute
+                app:motionTarget="@+id/close_mini_player"
+                app:framePosition="90"
+                android:alpha="0" />
+
+        </KeyFrameSet>
+        <OnSwipe
+            app:dragDirection="dragDown"
+            motion:maxVelocity="200"
+            app:touchAnchorId="@id/video_view"
+            app:touchAnchorSide="top"
+            />
+    </Transition>
+</MotionScene>

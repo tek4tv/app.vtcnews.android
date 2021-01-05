@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">-->
+
+    <app.vtcnews.android.ui.article_detail_fragment.PlayerScreenMotionLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/root_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        app:layoutDescription="@xml/article_video_motion_scene"
+        tools:showPaths="true">
+
+    <include
+        android:id="@+id/detail_layout"
+        layout="@layout/layout_article_detail" />
+
+    <LinearLayout
+        android:id="@+id/player_background_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="206dp"
+        tools:layout_editor_absoluteY="24dp">
+
+    </LinearLayout>
+
+    <app.vtcnews.android.ui.article_detail_fragment.CustomPlayerView
+        android:id="@+id/video_view"
+        android:layout_width="230dp"
+        android:layout_height="0dp"
+        android:background="@color/black"
+        android:scaleType="centerCrop"
+        app:buffered_color="#ffffff"
+        app:fastforward_increment="5000"
+        app:played_color="#ff1111"
+        app:rewind_increment="5000"
+        app:scrubber_color="#ff3333"
+        app:surface_type="texture_view"
+        app:unplayed_color="#ff888888"
+        tools:layout_editor_absoluteY="24dp" />
+
+
+        <ImageButton
+            android:id="@+id/btn_play_pause_mini"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/ic_baseline_pause_24"
+            tools:layout_editor_absoluteX="46dp"
+            tools:layout_editor_absoluteY="59dp" />
+
+        <TextView
+            android:id="@+id/txt_video_title_mini"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxWidth="100dp"
+            android:maxLines="1"
+            android:text="hgkjsaghkjsgkashfkadslfhkadsjfffffffffffffffffffffff"
+            tools:layout_editor_absoluteX="221dp"
+            tools:layout_editor_absoluteY="246dp" />
+
+        <ImageButton
+            android:id="@+id/close_mini_player"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            app:srcCompat="@drawable/ic_baseline_close_24" />
+
+        <ImageView
+            android:id="@+id/img_thumb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+</app.vtcnews.android.ui.article_detail_fragment.PlayerScreenMotionLayout>
+<!--</ScrollView>-->
+
+
+

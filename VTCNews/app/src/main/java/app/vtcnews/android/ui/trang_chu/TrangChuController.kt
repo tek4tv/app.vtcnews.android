@@ -5,6 +5,8 @@ import app.vtcnews.android.model.TrangChuData
 import com.airbnb.epoxy.TypedEpoxyController
 
 class TrangChuController : TypedEpoxyController<TrangChuData>() {
+    var articleClickListener : (Article) -> Unit = {}
+
     override fun buildModels(data: TrangChuData?) {
 
         if (data == null || data.hotArticles.isEmpty() || data.hotChannels.isEmpty()) return
@@ -12,12 +14,14 @@ class TrangChuController : TypedEpoxyController<TrangChuData>() {
         hotArticleHeader {
             id("hotArticleHeader")
             hotArticle(data.hotArticles.first())
+            articleClickListener(articleClickListener)
         }
 
         data.hotArticles.drop(1).forEach { hotArticle ->
             article {
                 id(hotArticle.id)
                 article(hotArticle)
+                articleClickListener(articleClickListener)
             }
         }
 
@@ -38,6 +42,7 @@ class TrangChuController : TypedEpoxyController<TrangChuData>() {
                 article {
                     id(firstArticles[i].id)
                     article(firstArticles[i])
+                    articleClickListener(articleClickListener)
                 }
             }
         }
@@ -53,6 +58,7 @@ class TrangChuController : TypedEpoxyController<TrangChuData>() {
                 article {
                     id(firstArticles[i].id)
                     article(firstArticles[i])
+                    articleClickListener(articleClickListener)
                 }
             }
         }
@@ -61,6 +67,7 @@ class TrangChuController : TypedEpoxyController<TrangChuData>() {
             article {
                 id(it.id)
                 article(it)
+                articleClickListener(articleClickListener)
             }
         }
     }
