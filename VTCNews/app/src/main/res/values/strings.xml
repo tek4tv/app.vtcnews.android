@@ -31,4 +31,6 @@
     <string name="vtc_addr">Tầng 12A, Tòa nhà 18 Tam Trinh, Hai Bà Trưng, TP.Hà Nội.</string>
     <string name="vtc_tel">024.3632.1588</string>
     <string name="vtc_email">toasoan@vtc.gov.vn</string>
+    <string name="share">Chia sẻ</string>
+    <string name="like">Thích %d</string>
 </resources>

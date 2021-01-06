@@ -91,3 +91,10 @@ data class VideoDetail(
     @Json(name = "VideoURL")
     val videoURL: String
 )
+
+data class ArticleVideo(
+    @Json(name = "Id")
+    var id: Long,
+    @Json(name = "URL")
+    var url : String
+)

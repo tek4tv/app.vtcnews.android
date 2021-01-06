@@ -46,7 +46,7 @@ abstract class ArticleModel : EpoxyModelWithHolder<HotArticleViewHolder>() {
 
             txtCategory.text = article.categoryName
 
-            txtDate.text = getDateDiff(article.publishedDate, txtDate.context.applicationContext.resources)
+            txtDate.text = getDateDiff(article.publishedDate!!, txtDate.context.applicationContext.resources)
             holder.root.setOnClickListener {
                 articleClickListener.invoke(article)
             }

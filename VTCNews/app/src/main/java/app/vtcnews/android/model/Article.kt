@@ -7,64 +7,64 @@ data class Article (
     val id: Int,
 
     @Json(name = "Title")
-    val title: String,
+    val title: String? = null,
 
     @Json(name = "CategoryId")
-    val categoryID: Long,
+    val categoryID: Long?  = null,
 
     @Json(name = "ImageUrl")
-    val imageURL: String,
+    val imageURL: String? = null,
 
     @Json(name = "Description")
-    val description: String,
+    val description: String? = null,
 
     @Json(name = "OrderBy")
-    val orderBy: Long,
+    val orderBy: Long? = null,
 
     @Json(name = "CategoryName")
-    val categoryName: String,
+    val categoryName: String? = null,
 
     @Json(name = "PublishedDate")
-    val publishedDate: String,
+    val publishedDate: String? = null,
 
     @Json(name = "ViewCount")
-    val viewCount: Long,
+    val viewCount: Long? =  null,
 
     @Json(name = "Duration")
-    val duration: Long,
+    val duration: Long? = null,
 
     @Json(name = "SEOSlug")
-    val seoSlug: String,
+    val seoSlug: String? = null,
 
     @Json(name = "CateGorySEOSlug")
-    val cateGorySEOSlug: String,
+    val cateGorySEOSlug: String? = null,
 
     @Json(name = "TotalRecord")
-    val totalRecord: Long,
+    val totalRecord: Long? = null,
 
     @Json(name = "ListVideoInfo")
     val listVideoInfo: Any? = null,
 
     @Json(name = "IsPhotoArticle")
-    val isPhotoArticle: Long,
+    val isPhotoArticle: Long?  = null,
 
     @Json(name = "IsVideoArticle")
-    val isVideoArticle: Long,
+    val isVideoArticle: Long? =  null,
 
     @Json(name = "ListUrlImages")
-    val listURLImages: String,
+    val listURLImages: String? = null,
 
     @Json(name = "LikeCount")
-    val likeCount: Long,
+    val likeCount: Long?  = null,
 
     @Json(name = "Type")
-    val type: Long,
+    val type: Long? = null,
 
     @Json(name = "Author")
     val author: Any? = null,
 
     @Json(name = "CountComment")
-    val countComment: Long,
+    val countComment: Long? = null,
 
     @Json(name = "AudioUrl")
     val audioURL: Any? = null,

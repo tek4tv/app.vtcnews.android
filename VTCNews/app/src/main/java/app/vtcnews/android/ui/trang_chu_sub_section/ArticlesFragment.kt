@@ -7,7 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import app.vtcnews.android.R
 import app.vtcnews.android.databinding.FragmentArticlesBinding
+import app.vtcnews.android.ui.article_detail_fragment.ArticleDetailFragment
+import app.vtcnews.android.ui.video.FragmentChitietVideo
 import app.vtcnews.android.viewmodels.PagingArticleFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -43,6 +46,25 @@ class ArticlesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.rvArticlesList.adapter = pagingAdapter
+        pagingAdapter.articleClickListener = {
+            val fragmentManager = requireParentFragment().requireActivity().supportFragmentManager
+            if(it.isVideoArticle == 1L)
+            {
+                fragmentManager.beginTransaction()
+                    .replace(
+                        R.id.fragment_holder, FragmentChitietVideo.newInstance(
+                        it.title ?: "",
+                        it.id.toLong(),
+                        it.categoryID!!.toLong()
+                    ))
+                    .addToBackStack(null)
+                    .commit()
+            }
+            else
+            {
+                ArticleDetailFragment.openWith(fragmentManager, it.id)
+            }
+        }
         setupObservers()
     }
 

@@ -17,9 +17,9 @@ data class ArticleDetail(
     @Json(name = "SourceInfo")
     val sourceInfo: SourceInfo,
 
-    val articleStructure: String,
+    val articleStructure: String? = null,
     val folderStructure: Any? = null,
-    val breakcrumbStructure: String,
+    val breakcrumbStructure: String? = null,
     val videoStructure: Any? = null,
 
     @Json(name = "ListArticleRelated")
@@ -33,64 +33,64 @@ data class DetailData(
     val tags: List<Any?>,
 
     @Json(name = "Id")
-    val id: Long,
+    val id: Long? = null,
 
     @Json(name = "Title")
-    val title: String,
+    val title: String? = null,
 
     @Json(name = "CategoryId")
-    val categoryID: Long,
+    val categoryID: Long? = null,
 
     @Json(name = "ImageUrl")
-    val imageURL: String,
+    val imageURL: String? = null,
 
     @Json(name = "ImageWidth")
-    val imageWidth: Long,
+    val imageWidth: Long? = null,
 
     @Json(name = "ImageHeight")
-    val imageHeight: Long,
+    val imageHeight: Long? = null,
 
     @Json(name = "Image")
-    val image: Long,
+    val image: Long? = null,
 
     @Json(name = "Description")
-    val description: String,
+    val description: String? = null,
 
     @Json(name = "CategoryName")
-    val categoryName: String,
+    val categoryName: String? = null,
 
     @Json(name = "CategoryCode")
-    val categoryCode: String,
+    val categoryCode: String? = null,
 
     @Json(name = "PublishedDate")
-    val publishedDate: String,
+    val publishedDate: String? = null,
 
     @Json(name = "ViewCount")
-    val viewCount: Long,
+    val viewCount: Long? = null,
 
     @Json(name = "Content")
-    val content: String,
+    val content: String? = null,
 
     @Json(name = "IsContentCached")
-    val isContentCached: Boolean,
+    val isContentCached: Boolean? = null,
 
     @Json(name = "InMatch")
-    val inMatch: Long,
+    val inMatch: Long? = null,
 
     @Json(name = "CountComment")
-    val countComment: Long,
+    val countComment: Long? = null,
 
     @Json(name = "ImageFacebookUrl")
     val imageFacebookURL: String? = null,
 
     @Json(name = "CateSEOSlug")
-    val cateSEOSlug: String,
+    val cateSEOSlug: String? = null,
 
     @Json(name = "LastUpdateDate")
-    val lastUpdateDate: String,
+    val lastUpdateDate: String? = null,
 
     @Json(name = "CreatedDate")
-    val createdDate: String,
+    val createdDate: String? = null,
 
     @Json(name = "LocationRegionalCode")
     val locationRegionalCode: Any? = null,
@@ -105,21 +105,21 @@ data class DetailData(
     val author: String? = null,
 
     @Json(name = "Type")
-    val type: Long,
+    val type: Long? = null,
 
     @Json(name = "LikeCount")
-    val likeCount: Long,
+    val likeCount: Long? = null,
 
     @Json(name = "NoteSignature")
     val noteSignature: String? = null,
 
     @Json(name = "AmpStatus")
-    val ampStatus: Boolean,
+    val ampStatus: Boolean? = null,
 
-    val isVideoArticle: Boolean,
+    val isVideoArticle: Boolean? = null,
 
     @Json(name = "AdGoogle")
-    val adGoogle: Boolean,
+    val adGoogle: Boolean? = null,
 
     @Json(name = "ChannelId")
     val channelID: Any? = null,
@@ -131,66 +131,66 @@ data class DetailData(
     val channelSlug: Any? = null,
 
     @Json(name = "IsFacebook")
-    val isFacebook: Boolean,
+    val isFacebook: Boolean? = null,
 
     @Json(name = "IsZalo")
-    val isZalo: Boolean,
+    val isZalo: Boolean? = null,
 
     @Json(name = "IsTweet")
-    val isTweet: Boolean,
+    val isTweet: Boolean? = null,
 
     @Json(name = "IsYoutube")
-    val isYoutube: Boolean,
+    val isYoutube: Boolean? = null,
 
     @Json(name = "PublishedDateInt")
-    val publishedDateInt: Long,
+    val publishedDateInt: Long? = null,
 
     @Json(name = "SEODescription")
     val seoDescription: Any? = null,
 
     @Json(name = "SEOTitle")
-    val seoTitle: Any? = null,
+    val seoTitle: String? = null,
 
     @Json(name = "SEOTagKeyword")
-    val seoTagKeyword: String,
+    val seoTagKeyword: String? = null,
 
     @Json(name = "SEOKeyword")
-    val seoKeyword: String,
+    val seoKeyword: String? = null,
 
     @Json(name = "SEOSlug")
-    val seoSlug: String
+    val seoSlug: String? = null
 )
 
 data class CategoryDetail(
     @Json(name = "Id")
-    val id: Long,
+    val id: Long? = null,
 
     @Json(name = "SEOSlug")
-    val seoSlug: String,
+    val seoSlug: String? = null,
 
     @Json(name = "Title")
-    val title: String,
+    val title: String? = null,
 
     @Json(name = "ParentId")
     val parentID: Long? = null,
 
     @Json(name = "OrderDesktop")
-    val orderDesktop: Long,
+    val orderDesktop: Long? = null,
 
     @Json(name = "OrderMobile")
-    val orderMobile: Long,
+    val orderMobile: Long? = null,
 
     @Json(name = "OrderIndex")
-    val orderIndex: Long,
+    val orderIndex: Long? = null,
 
     @Json(name = "OrderFooter")
-    val orderFooter: Long,
+    val orderFooter: Long? = null,
 
     @Json(name = "IsShowMenu")
-    val isShowMenu: Boolean,
+    val isShowMenu: Boolean? = null,
 
     @Json(name = "Selected")
-    val selected: Long,
+    val selected: Long? = null,
 
     @Json(name = "Domain")
     val domain: Any? = null
@@ -198,18 +198,18 @@ data class CategoryDetail(
 
 data class Tag(
     @Json(name = "TagId")
-    val tagID: Long,
+    val tagID: Long? = null,
 
     @Json(name = "TagName")
-    val tagName: String,
+    val tagName: String? = null,
 
     @Json(name = "TagTitleWithoutUnicode")
-    val tagTitleWithoutUnicode: String
+    val tagTitleWithoutUnicode: String? = null
 )
 
 data class SourceInfo(
     @Json(name = "Id")
-    val id: Long,
+    val id: Long? = null,
 
     @Json(name = "Name")
     val name: Any? = null,

@@ -43,6 +43,15 @@ class TrangChuSubMenuFragment : Fragment() {
         setupObservers()
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.root.post {
+            binding.root.post {
+                binding.tabMenuItem.scrollTo(0, 0)
+            }
+        }
+    }
+
     private fun setupObservers()
     {
         viewModel.menuItem.observe(viewLifecycleOwner)

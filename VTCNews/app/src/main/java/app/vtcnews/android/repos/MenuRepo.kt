@@ -19,7 +19,7 @@ class MenuRepo @Inject constructor(private val menuService: MenuService) {
         if (response is Resource.Success) {
             menuList = response.data
             parentMenus =
-                menuList.filter { it.parentId == null && it.isShowMenu }.sortedBy { it.orderMobile }
+                menuList.filter { it.parentId == null && it.isShowMenu?:true }.sortedBy { it.orderMobile }
         }
 
         return response
