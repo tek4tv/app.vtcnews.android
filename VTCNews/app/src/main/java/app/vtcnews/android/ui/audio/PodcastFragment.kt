@@ -45,11 +45,6 @@ class PodcastFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = LayoutPodcastBinding.inflate(layoutInflater,container,false)
-        val view = inflater.inflate(R.layout.layout_podcast, container, false)
-
-
-
-
         when (arguments?.getString("trangthai")) {
             "Podcast" -> {
                 binding.backgroundPC.setBackgroundColor(
@@ -67,7 +62,6 @@ class PodcastFragment : Fragment() {
                 )
                 binding.icHeader.setImageResource(R.drawable.icpc)
                 binding.btLoadMore.setBackgroundResource(R.drawable.custombuttonpodc)
-                binding.tvEpDescrip.text = "tập"
 
             }
             "Sách nói" -> {
@@ -86,7 +80,6 @@ class PodcastFragment : Fragment() {
                 )
                 binding.icHeader.setImageResource(R.drawable.icbook)
                 binding.btLoadMore.setBackgroundResource(R.drawable.custombuttonbook)
-                binding.tvEpDescrip.text = "tập"
             }
             "Âm nhạc" -> {
                 binding.backgroundPC.setBackgroundColor(
@@ -104,7 +97,6 @@ class PodcastFragment : Fragment() {
                 )
                 binding.icHeader.setImageResource(R.drawable.icmusic)
                 binding.btLoadMore.setBackgroundResource(R.drawable.custombuttonam)
-                binding.tvEpDescrip.text = "ca khúc"
             }
         }
         return binding.root
@@ -130,7 +122,21 @@ class PodcastFragment : Fragment() {
                 )
                 .addToBackStack(null).commit()
         })
+
+
     }
+
+    override fun onResume() {
+        super.onResume()
+        if(requireActivity().supportFragmentManager.findFragmentByTag("player") != null)
+        {
+            val btLoadmore = requireActivity().findViewById<AppCompatButton>(R.id.btLoadMore)
+            val param = btLoadmore.layoutParams as ViewGroup.MarginLayoutParams
+            param.setMargins(0,0,0,200)
+            btLoadmore.layoutParams = param
+        }
+    }
+
 
     fun setUpObser()
     {

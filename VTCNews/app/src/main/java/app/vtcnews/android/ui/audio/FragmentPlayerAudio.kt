@@ -6,13 +6,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.observe
+import androidx.recyclerview.widget.RecyclerView
 import app.vtcnews.android.R
 import app.vtcnews.android.databinding.FragmentPlayerAudioBinding
-import app.vtcnews.android.model.Audio.ListPodcast
 import app.vtcnews.android.repos.AudioRepo
+import app.vtcnews.android.ui.video.VideoNotification
 import app.vtcnews.android.viewmodels.AudioHomeFragViewModel
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
@@ -53,7 +54,15 @@ class FragmentPlayerAudio : Fragment() {
         )
         mediaPlayer.start()
         buttonClick()
+        changeLayoutPDHome()
 
+    }
+    fun changeLayoutPDHome()
+    {
+        val btLoadmore = requireActivity().findViewById<AppCompatButton>(R.id.btLoadMore)
+        val param = btLoadmore.layoutParams as ViewGroup.MarginLayoutParams
+        param.setMargins(0,0,0,200)
+        btLoadmore.layoutParams = param
     }
 
     fun buttonClick() {
@@ -102,6 +111,9 @@ class FragmentPlayerAudio : Fragment() {
                 tvTitleChapter.text = list[currntPos].name
                 mediaPlayer.start()
             })
+            binding.ibClose.setOnClickListener(View.OnClickListener {
+                requireActivity().supportFragmentManager.beginTransaction().remove(this@FragmentPlayerAudio).commit()
+            })
 
 
         }
@@ -125,6 +137,19 @@ class FragmentPlayerAudio : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         mediaPlayer.stop()
+        val backgroundPC = requireActivity().findViewById<AppCompatButton>(R.id.btLoadMore)
+        val param = backgroundPC.layoutParams as ViewGroup.MarginLayoutParams
+        param.setMargins(0,0,0,50)
+        backgroundPC.layoutParams = param
+
+        if(requireActivity().supportFragmentManager.findFragmentByTag("player") != null)
+        {
+            val layout = requireActivity().findViewById<RecyclerView>(R.id.rvPcChild)
+            val param2 = layout.layoutParams as ViewGroup.MarginLayoutParams
+            param.setMargins(0,0,0,0)
+            layout.layoutParams = param2
+        }
+
     }
 
     override fun onPause() {

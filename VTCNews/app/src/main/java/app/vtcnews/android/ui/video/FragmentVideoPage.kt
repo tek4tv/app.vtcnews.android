@@ -1,36 +1,33 @@
 package com.example.vtclive.Video
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
+import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import app.vtcnews.android.R
 import app.vtcnews.android.databinding.LayoutVideoPageBinding
-import app.vtcnews.android.ui.audio.FragmentChiTietAudio
-import app.vtcnews.android.ui.audio.LoadMoreVPAdapter
 import app.vtcnews.android.ui.video.FragmentChitietVideo
 import app.vtcnews.android.ui.video.VideoHomeAdapter
 import app.vtcnews.android.viewmodels.VideoHomeFragViewModel
-import com.google.android.material.tabs.TabLayoutMediator
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class FragmentVideoPage : Fragment() {
-    lateinit var binding : LayoutVideoPageBinding
+    lateinit var binding: LayoutVideoPageBinding
     val viewModel: VideoHomeFragViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = LayoutVideoPageBinding.inflate(layoutInflater,container,false)
+        binding = LayoutVideoPageBinding.inflate(layoutInflater, container, false)
 
 //        val listTitle: MutableList<String> = ArrayList()
 //        val adapter = LoadMoreVPAdapter(requireActivity())
@@ -47,8 +44,6 @@ class FragmentVideoPage : Fragment() {
 //        TabLayoutMediator( binding.tabVideo,binding.vpVideo ) { tab, position ->
 //            tab.text = listTitle[position]
 //        }.attach()
-
-
         return binding.root
     }
 
@@ -56,22 +51,32 @@ class FragmentVideoPage : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getVideoHome()
         dataObserVideo()
+
     }
-    fun dataObserVideo()
-    {
+
+    fun dataObserVideo() {
         viewModel.listVideoHome.observe(viewLifecycleOwner)
         {
             val adapter = VideoHomeAdapter(it)
-            val layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
-           binding.rvVideoHome.adapter = adapter
+            val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            binding.rvVideoHome.adapter = adapter
             binding.rvVideoHome.layoutManager = layoutManager
+            val navBottom = requireActivity().findViewById<BottomNavigationView>(R.id.main_bottom_nav)
             adapter.clickListen = {
+                val frame_player =
+                    requireActivity().findViewById<FrameLayout>(R.id.frame_player_podcast)
+                val frame_hoder = requireActivity().findViewById<FrameLayout>(R.id.fragment_holder)
+                val params = frame_player.layoutParams
+                params.width = FrameLayout.LayoutParams.MATCH_PARENT
+                params.height = frame_hoder.height + navBottom.height
+                frame_player.layoutParams = params
                 requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(
-                        R.id.fragment_holder,
-                        FragmentChitietVideo.newInstance(it.title,it.id,it.categoryID)
-                    )
-                    .addToBackStack(null).commit()
+                    .setCustomAnimations(R.anim.enter_from_right,0,0,R.anim.exit_to_right)
+                    .add(
+                        R.id.frame_player_podcast,
+                        FragmentChitietVideo.newInstance(it.title, it.id, it.categoryID)
+                    ).addToBackStack(null).commit()
+               
             }
         }
     }

@@ -42,7 +42,7 @@
                 android:padding="@dimen/_5sdp"
                 android:text="Ngăm vẻ đẹp của trái đất qua 100GB ảnh của NASA"
                 android:textColor="@color/colorTitle"
-                android:textSize="@dimen/_15sdp" />
+                android:textSize="@dimen/_18sdp" />
 
             <LinearLayout
                 android:padding="@dimen/_5sdp"
@@ -57,6 +57,7 @@
                     android:layout_gravity="center_vertical"
                     android:id="@+id/tvTimeDiff"
                     android:text="12' trước"
+                    android:layout_marginRight="@dimen/_5sdp"
                     android:textSize="@dimen/_15sdp" />
 
                 <TextView

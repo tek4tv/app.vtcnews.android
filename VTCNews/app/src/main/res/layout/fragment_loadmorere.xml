@@ -12,12 +12,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/layoutPCChild"
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp">
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
@@ -58,9 +59,9 @@
 
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_xemthem"
+                android:id="@+id/rvPcChild"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp" />
 
             <!-- end header-->

@@ -1,11 +1,16 @@
 package app.vtcnews.android.ui.audio
 
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.databinding.DataBindingUtil
+import android.widget.FrameLayout
+import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
@@ -42,8 +47,8 @@ class FragmentChiTietAudio : Fragment() {
         setUpDataObser()
 
     }
-    fun setUpDataObser()
-    {
+
+    fun setUpDataObser() {
         viewModel.podcastInfo.observe(viewLifecycleOwner)
         {
             Picasso.get().load(it.image182182).into(binding.ivChitiet)
@@ -59,10 +64,37 @@ class FragmentChiTietAudio : Fragment() {
             binding.rvListChapter.layoutManager = layoutManager
 
             listChapterAdapter.clickListen = { listPodcast: ListPodcast, i: Int ->
+
+//                VideoNotification.createNotifi(requireContext(),listPodcast)
+                
+                val bitmap: Bitmap = Picasso.get().load(listPodcast.image182182).get()
+                val intent = Intent()
+                val penIntent = PendingIntent.getBroadcast(requireContext(), 0, intent, 0)
+                val notificationManager =
+                    requireActivity().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                val mbuild = NotificationCompat.Builder(requireContext(), "1")
+                mbuild.setSmallIcon(R.drawable.ic_play_arrow)
+                mbuild.setContentTitle(listPodcast.name)
+                mbuild.setContentText("...")
+                mbuild.setLargeIcon(bitmap)
+                mbuild.addAction(R.drawable.exo_icon_previous, "", penIntent)
+                notificationManager.notify(1, mbuild.build())
+
+                val frame_player =
+                    requireActivity().findViewById<FrameLayout>(R.id.frame_player_podcast)
+                val frame_hoder = requireActivity().findViewById<FrameLayout>(R.id.fragment_holder)
+                val params = frame_player.layoutParams
+                params.width = FrameLayout.LayoutParams.MATCH_PARENT
+                params.height = FrameLayout.LayoutParams.WRAP_CONTENT
+                frame_player.layoutParams = params
+
                 requireActivity().supportFragmentManager.beginTransaction()
                     .replace(
                         R.id.frame_player_podcast,
-                        FragmentPlayerAudio.newInstance(listPodcast.fileURL,listPodcast.name,listPodcast.image182182,i)
+                        FragmentPlayerAudio.newInstance(
+                            listPodcast.fileURL,
+                            listPodcast.name, listPodcast.image182182, i
+                        ), "player"
                     ).commit()
 
             }
