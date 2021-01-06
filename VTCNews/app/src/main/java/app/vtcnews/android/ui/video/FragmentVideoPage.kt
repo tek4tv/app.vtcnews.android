@@ -14,6 +14,7 @@ import app.vtcnews.android.databinding.LayoutVideoPageBinding
 import app.vtcnews.android.ui.video.FragmentChitietVideo
 import app.vtcnews.android.ui.video.VideoHomeAdapter
 import app.vtcnews.android.viewmodels.VideoHomeFragViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -60,17 +61,18 @@ class FragmentVideoPage : Fragment() {
             val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             binding.rvVideoHome.adapter = adapter
             binding.rvVideoHome.layoutManager = layoutManager
-
+            val navBottom = requireActivity().findViewById<BottomNavigationView>(R.id.main_bottom_nav)
             adapter.clickListen = {
                 val frame_player =
                     requireActivity().findViewById<FrameLayout>(R.id.frame_player_podcast)
                 val frame_hoder = requireActivity().findViewById<FrameLayout>(R.id.fragment_holder)
                 val params = frame_player.layoutParams
                 params.width = FrameLayout.LayoutParams.MATCH_PARENT
-                params.height = frame_hoder.height
+                params.height = frame_hoder.height + navBottom.height
                 frame_player.layoutParams = params
                 requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(
+                    .setCustomAnimations(R.anim.enter_from_right,0,0,R.anim.exit_to_right)
+                    .add(
                         R.id.frame_player_podcast,
                         FragmentChitietVideo.newInstance(it.title, it.id, it.categoryID)
                     ).addToBackStack(null).commit()

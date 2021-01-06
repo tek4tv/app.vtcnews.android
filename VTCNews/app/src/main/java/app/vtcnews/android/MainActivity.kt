@@ -126,6 +126,7 @@ class MainActivity : AppCompatActivity() {
         if (curFrag == "trang_chu") return
 
         supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.enter_from_right,0,0,R.anim.exit_to_right)
             .replace(R.id.fragment_holder, TrangChuFragment.newInstance())
             .addToBackStack(null).commit()
         curFrag = "trang_chu"
@@ -135,6 +136,7 @@ class MainActivity : AppCompatActivity() {
         if (curFrag == "trending") return
 
         supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.enter_from_right,0,0,R.anim.exit_to_right)
             .replace(R.id.fragment_holder, ArticlesFragment.newInstance(-1))
             .addToBackStack(null).commit()
         curFrag = "trending"
@@ -144,6 +146,7 @@ class MainActivity : AppCompatActivity() {
         if (curFrag == "audio") return
 
         supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.enter_from_right,0,0,R.anim.exit_to_right)
             .replace(R.id.fragment_holder, AudioHomeFragment.newInstance())
             .addToBackStack(null)
             .commit()
@@ -154,6 +157,7 @@ class MainActivity : AppCompatActivity() {
         if (curFrag == "video") return
 
         supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.enter_from_right,0,0,R.anim.exit_to_right)
             .replace(R.id.fragment_holder, FragmentVideoPage.newInstance())
             .addToBackStack(null)
             .commit()

@@ -67,7 +67,6 @@ class PodcastFragment : Fragment() {
                 )
                 binding.icHeader.setImageResource(R.drawable.icpc)
                 binding.btLoadMore.setBackgroundResource(R.drawable.custombuttonpodc)
-                binding.tvEpDescrip.text = "tập"
 
             }
             "Sách nói" -> {
@@ -86,7 +85,6 @@ class PodcastFragment : Fragment() {
                 )
                 binding.icHeader.setImageResource(R.drawable.icbook)
                 binding.btLoadMore.setBackgroundResource(R.drawable.custombuttonbook)
-                binding.tvEpDescrip.text = "tập"
             }
             "Âm nhạc" -> {
                 binding.backgroundPC.setBackgroundColor(
@@ -104,7 +102,6 @@ class PodcastFragment : Fragment() {
                 )
                 binding.icHeader.setImageResource(R.drawable.icmusic)
                 binding.btLoadMore.setBackgroundResource(R.drawable.custombuttonam)
-                binding.tvEpDescrip.text = "ca khúc"
             }
         }
         return binding.root

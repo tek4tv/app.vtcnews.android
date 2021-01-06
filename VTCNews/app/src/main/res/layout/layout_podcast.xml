@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -45,7 +44,7 @@
                 <!-- header-->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_360sdp"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_10sdp"
                     app:cardCornerRadius="@dimen/_6sdp">
@@ -53,70 +52,40 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:weightSum="3">
+                        android:orientation="vertical">
 
-                        <RelativeLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="2.5">
+                            android:layout_height="wrap_content">
 
-                            <ImageView
-                                android:scaleType="fitXY"
-                                android:id="@+id/ivHeader"
+                            <androidx.cardview.widget.CardView
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                 />
+                                android:layout_height="0dp"
+                                app:layout_constraintDimensionRatio="H, 1:1"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
 
-                            <ImageView
-                                android:layout_width="@dimen/_60sdp"
-                                android:layout_height="@dimen/_60sdp"
-                                android:layout_centerInParent="true"
-                                android:src="@drawable/iconw" />
+                                <ImageView
+                                    android:id="@+id/ivHeader"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent" />
 
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="@dimen/_25sdp"
-                                android:layout_alignParentBottom="true"
-                                android:layout_margin="@dimen/_10sdp"
-                                android:background="@color/colorEp"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:id="@+id/tv_episode"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                <ImageView
+                                    android:layout_width="@dimen/_60sdp"
+                                    android:layout_height="@dimen/_60sdp"
+                                    android:layout_centerInParent="true"
                                     android:layout_gravity="center"
-                                    android:layout_weight="1"
-                                    android:text="10"
-                                    android:padding="@dimen/_5sdp"
-                                    android:textColor="@color/white"
-                                    android:textSize="@dimen/_10sdp"
-                                    android:textStyle="bold" />
+                                    android:src="@drawable/iconw" />
 
-                                <TextView
-                                    android:padding="@dimen/_5sdp"
-                                    android:id="@+id/tvEpDescrip"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_weight="1"
-                                    android:text="tập"
-                                    android:textColor="@color/white"
-                                    android:textSize="@dimen/_10sdp" />
-
-                            </LinearLayout>
-                        </RelativeLayout>
+                            </androidx.cardview.widget.CardView>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <TextView
                             android:id="@+id/tvTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="0dp"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginEnd="@dimen/_10sdp"
-                            android:layout_weight="0.5"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:maxLines="2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/_10sdp"
                             android:textColor="@color/colorTitle"
                             android:textSize="@dimen/_15sdp"
                             android:textStyle="bold" />
