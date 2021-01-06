@@ -1,7 +1,10 @@
 package app.vtcnews.android.ui.article_detail_fragment
 
 import android.annotation.SuppressLint
+import android.content.ClipData
+import android.content.ContentResolver
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +13,7 @@ import android.view.ViewGroup
 import android.webkit.WebSettings
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.ContentResolverCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
@@ -24,6 +28,8 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.util.Util
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.FileNotFoundException
+import java.io.IOException
 
 private const val ARG_PARAM1 = "param1"
 
@@ -197,9 +203,9 @@ class ArticleDetailFragment : Fragment() {
 
                 val intent = Intent(Intent.ACTION_SEND)
                 intent.apply {
-                    type = "text/plain"
-                    putExtra(Intent.EXTRA_SUBJECT, detailData.title)
+                    type = "text/*"
                     putExtra(Intent.EXTRA_TEXT, url)
+                    putExtra(Intent.EXTRA_TITLE, detailData.title)
                     startActivity(Intent.createChooser(intent, "Chia sẻ"))
                 }
             }
