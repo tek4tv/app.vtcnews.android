@@ -13,12 +13,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.appcompat.widget.Toolbar
 import androidx.core.app.NotificationCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
+import app.vtcnews.android.MainActivity
 import app.vtcnews.android.R
 import app.vtcnews.android.databinding.VideoFragmentMotionPlayerBinding
 import app.vtcnews.android.model.Article
@@ -72,6 +74,11 @@ class FragmentChitietVideo : Fragment() {
         mbuild.addAction(R.drawable.exo_icon_previous, "", penIntent)
         notificationManager.notify(1, mbuild.build())
 
+//        val toolbar = requireActivity().findViewById(R.id.toolbar) as Toolbar
+//        activity.setActionBar(toolbar)
+
+
+
         return binding.root
     }
 
@@ -99,6 +106,9 @@ class FragmentChitietVideo : Fragment() {
             }
             false
         })
+
+    }
+    private fun setupNav() {
 
     }
 

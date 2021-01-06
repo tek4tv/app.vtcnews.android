@@ -45,11 +45,6 @@ class PodcastFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = LayoutPodcastBinding.inflate(layoutInflater,container,false)
-        val view = inflater.inflate(R.layout.layout_podcast, container, false)
-
-
-
-
         when (arguments?.getString("trangthai")) {
             "Podcast" -> {
                 binding.backgroundPC.setBackgroundColor(
@@ -127,7 +122,21 @@ class PodcastFragment : Fragment() {
                 )
                 .addToBackStack(null).commit()
         })
+
+
     }
+
+    override fun onResume() {
+        super.onResume()
+        if(requireActivity().supportFragmentManager.findFragmentByTag("player") != null)
+        {
+            val btLoadmore = requireActivity().findViewById<AppCompatButton>(R.id.btLoadMore)
+            val param = btLoadmore.layoutParams as ViewGroup.MarginLayoutParams
+            param.setMargins(0,0,0,200)
+            btLoadmore.layoutParams = param
+        }
+    }
+
 
     fun setUpObser()
     {
