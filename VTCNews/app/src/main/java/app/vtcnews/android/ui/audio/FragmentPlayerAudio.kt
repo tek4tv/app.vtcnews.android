@@ -102,6 +102,9 @@ class FragmentPlayerAudio : Fragment() {
                 tvTitleChapter.text = list[currntPos].name
                 mediaPlayer.start()
             })
+            binding.ibClose.setOnClickListener(View.OnClickListener {
+                requireActivity().supportFragmentManager.beginTransaction().remove(this@FragmentPlayerAudio).commit()
+            })
 
 
         }

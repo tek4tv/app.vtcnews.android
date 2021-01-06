@@ -1,12 +1,18 @@
 package app.vtcnews.android.ui.video
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
@@ -18,6 +24,7 @@ import app.vtcnews.android.viewmodels.VideoHomeFragViewModel
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 
 
 @AndroidEntryPoint
@@ -38,12 +45,27 @@ class FragmentChitietVideo : Fragment() {
 
     }
 
+    lateinit var notificationChannel: NotificationChannel
+    lateinit var notificationManager: NotificationManager
+    lateinit var builder: Notification.Builder
+    private val channelId = "12345"
+    private val description = "Test Notification"
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = VideoFragmentMotionPlayerBinding.inflate(layoutInflater, container, false)
+
+        val intent = Intent()
+        val penIntent = PendingIntent.getBroadcast(requireContext(),0,intent,0)
+        notificationManager = requireActivity().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val mbuild = NotificationCompat.Builder(requireContext(),"1")
+        mbuild.setSmallIcon(R.drawable.ic_play_arrow)
+        mbuild.setContentTitle("Player")
+        mbuild.setContentText("...")
+        mbuild.addAction(R.drawable.exo_icon_previous,"",penIntent)
+        notificationManager.notify(1,mbuild.build())
 
         return binding.root
     }
@@ -61,19 +83,6 @@ class FragmentChitietVideo : Fragment() {
         viewModel.getVideoByCategory(1, requireArguments().getLong("categoryid"))
         buttonClick()
 
-        //back press event
-        view.setFocusableInTouchMode(true)
-        view.requestFocus()
-        view.setOnKeyListener(View.OnKeyListener { view, i, keyEvent ->
-            if (keyEvent.action == KeyEvent.ACTION_DOWN) {
-                if (i == KeyEvent.KEYCODE_BACK) {
-                    requireActivity().supportFragmentManager.beginTransaction().remove(this)
-                        .commit()
-                }
-            }
-            false
-
-        })
     }
 
     fun dataVideoDetailObser() {
@@ -110,17 +119,17 @@ class FragmentChitietVideo : Fragment() {
                 params.width = FrameLayout.LayoutParams.MATCH_PARENT
                 params.height = frame_hoder.height
                 frame_player.layoutParams = params
-
+                player.release()
+                requireActivity().supportFragmentManager.popBackStack()
                 requireActivity().supportFragmentManager.beginTransaction()
                     .replace(
                         R.id.frame_player_podcast,
-                        FragmentChitietVideo.newInstance(
+                        newInstance(
                             article.title,
                             article.id.toLong(),
                             article.categoryID
                         )
                     ).addToBackStack(null).commit()
-                requireActivity().supportFragmentManager.popBackStack()
             }
         }
     }
@@ -147,8 +156,7 @@ class FragmentChitietVideo : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        player = SimpleExoPlayer.Builder(requireContext()).build()
-        player.stop()
+        player.release()
     }
 
 

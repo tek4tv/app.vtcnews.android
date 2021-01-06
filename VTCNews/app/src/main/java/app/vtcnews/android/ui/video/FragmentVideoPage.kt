@@ -74,6 +74,7 @@ class FragmentVideoPage : Fragment() {
                         R.id.frame_player_podcast,
                         FragmentChitietVideo.newInstance(it.title, it.id, it.categoryID)
                     ).addToBackStack(null).commit()
+               
             }
         }
     }
