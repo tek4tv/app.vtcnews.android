@@ -32,5 +32,12 @@
     <string name="vtc_tel">024.3632.1588</string>
     <string name="vtc_email">toasoan@vtc.gov.vn</string>
     <string name="share">Chia sẻ</string>
+
+
+    //article detail
     <string name="like">Thích %d</string>
+    <string name="morearticle">Thêm thông tin</string>
+
+    //comment
+    <string name="comment">Bình luận</string>
 </resources>

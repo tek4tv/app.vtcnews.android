@@ -29,21 +29,6 @@ class FragmentVideoPage : Fragment() {
     ): View? {
         binding = LayoutVideoPageBinding.inflate(layoutInflater, container, false)
 
-//        val listTitle: MutableList<String> = ArrayList()
-//        val adapter = LoadMoreVPAdapter(requireActivity())
-//
-//        listTitle.add("Chính trị xã hội")
-//        listTitle.add("Kinh tế")
-//        listTitle.add("Quốc tế")
-//        listTitle.add("Giải trí")
-//        adapter.addFrag(FragmentVPVideo.newInstance())
-//        adapter.addFrag(FragmentVPVideo.newInstance())
-//        adapter.addFrag(FragmentVPVideo.newInstance())
-//        adapter.addFrag(FragmentVPVideo.newInstance())
-//        binding.vpVideo.adapter = adapter
-//        TabLayoutMediator( binding.tabVideo,binding.vpVideo ) { tab, position ->
-//            tab.text = listTitle[position]
-//        }.attach()
         return binding.root
     }
 
@@ -71,7 +56,7 @@ class FragmentVideoPage : Fragment() {
                 params.height = frame_hoder.height + navBottom.height
                 frame_player.layoutParams = params
                 requireActivity().supportFragmentManager.beginTransaction()
-                    .setCustomAnimations(R.anim.enter_from_right,0,0,R.anim.exit_to_right)
+                    .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_right,0,R.anim.exit_to_right)
                     .add(
                         R.id.frame_player_podcast,
                         FragmentChitietVideo.newInstance(it.title, it.id, it.categoryID)

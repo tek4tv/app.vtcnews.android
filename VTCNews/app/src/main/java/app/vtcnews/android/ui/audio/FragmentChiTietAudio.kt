@@ -1,10 +1,13 @@
 package app.vtcnews.android.ui.audio
 
+import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,14 +21,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import app.vtcnews.android.R
 import app.vtcnews.android.databinding.FragmentChitietAudioBinding
 import app.vtcnews.android.model.Audio.ListPodcast
+import app.vtcnews.android.ui.video.VideoNotification
 import app.vtcnews.android.viewmodels.AudioHomeFragViewModel
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.job
+import kotlinx.coroutines.launch
+import kotlin.concurrent.thread
 
 @AndroidEntryPoint
 class FragmentChiTietAudio : Fragment() {
     private val viewModel: AudioHomeFragViewModel by viewModels()
     lateinit var binding: FragmentChitietAudioBinding
+    lateinit var notificationManager:NotificationManager
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -65,20 +74,22 @@ class FragmentChiTietAudio : Fragment() {
 
             listChapterAdapter.clickListen = { listPodcast: ListPodcast, i: Int ->
 
-//                VideoNotification.createNotifi(requireContext(),listPodcast)
-                
-                val bitmap: Bitmap = Picasso.get().load(listPodcast.image182182).get()
-                val intent = Intent()
-                val penIntent = PendingIntent.getBroadcast(requireContext(), 0, intent, 0)
-                val notificationManager =
-                    requireActivity().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                val mbuild = NotificationCompat.Builder(requireContext(), "1")
-                mbuild.setSmallIcon(R.drawable.ic_play_arrow)
-                mbuild.setContentTitle(listPodcast.name)
-                mbuild.setContentText("...")
-                mbuild.setLargeIcon(bitmap)
-                mbuild.addAction(R.drawable.exo_icon_previous, "", penIntent)
-                notificationManager.notify(1, mbuild.build())
+                thread {
+                    createChannel()
+                    val bitmap = Picasso.get().load(listPodcast.image182182).get()
+                    val intent = Intent()
+                    val penIntent = PendingIntent.getBroadcast(requireContext(), 0, intent, 0)
+                    notificationManager =
+                        requireActivity().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                    val mbuild = NotificationCompat.Builder(requireContext(), "1")
+                    mbuild.setSmallIcon(R.drawable.ic_play_arrow)
+                    mbuild.setContentTitle(listPodcast.name)
+                    mbuild.setContentText("...")
+                    mbuild.setLargeIcon(bitmap)
+                    mbuild.addAction(R.drawable.exo_icon_previous, "Player", penIntent)
+                    notificationManager.notify(1, mbuild.build())
+                }
+
 
                 val frame_player =
                     requireActivity().findViewById<FrameLayout>(R.id.frame_player_podcast)
@@ -102,6 +113,15 @@ class FragmentChiTietAudio : Fragment() {
         }
 
     }
+    fun createChannel()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            val channel = NotificationChannel("1","PC Player",NotificationManager.IMPORTANCE_DEFAULT)
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
 
     companion object {
         fun newInstance(id: Long) = FragmentChiTietAudio().apply {

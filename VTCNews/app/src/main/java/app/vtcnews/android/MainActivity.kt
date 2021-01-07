@@ -11,6 +11,7 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.get
 import app.vtcnews.android.databinding.ActivityMainBinding
 import app.vtcnews.android.ui.audio.AudioHomeFragment
+import app.vtcnews.android.ui.comment.CommentFragment
 import app.vtcnews.android.ui.trang_chu.TrangChuFragment
 import app.vtcnews.android.ui.trang_chu_sub_section.ArticlesFragment
 import com.example.vtclive.Video.FragmentVideoPage
@@ -60,6 +61,9 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.menuVideo -> {
                     switchToVideo()
+                }
+                R.id.menuShare -> {
+                    switchToShare()
                 }
             }
             true
@@ -111,6 +115,7 @@ class MainActivity : AppCompatActivity() {
                     switchToAudio()
                     binding.mainBottomNav.selectedItemId = R.id.menuAudio
                 }
+
             }
 
             binding.root.closeDrawer(GravityCompat.START)
@@ -159,6 +164,16 @@ class MainActivity : AppCompatActivity() {
             .addToBackStack(null)
             .commit()
         curFrag = "video"
+    }
+    fun switchToShare() {
+        if (curFrag == "share") return
+
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
+            .replace(R.id.fragment_holder, CommentFragment.newInstance(574750))
+            .addToBackStack(null)
+            .commit()
+        curFrag = "share"
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

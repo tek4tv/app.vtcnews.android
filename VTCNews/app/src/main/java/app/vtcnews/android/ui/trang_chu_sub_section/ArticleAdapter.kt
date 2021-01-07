@@ -1,6 +1,5 @@
 package app.vtcnews.android.ui.trang_chu_sub_section
 
-import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,9 +10,6 @@ import app.vtcnews.android.R
 import app.vtcnews.android.databinding.ArticeItemBinding
 import app.vtcnews.android.model.Article
 import com.bumptech.glide.Glide
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.math.abs
 
 class ArticleAdapter : PagingDataAdapter<Article, ArticleHolder>(ArticleDiffCallback) {
 

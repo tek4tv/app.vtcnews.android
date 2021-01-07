@@ -13,14 +13,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import androidx.appcompat.widget.Toolbar
 import androidx.core.app.NotificationCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
-import app.vtcnews.android.MainActivity
 import app.vtcnews.android.R
 import app.vtcnews.android.databinding.VideoFragmentMotionPlayerBinding
 import app.vtcnews.android.model.Article
@@ -85,7 +83,6 @@ class FragmentChitietVideo : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getVideoDetail(requireArguments().getLong("idvideodetail"))
-        Log.i("idaCurrent", "" + requireArguments().getLong("idvideodetail"))
         binding.tvTitleVideo.setText(requireArguments().getString("title"))
         binding.txtVideoTitleMini.setText(requireArguments().getString("title"))
         binding.txtVideoTitleMini.isSelected = true
@@ -153,9 +150,9 @@ class FragmentChitietVideo : Fragment() {
                     .add(
                         R.id.frame_player_podcast,
                         newInstance(
-                            article.title,
+                            article.title!!,
                             article.id.toLong(),
-                            article.categoryID
+                            article.categoryID!!
                         )
                     ).addToBackStack(null).commit()
             }
@@ -174,7 +171,8 @@ class FragmentChitietVideo : Fragment() {
             }
         }
         binding.closeMiniPlayer.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction().remove(this).commit()
+            navBottom.isVisible = true
+            requireActivity().supportFragmentManager.beginTransaction().setCustomAnimations(0, R.anim.exit_to_right, 0, R.anim.exit_to_right).remove(this).commit()
         }
     }
 

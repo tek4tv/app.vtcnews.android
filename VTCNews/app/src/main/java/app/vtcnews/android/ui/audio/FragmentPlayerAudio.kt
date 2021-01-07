@@ -142,13 +142,13 @@ class FragmentPlayerAudio : Fragment() {
         param.setMargins(0,0,0,50)
         backgroundPC.layoutParams = param
 
-        if(requireActivity().supportFragmentManager.findFragmentByTag("player") != null)
-        {
-            val layout = requireActivity().findViewById<RecyclerView>(R.id.rvPcChild)
-            val param2 = layout.layoutParams as ViewGroup.MarginLayoutParams
-            param.setMargins(0,0,0,0)
-            layout.layoutParams = param2
-        }
+//        if(requireActivity().supportFragmentManager.findFragmentByTag("player") != null)
+//        {
+//            val layout = requireActivity().findViewById<RecyclerView>(R.id.rvPcChild)
+//            val param2 = layout.layoutParams as ViewGroup.MarginLayoutParams
+//            param.setMargins(0,0,0,0)
+//            layout.layoutParams = param2
+//        }
 
     }
 

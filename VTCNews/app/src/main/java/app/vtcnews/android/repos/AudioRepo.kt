@@ -5,7 +5,6 @@ import app.vtcnews.android.model.Audio.*
 import app.vtcnews.android.network.Audio.AllPodcastService
 import app.vtcnews.android.network.Resource
 import app.vtcnews.android.network.performNetworkCall
-import retrofit2.http.Path
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -39,12 +38,12 @@ class AudioRepo @Inject constructor(private val audioService: AllPodcastService)
     }
 
     suspend fun getAlbumDetail(id: Long):
-            Resource<AlbumDetail>{
+            Resource<AlbumDetail> {
         val res = performNetworkCall {
             audioService.getAlbumDetail(id)
         }
 
-        if(res is Resource.Success)
+        if (res is Resource.Success)
             listAlbumDetail = res.data.items
 
         return res

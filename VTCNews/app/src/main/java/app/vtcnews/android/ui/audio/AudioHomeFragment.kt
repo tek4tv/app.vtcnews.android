@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import app.vtcnews.android.databinding.ActivityAudioHomeBinding
+import app.vtcnews.android.model.Audio.AllPodCast
 import app.vtcnews.android.viewmodels.AudioHomeFragViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -43,11 +44,10 @@ class AudioHomeFragment : Fragment() {
 
     fun setUpob()
     {
-
         viewModel.listAllPodCast.observe(viewLifecycleOwner)
         {
-            it.forEach {
-                adapter.addFrag(PodcastFragment.newInstance(it.name,it.id))
+            it.forEach {AllPodCast ->
+                adapter.addFrag(PodcastFragment.newInstance(AllPodCast.name,AllPodCast.id))
             }
         }
     }

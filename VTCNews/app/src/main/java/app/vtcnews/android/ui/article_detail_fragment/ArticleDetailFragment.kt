@@ -1,35 +1,36 @@
 package app.vtcnews.android.ui.article_detail_fragment
 
 import android.annotation.SuppressLint
-import android.content.ClipData
-import android.content.ContentResolver
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebSettings
+import android.webkit.WebView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.content.ContentResolverCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.observe
+import androidx.recyclerview.widget.LinearLayoutManager
 import app.vtcnews.android.R
 import app.vtcnews.android.databinding.FragmentArticleDetailBinding
+import app.vtcnews.android.model.Article
 import app.vtcnews.android.model.ArticleDetail
 import app.vtcnews.android.model.ArticleVideo
+import app.vtcnews.android.ui.comment.CommentFragment
+import app.vtcnews.android.ui.trang_chu.ArticleItemAdapter
 import app.vtcnews.android.ui.trang_chu_sub_section.getDateDiff
 import app.vtcnews.android.viewmodels.ArticleDetailViewModel
+import app.vtcnews.android.viewmodels.CommentFragViewModel
 import com.bumptech.glide.Glide
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.util.Util
 import dagger.hilt.android.AndroidEntryPoint
-import java.io.FileNotFoundException
-import java.io.IOException
 
 private const val ARG_PARAM1 = "param1"
 
@@ -40,6 +41,8 @@ class ArticleDetailFragment : Fragment() {
     private lateinit var binding: FragmentArticleDetailBinding
 
     private val viewModel by viewModels<ArticleDetailViewModel>()
+    private val viewModelComment by viewModels<CommentFragViewModel>()
+
 
     private var player: SimpleExoPlayer? = null
 
@@ -62,7 +65,16 @@ class ArticleDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         registerObservers()
+        addCommentFrag()
         viewModel.getArticleDetail()
+        viewModel.getArticleByCategory(1, requireArguments().getLong("categoryId"))
+    }
+    fun addCommentFrag()
+    {
+        parentFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
+            .add(R.id.comment_frag_holder,CommentFragment.newInstance(requireArguments().getInt(ARG_PARAM1).toLong()))
+            .commit()
     }
 
     override fun onStart() {
@@ -108,8 +120,20 @@ class ArticleDetailFragment : Fragment() {
         {
             setupVideoList(it)
         }
+        viewModel.articleListByCategory.observe(viewLifecycleOwner)
+        {
+            setupRvMoreArticle(it)
+        }
+
     }
 
+    fun setupRvMoreArticle(listArticle: List<Article>) {
+        val adapterMoreArticle = ArticleItemAdapter(listArticle.take(10))
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.detailLayout.rvMoreArticle.adapter = adapterMoreArticle
+        binding.detailLayout.rvMoreArticle.layoutManager = layoutManager
+
+    }
 
     private fun setupVideoList(videoList: List<ArticleVideo>) {
         viewModel.curVideo = videoList[0]
@@ -241,9 +265,11 @@ class ArticleDetailFragment : Fragment() {
         binding.detailLayout.webContent.apply {
             settings.javaScriptEnabled = true
             settings.domStorageEnabled = true
+            scrollBarStyle = WebView.SCROLLBARS_OUTSIDE_OVERLAY
+            isScrollbarFadingEnabled = false
             settings.layoutAlgorithm = WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING
 
-            val imageStyle = "<style>img{max-width: 100%; height:auto;}</style>"
+            val imageStyle = "<style>img{max-width: 100% !important; height:auto;display: block}</style>"
 
             settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
             loadData(
@@ -255,16 +281,17 @@ class ArticleDetailFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(articleId: Int) =
+        fun newInstance(articleId: Int, categogyId: Long) =
             ArticleDetailFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_PARAM1, articleId)
+                    putLong("categoryId", categogyId)
                 }
             }
 
-        fun openWith(fragmentManager: FragmentManager, articleId: Int) {
+        fun openWith(fragmentManager: FragmentManager, articleId: Int, categogyId: Long) {
             fragmentManager.beginTransaction()
-                .replace(R.id.fragment_holder, newInstance(articleId))
+                .replace(R.id.fragment_holder, newInstance(articleId, categogyId))
                 .addToBackStack(null)
                 .commit()
         }

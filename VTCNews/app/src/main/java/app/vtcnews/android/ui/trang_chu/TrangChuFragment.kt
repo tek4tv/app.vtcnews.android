@@ -95,7 +95,7 @@ class TrangChuFragment : Fragment() {
                     .commit()
 
             } else {
-                ArticleDetailFragment.openWith(parentFragmentManager, it.id)
+                ArticleDetailFragment.openWith(parentFragmentManager, it.id,it.categoryID!!)
             }
         }
         binding.rvTrangchu.setController(controller)

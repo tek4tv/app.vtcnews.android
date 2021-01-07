@@ -4,7 +4,7 @@
 
     <!-- Mau nền solid -->
     <solid
-        android:color="@color/backgroundlistchitiet">
+        android:color="@color/white">
     </solid>
     <!-- vien stroke -->
     <stroke
@@ -16,10 +16,10 @@
 
     <!--thuoc tinh can chinh padding -->
     <padding
-        android:bottom="1dp"
-        android:left="1dp"
-        android:right="1dp"
-        android:top="1dp">
+        android:bottom="10dp"
+        android:left="10dp"
+        android:right="10dp"
+        android:top="10dp">
     </padding>
 
     <!-- can 4 goc corners radius-->
