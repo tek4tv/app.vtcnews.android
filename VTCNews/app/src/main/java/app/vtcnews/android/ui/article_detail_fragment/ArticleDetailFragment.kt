@@ -3,7 +3,6 @@ package app.vtcnews.android.ui.article_detail_fragment
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,11 +10,13 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
+import app.vtcnews.android.MainActivity
 import app.vtcnews.android.R
 import app.vtcnews.android.databinding.FragmentArticleDetailBinding
 import app.vtcnews.android.model.Article
@@ -25,7 +26,6 @@ import app.vtcnews.android.ui.comment.CommentFragment
 import app.vtcnews.android.ui.trang_chu.ArticleItemAdapter
 import app.vtcnews.android.ui.trang_chu_sub_section.getDateDiff
 import app.vtcnews.android.viewmodels.ArticleDetailViewModel
-import app.vtcnews.android.viewmodels.CommentFragViewModel
 import com.bumptech.glide.Glide
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -41,9 +41,6 @@ class ArticleDetailFragment : Fragment() {
     private lateinit var binding: FragmentArticleDetailBinding
 
     private val viewModel by viewModels<ArticleDetailViewModel>()
-    private val viewModelComment by viewModels<CommentFragViewModel>()
-
-
     private var player: SimpleExoPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,21 +56,31 @@ class ArticleDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentArticleDetailBinding.inflate(inflater, container, false)
+        (requireActivity() as MainActivity).supportActionBar?.hide()
+        binding.btBack.setOnClickListener {
+            binding.layoutMenu.isVisible = false
+            (requireActivity() as MainActivity).supportActionBar?.show()
+            requireActivity().supportFragmentManager.popBackStack()
+        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        registerObservers()
-        addCommentFrag()
         viewModel.getArticleDetail()
         viewModel.getArticleByCategory(1, requireArguments().getLong("categoryId"))
+        registerObservers()
+        addCommentFrag()
+        setRvOber()
+        binding.articleDetailRoot.isVisible = true
     }
-    fun addCommentFrag()
-    {
+
+    fun addCommentFrag() {
         parentFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
-            .add(R.id.comment_frag_holder,CommentFragment.newInstance(requireArguments().getInt(ARG_PARAM1).toLong()))
+            .add(
+                R.id.comment_frag_holder,
+                CommentFragment.newInstance(requireArguments().getInt(ARG_PARAM1).toLong())
+            )
             .commit()
     }
 
@@ -98,6 +105,12 @@ class ArticleDetailFragment : Fragment() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding.layoutMenu.isVisible = false
+        (requireActivity() as MainActivity).supportActionBar?.show()
+    }
+
     override fun onPause() {
         super.onPause()
         if (Util.SDK_INT < 24) {
@@ -120,19 +133,32 @@ class ArticleDetailFragment : Fragment() {
         {
             setupVideoList(it)
         }
-        viewModel.articleListByCategory.observe(viewLifecycleOwner)
-        {
-            setupRvMoreArticle(it)
-        }
-
     }
 
-    fun setupRvMoreArticle(listArticle: List<Article>) {
-        val adapterMoreArticle = ArticleItemAdapter(listArticle.take(10))
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        binding.detailLayout.rvMoreArticle.adapter = adapterMoreArticle
-        binding.detailLayout.rvMoreArticle.layoutManager = layoutManager
+    fun setRvOber() {
+        viewModel.articleListByCategory.observe(viewLifecycleOwner)
+        {
+            setupRvMoreArticle(it, requireArguments().getInt(ARG_PARAM1))
+        }
+    }
 
+    fun setupRvMoreArticle(listArticle: MutableList<Article>, currentID: Int) {
+//        listArticle.forEach {
+//            if(it.id == currentID)
+//            {
+//                listArticle.remove(it)
+//            }
+//        }
+        val adapterMoreArticle = ArticleItemAdapter(listArticle.take(8))
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.rvMoreArticle.adapter = adapterMoreArticle
+        binding.rvMoreArticle.layoutManager = layoutManager
+
+        adapterMoreArticle.articleClickListener =
+            { Article ->
+                parentFragmentManager.popBackStack()
+                openWith(parentFragmentManager, Article.id, Article.categoryID!!)
+            }
     }
 
     private fun setupVideoList(videoList: List<ArticleVideo>) {
@@ -147,9 +173,10 @@ class ArticleDetailFragment : Fragment() {
     private fun initPlayer() {
         player = SimpleExoPlayer.Builder(requireContext())
             .build()
-        binding.detailLayout.articleVideo.player = player
+        binding.articleVideo.player = player
         player?.playWhenReady = true
         playVideo(viewModel.curVideo)
+        player?.play()
     }
 
     private fun releasePlayer() {
@@ -182,9 +209,9 @@ class ArticleDetailFragment : Fragment() {
         val videoList = getVideoList(articleDetail.detailData.content!!)
 
         if (videoList.isNotEmpty()) {
-            val rootLayout = binding.detailLayout.articleDetailRoot
-            binding.detailLayout.imgArticleThumb.visibility = View.GONE
-            binding.detailLayout.articleVideo.visibility = View.VISIBLE
+            val rootLayout = binding.articleDetailRoot
+            binding.imgArticleThumb.visibility = View.GONE
+            binding.articleVideo.visibility = View.VISIBLE
 
             val rootConstraintSet = ConstraintSet()
             rootConstraintSet.clone(rootLayout)
@@ -200,12 +227,12 @@ class ArticleDetailFragment : Fragment() {
 
             loadVideo(videoList)
         } else {
-            Glide.with(binding.detailLayout.imgArticleThumb)
+            Glide.with(binding.imgArticleThumb)
                 .load("https://image.vtc.vn${articleDetail.detailData.imageURL}")
-                .into(binding.detailLayout.imgArticleThumb)
+                .into(binding.imgArticleThumb)
         }
 
-        binding.detailLayout.apply {
+        binding.apply {
             val detailData = articleDetail.detailData
             txtArticleTitle.text = detailData.title
             txtDate.text =
@@ -262,16 +289,16 @@ class ArticleDetailFragment : Fragment() {
             res
         }
 
-        binding.detailLayout.webContent.apply {
+        binding.webContent.apply {
             settings.javaScriptEnabled = true
             settings.domStorageEnabled = true
-            scrollBarStyle = WebView.SCROLLBARS_OUTSIDE_OVERLAY
-            isScrollbarFadingEnabled = false
+            settings.loadsImagesAutomatically = true
+            settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
             settings.layoutAlgorithm = WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING
 
-            val imageStyle = "<style>img{max-width: 100% !important; height:auto;display: block}</style>"
+            val imageStyle =
+                "<style>img{max-width:100% !important; margin-left:0px;height:auto;display: block;object-fit: fill;}</style>"
 
-            settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
             loadData(
                 "$imageStyle $imgTags",
                 "text/html", "UTF-8",

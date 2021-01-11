@@ -11,11 +11,46 @@
     tools:showPaths="true">
 
     <LinearLayout
-       android:background="@color/white"
         android:id="@+id/player_background_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         android:orientation="vertical" />
+    <!--Menu Header-->
+    <RelativeLayout
+        android:id="@+id/layoutMenu"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/vtcBackground"
+        app:layout_constraintBottom_toTopOf="@id/video_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btBack"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_alignParentStart="true"
+            android:background="@null"
+            android:src="@drawable/ic_arrow_back_24" />
+
+        <ImageView
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_centerInParent="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/logovtc" />
+
+        <ImageButton
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_alignParentRight="true"
+            android:background="@null"
+            android:src="@drawable/ic_share_24" />
+    </RelativeLayout>
+    <!--End Menu Header-->
+
 
     <app.vtcnews.android.ui.article_detail_fragment.CustomPlayerView
         android:id="@+id/video_view"
@@ -24,12 +59,15 @@
         android:background="@color/black"
         android:scaleType="centerCrop"
         app:buffered_color="#ffffff"
+        app:controller_layout_id="@layout/layout_exoplayer_control_view"
         app:fastforward_increment="5000"
         app:played_color="#ff1111"
         app:rewind_increment="5000"
         app:scrubber_color="#ff3333"
         app:surface_type="texture_view"
-        app:unplayed_color="#ff888888" />
+        app:unplayed_color="#ff888888"
+        app:layout_constraintTop_toBottomOf="@id/layoutMenu"
+        app:use_controller="true" />
 
     <ScrollView
         android:id="@+id/svVideo"
@@ -54,12 +92,15 @@
                 android:padding="@dimen/_10sdp"
                 android:text="Ngăm vẻ đẹp của trái đất qua 100GB ảnh của NASA"
                 android:textColor="@color/colorTitle"
-                android:textSize="@dimen/_15sdp" />
+                android:textSize="@dimen/_18sdp"
+                android:visibility="invisible" />
 
             <LinearLayout
+                android:id="@+id/layoutTimeCate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="invisible">
 
                 <TextView
                     android:id="@+id/tvTimeDiff"
@@ -82,19 +123,31 @@
 
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/tvVideoLQ"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_10sdp"
+                android:text="Video liên quan"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_15sdp"
+                android:textStyle="bold"
+                android:visibility="invisible" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvVideoNext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:nestedScrollingEnabled="true" />
+                android:nestedScrollingEnabled="true"
+                android:visibility="invisible" />
 
 
         </LinearLayout>
 
 
     </ScrollView>
+
 
     <ImageButton
         android:id="@+id/btn_play_pause_mini"
@@ -111,9 +164,9 @@
         android:layout_height="wrap_content"
         android:ellipsize="marquee"
         android:marqueeRepeatLimit="marquee_forever"
+        android:maxWidth="100dp"
         android:scrollHorizontally="true"
         android:singleLine="true"
-        android:maxWidth="100dp"
         android:text="hgkjsaghkjsgkashfkadslfhkadsjfffffffffffffffffffffff"
         tools:layout_editor_absoluteX="221dp"
         tools:layout_editor_absoluteY="246dp" />

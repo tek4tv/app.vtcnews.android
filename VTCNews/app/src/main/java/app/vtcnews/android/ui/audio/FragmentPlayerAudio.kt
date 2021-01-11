@@ -9,11 +9,9 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.RecyclerView
 import app.vtcnews.android.R
 import app.vtcnews.android.databinding.FragmentPlayerAudioBinding
 import app.vtcnews.android.repos.AudioRepo
-import app.vtcnews.android.ui.video.VideoNotification
 import app.vtcnews.android.viewmodels.AudioHomeFragViewModel
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,7 +43,7 @@ class FragmentPlayerAudio : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.tvTitleChapter.setText(requireArguments().getString("name"))
+        binding.tvTitleChapter.text = requireArguments().getString("name")
         binding.tvTitleChapter.isSelected = true
         Picasso.get().load(requireArguments().getString("urlIMG")).into(binding.ivChapter)
         mediaPlayer = MediaPlayer.create(
@@ -57,11 +55,11 @@ class FragmentPlayerAudio : Fragment() {
         changeLayoutPDHome()
 
     }
-    fun changeLayoutPDHome()
-    {
+
+    fun changeLayoutPDHome() {
         val btLoadmore = requireActivity().findViewById<AppCompatButton>(R.id.btLoadMore)
         val param = btLoadmore.layoutParams as ViewGroup.MarginLayoutParams
-        param.setMargins(0,0,0,200)
+        param.setMargins(0, 0, 0, 200)
         btLoadmore.layoutParams = param
     }
 
@@ -79,7 +77,7 @@ class FragmentPlayerAudio : Fragment() {
             })
             val list = audioRepo.listAlbumDetail
             currntPos = requireArguments().getInt("curent")
-            ibNext.setOnClickListener(View.OnClickListener {
+            ibNext.setOnClickListener {
                 mediaPlayer.stop()
                 if (currntPos >= list.size - 1) {
                     currntPos = list.size - 1
@@ -93,8 +91,13 @@ class FragmentPlayerAudio : Fragment() {
                 )
                 tvTitleChapter.text = list[currntPos].name
                 mediaPlayer.start()
+                if (!mediaPlayer.isPlaying) {
+                    ibPlay.setImageResource(R.drawable.ic_play_arrow)
+                } else {
+                    ibPlay.setImageResource(R.drawable.ic_pause)
+                }
 
-            })
+            }
             ibPre.setOnClickListener(View.OnClickListener {
                 mediaPlayer.stop()
                 if (currntPos <= 0) {
@@ -110,9 +113,17 @@ class FragmentPlayerAudio : Fragment() {
                 )
                 tvTitleChapter.text = list[currntPos].name
                 mediaPlayer.start()
+                if (!mediaPlayer.isPlaying) {
+                    ibPlay.setImageResource(R.drawable.ic_play_arrow)
+                } else {
+                    ibPlay.setImageResource(R.drawable.ic_pause)
+                }
             })
             binding.ibClose.setOnClickListener(View.OnClickListener {
-                requireActivity().supportFragmentManager.beginTransaction().remove(this@FragmentPlayerAudio).commit()
+                mediaPlayer.stop()
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .setCustomAnimations(0, R.anim.exit_to_right, 0, R.anim.exit_to_right)
+                    .remove(this@FragmentPlayerAudio).commit()
             })
 
 
@@ -139,7 +150,7 @@ class FragmentPlayerAudio : Fragment() {
         mediaPlayer.stop()
         val backgroundPC = requireActivity().findViewById<AppCompatButton>(R.id.btLoadMore)
         val param = backgroundPC.layoutParams as ViewGroup.MarginLayoutParams
-        param.setMargins(0,0,0,50)
+        param.setMargins(0, 0, 0, 50)
         backgroundPC.layoutParams = param
 
 //        if(requireActivity().supportFragmentManager.findFragmentByTag("player") != null)
@@ -152,8 +163,14 @@ class FragmentPlayerAudio : Fragment() {
 
     }
 
-    override fun onPause() {
-        super.onPause()
-        mediaPlayer.pause()
+    override fun onResume() {
+        super.onResume()
+        if (!mediaPlayer.isPlaying) {
+            mediaPlayer.pause()
+            binding.ibPlay.setImageResource(R.drawable.ic_play_arrow)
+        } else {
+            mediaPlayer.start()
+            binding.ibPlay.setImageResource(R.drawable.ic_pause)
+        }
     }
 }

@@ -50,7 +50,7 @@ class ArticlesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.rvArticlesList.adapter = pagingAdapter
         pagingAdapter.articleClickListener = {
-            val fragmentManager = parentFragmentManager
+            val fragmentManager = requireActivity().supportFragmentManager
             if (it.isVideoArticle == 1L) {
                 val navBottom =
                     requireActivity().findViewById<BottomNavigationView>(R.id.main_bottom_nav)
@@ -74,8 +74,12 @@ class ArticlesFragment : Fragment() {
                     )
                     .addToBackStack(null)
                     .commit()
-            } else {
+            } else if(it.isVideoArticle == 0L) {
                 ArticleDetailFragment.openWith(fragmentManager, it.id,it.categoryID!!)
+            }
+            else
+            {
+                //
             }
         }
         setupObservers()

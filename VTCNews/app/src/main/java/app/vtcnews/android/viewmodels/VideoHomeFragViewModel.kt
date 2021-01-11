@@ -46,7 +46,7 @@ class VideoHomeFragViewModel @ViewModelInject constructor(
     fun getVideoByCategory(page : Int, id:Long)
     {
         viewModelScope.launch {
-            when (val res:app.vtcnews.android.network.Resource<List<Article>> = articleRepo.getArticleByCategory(page,id))
+            when (val res:app.vtcnews.android.network.Resource<MutableList<Article>> = articleRepo.getArticleByCategory(page,id))
             {
                 is app.vtcnews.android.network.Resource.Success ->listVideoByCategory.value = res.data
                 is app.vtcnews.android.network.Resource.Error -> error.value = res.message

@@ -2,6 +2,7 @@ package app.vtcnews.android.ui.trang_chu
 
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatButton
 import app.vtcnews.android.R
 import app.vtcnews.android.model.Video
 import app.vtcnews.android.ui.KotlinEpoxyHolder
@@ -9,6 +10,7 @@ import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.bumptech.glide.Glide
+import com.example.vtclive.Video.FragmentVideoPage
 
 @EpoxyModelClass(layout = R.layout.home_video_section_layout)
 abstract class VideoSectionModel : EpoxyModelWithHolder<VideoSectionHolder>() {
@@ -18,6 +20,9 @@ abstract class VideoSectionModel : EpoxyModelWithHolder<VideoSectionHolder>() {
 
     @EpoxyAttribute
     var clickListener : (Video) -> Unit = {}
+
+    @EpoxyAttribute
+    var btClickListener : () -> Unit = {}
 
     override fun bind(holder: VideoSectionHolder) {
         super.bind(holder)
@@ -51,6 +56,10 @@ abstract class VideoSectionModel : EpoxyModelWithHolder<VideoSectionHolder>() {
                     clickListener.invoke(videoList[index])
                 }
             }
+            btXemthem.setOnClickListener{
+               btClickListener.invoke()
+            }
+
 
             txt.forEachIndexed { index, textView ->
                 textView.text = videoList[index].title
@@ -72,4 +81,6 @@ class VideoSectionHolder : KotlinEpoxyHolder()
     val txtTitle2 by bind<TextView>(R.id.txt_video_title_2)
     val txtTitle3 by bind<TextView>(R.id.txt_video_title_3)
     val txtTitle4 by bind<TextView>(R.id.txt_video_title_4)
+
+    val btXemthem by bind<AppCompatButton>(R.id.btXemThemVideo)
 }

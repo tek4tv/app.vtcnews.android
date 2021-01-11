@@ -14,7 +14,8 @@ import com.squareup.picasso.Picasso
 abstract class HotChannelModel : EpoxyModelWithHolder<HotChannelHolder>() {
     @EpoxyAttribute
     lateinit var channels : Pair<HotChannel, HotChannel>
-
+    @EpoxyAttribute
+    var onClickListener:(HotChannel)->Unit={}
     override fun bind(holder: HotChannelHolder) {
         super.bind(holder)
 
@@ -27,6 +28,13 @@ abstract class HotChannelModel : EpoxyModelWithHolder<HotChannelHolder>() {
             .load(channels.second.image169)
             .into(holder.img2)
         holder.txtTitle2.text = channels.second.title
+
+        holder.img1.setOnClickListener{
+            onClickListener.invoke(channels.first)
+        }
+        holder.img2.setOnClickListener{
+            onClickListener.invoke(channels.second)
+        }
     }
 }
 

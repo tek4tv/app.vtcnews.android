@@ -22,7 +22,7 @@ class ArticleRepo @Inject constructor(
     suspend fun getArticleSuggestionHome(): Resource<List<Article>> =
         performNetworkCall { articleService.getArticleSuggestionHome() }
 
-    suspend fun getArticleByCategory(page: Int, categoryId: Long): Resource<List<Article>> {
+    suspend fun getArticleByCategory(page: Int, categoryId: Long): Resource<MutableList<Article>> {
         return performNetworkCall { articleService.getArticleByCategory(page, categoryId) }
     }
 

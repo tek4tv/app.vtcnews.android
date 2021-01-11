@@ -1,24 +1,19 @@
 package app.vtcnews.android.ui.video
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import androidx.core.app.NotificationCompat
+import android.widget.ImageView
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
+import app.vtcnews.android.MainActivity
 import app.vtcnews.android.R
 import app.vtcnews.android.databinding.VideoFragmentMotionPlayerBinding
 import app.vtcnews.android.model.Article
@@ -27,14 +22,13 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.random.Random
 
 
 @AndroidEntryPoint
 class FragmentChitietVideo : Fragment() {
-    lateinit var binding: VideoFragmentMotionPlayerBinding
-    lateinit var player: SimpleExoPlayer
-    val viewModel: VideoHomeFragViewModel by viewModels()
+    private lateinit var binding: VideoFragmentMotionPlayerBinding
+    private var player: SimpleExoPlayer? = null
+    private val viewModel: VideoHomeFragViewModel by viewModels()
     private lateinit var navBottom: BottomNavigationView
 
     companion object {
@@ -49,79 +43,68 @@ class FragmentChitietVideo : Fragment() {
 
     }
 
-    lateinit var notificationChannel: NotificationChannel
-    lateinit var notificationManager: NotificationManager
-    lateinit var builder: Notification.Builder
-    private val channelId = "12345"
-    private val description = "Test Notification"
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = VideoFragmentMotionPlayerBinding.inflate(layoutInflater, container, false)
-
-        val intent = Intent()
-        val penIntent = PendingIntent.getBroadcast(requireContext(), 0, intent, 0)
-        notificationManager =
-            requireActivity().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val mbuild = NotificationCompat.Builder(requireContext(), "1")
-        mbuild.setSmallIcon(R.drawable.ic_play_arrow)
-        mbuild.setContentTitle("Player")
-        mbuild.setContentText("...")
-        mbuild.addAction(R.drawable.exo_icon_previous, "", penIntent)
-        notificationManager.notify(1, mbuild.build())
-
-//        val toolbar = requireActivity().findViewById(R.id.toolbar) as Toolbar
-//        activity.setActionBar(toolbar)
-
-
+        (requireActivity() as MainActivity).supportActionBar?.hide()
 
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        player = SimpleExoPlayer.Builder(requireContext()).build()
         viewModel.getVideoDetail(requireArguments().getLong("idvideodetail"))
-        binding.tvTitleVideo.setText(requireArguments().getString("title"))
-        binding.txtVideoTitleMini.setText(requireArguments().getString("title"))
+        binding.tvTitleVideo.text = requireArguments().getString("title")
+        binding.txtVideoTitleMini.text = requireArguments().getString("title")
         binding.txtVideoTitleMini.isSelected = true
 
         dataListNextVideoObser()
         dataVideoDetailObser()
-        val pageRandom = Random.nextInt(2, 4)
-        viewModel.getVideoByCategory(pageRandom, requireArguments().getLong("categoryid"))
-        buttonClick()
+        //val pageRandom = Random.nextInt(2, 3)
+        viewModel.getVideoByCategory(1, requireArguments().getLong("categoryid"))
+        binding.tvTitleVideo.isVisible = true
+        binding.layoutTimeCate.isVisible = true
+        binding.rvVideoNext.isVisible = true
+        binding.tvVideoLQ.isVisible = true
 
-        navBottom = requireActivity().findViewById<BottomNavigationView>(R.id.main_bottom_nav)
+        buttonClick()
+        navBottom = requireActivity().findViewById(R.id.main_bottom_nav)
         navBottom.isVisible = false
-        view.setFocusableInTouchMode(true)
+        view.isFocusableInTouchMode = true
         view.requestFocus()
         view.setOnKeyListener(View.OnKeyListener { view, i, keyEvent ->
             if (i == KeyEvent.KEYCODE_BACK) {
                 navBottom.isVisible = true
+
             }
             false
         })
 
-    }
-    private fun setupNav() {
 
     }
 
     fun dataVideoDetailObser() {
         viewModel.videoDetail.observe(viewLifecycleOwner)
         {
-            player = SimpleExoPlayer.Builder(requireContext()).build()
-            val url = it[0].videoURL
-            Log.i("idaUrl", url)
-            binding.videoView.setPlayer(player)
-            val mediaItem: MediaItem =
-                MediaItem.fromUri("https://media.vtc.vn/" + url)
-            player.setMediaItem(mediaItem)
-            player.prepare()
-            player.playWhenReady = true
-            player.play()
+            it.forEach()
+            { videoDetail ->
+
+                val url = videoDetail.videoURL
+                binding.videoView.player = player
+                val mediaItem: MediaItem =
+                    MediaItem.fromUri("https://media.vtc.vn/$url")
+                player?.setMediaItem(mediaItem)
+                player?.prepare()
+                player?.playWhenReady = true
+                binding.videoView.hideController()
+                player?.play()
+            }
+
+
         }
     }
 
@@ -129,25 +112,24 @@ class FragmentChitietVideo : Fragment() {
         viewModel.listVideoByCategory.observe(viewLifecycleOwner)
         { listVideoByCategory ->
             val adapter = VideoItemAdapter(listVideoByCategory.take(8))
-
             val layoutManager = GridLayoutManager(context, 2)
             binding.rvVideoNext.adapter = adapter
             binding.rvVideoNext.layoutManager = layoutManager
 
             adapter.clickListen = { article: Article ->
-
                 val frame_player =
                     requireActivity().findViewById<FrameLayout>(R.id.frame_player_podcast)
+                val toolbar = requireActivity().findViewById<Toolbar>(R.id.toolbar)
                 val frame_hoder = requireActivity().findViewById<FrameLayout>(R.id.fragment_holder)
                 val params = frame_player.layoutParams
                 params.width = FrameLayout.LayoutParams.MATCH_PARENT
-                params.height = frame_hoder.height + navBottom.height
+                params.height = frame_hoder.height + navBottom.height + toolbar.height
                 frame_player.layoutParams = params
-                player.release()
+                player?.release()
                 requireActivity().supportFragmentManager.beginTransaction().remove(this).commit()
                 requireActivity().supportFragmentManager.beginTransaction()
                     .setCustomAnimations(0, 0, 0, R.anim.exit_to_right)
-                    .add(
+                    .replace(
                         R.id.frame_player_podcast,
                         newInstance(
                             article.title!!,
@@ -161,30 +143,54 @@ class FragmentChitietVideo : Fragment() {
 
 
     fun buttonClick() {
-        binding.btnPlayPauseMini.setOnClickListener {
-            if (player.isPlaying) {
-                player.pause()
+        val btPlay = activity?.findViewById<ImageView>(R.id.bt_exo_play)
+        val btFullsc = activity?.findViewById<ImageView>(R.id.bt_exo_fullscreen)
+
+        btPlay!!.setOnClickListener {
+            if (player!!.isPlaying) {
+                player!!.pause()
                 binding.btnPlayPauseMini.setImageResource(R.drawable.ic_play_arrow)
+                btPlay?.setImageResource(R.drawable.ic_baseline_play_arrow)
             } else {
-                player.play()
+                player!!.play()
                 binding.btnPlayPauseMini.setImageResource(R.drawable.ic_pause)
+                btPlay?.setImageResource(R.drawable.ic_baseline_pause)
             }
         }
+
+        binding.btnPlayPauseMini.setOnClickListener {
+            if (player!!.isPlaying) {
+                player!!.pause()
+                binding.btnPlayPauseMini.setImageResource(R.drawable.ic_play_arrow)
+                btPlay?.setImageResource(R.drawable.ic_baseline_play_arrow)
+            } else {
+                player!!.play()
+                binding.btnPlayPauseMini.setImageResource(R.drawable.ic_pause)
+                btPlay?.setImageResource(R.drawable.ic_baseline_pause)
+            }
+        }
+
         binding.closeMiniPlayer.setOnClickListener {
             navBottom.isVisible = true
-            requireActivity().supportFragmentManager.beginTransaction().setCustomAnimations(0, R.anim.exit_to_right, 0, R.anim.exit_to_right).remove(this).commit()
+            requireActivity().supportFragmentManager.beginTransaction()
+                .setCustomAnimations(0, R.anim.exit_to_right, 0, R.anim.exit_to_right).remove(this)
+                .commit()
+        }
+        binding.btBack.setOnClickListener {
+            (requireActivity() as MainActivity).supportActionBar?.show()
+            requireActivity().supportFragmentManager.popBackStack()
         }
     }
 
     override fun onStop() {
         super.onStop()
         navBottom.isVisible = true
-        player.release()
+        player?.release()
     }
 
-    override fun onPause() {
-        super.onPause()
-        player.release()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        (requireActivity() as MainActivity).supportActionBar?.show()
     }
 
 

@@ -20,7 +20,7 @@ class ArticleDetailViewModel @ViewModelInject constructor(
     var articleId = 0
     val articleDetail = MutableLiveData<ArticleDetail>()
     val articleVideos = MutableLiveData<List<ArticleVideo>>()
-    val articleListByCategory = MutableLiveData<List<Article>>()
+    val articleListByCategory = MutableLiveData<MutableList<Article>>()
     val error = MutableLiveData<String>()
 
     var currentWindow = 0
@@ -53,7 +53,7 @@ class ArticleDetailViewModel @ViewModelInject constructor(
 
     fun getArticleByCategory(page: Int, categoryId: Long) {
         viewModelScope.launch {
-            when (val res: app.vtcnews.android.network.Resource<List<Article>> =
+            when (val res: app.vtcnews.android.network.Resource<MutableList<Article>> =
                 articleRepo.getArticleByCategory(page, categoryId)) {
                 is app.vtcnews.android.network.Resource.Success -> articleListByCategory.value =
                     res.data

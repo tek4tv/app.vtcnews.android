@@ -1,6 +1,8 @@
 package app.vtcnews.android
 
+import android.content.Context
 import android.content.res.Configuration
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
@@ -28,6 +30,16 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
+        supportActionBar?.title = ""
+
+//        binding.refreshlayout.setOnRefreshListener{
+//            binding.refreshlayout.isRefreshing = false
+//            finish()
+//            overridePendingTransition(0, 0)
+//            startActivity(intent)
+//            overridePendingTransition(0, 0)
+//
+//        }
 
         supportFragmentManager.apply {
             addOnBackStackChangedListener {
@@ -35,6 +47,7 @@ class MainActivity : AppCompatActivity() {
                     when (curFragment) {
                         is TrangChuFragment -> binding.mainBottomNav.menu[0].isChecked = true
                         is ArticlesFragment -> binding.mainBottomNav.menu[1].isChecked = true
+                        is FragmentVideoPage -> binding.mainBottomNav.menu[2].isChecked = true
                         is AudioHomeFragment -> binding.mainBottomNav.menu[3].isChecked = true
                         else -> Log.d("MainActivity", "Unknown Fragment type!")
                     }
@@ -63,7 +76,7 @@ class MainActivity : AppCompatActivity() {
                     switchToVideo()
                 }
                 R.id.menuShare -> {
-                    switchToShare()
+//                    switchToShare()
                 }
             }
             true
@@ -85,13 +98,13 @@ class MainActivity : AppCompatActivity() {
     private fun setupNavDrawer() {
         toggle = ActionBarDrawerToggle(
             this,
-            binding.root,
+            binding.drawerLayout,
             binding.toolbar,
             R.string.open_drawer,
             R.string.close_drawer
         )
 
-        binding.root.addDrawerListener(toggle)
+        binding.drawerLayout.addDrawerListener(toggle)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         //binding.toolbar.setNavigationIcon(R.drawable.ic_nav_drawer_24)
         supportActionBar?.setHomeButtonEnabled(true)
@@ -115,10 +128,15 @@ class MainActivity : AppCompatActivity() {
                     switchToAudio()
                     binding.mainBottomNav.selectedItemId = R.id.menuAudio
                 }
+                R.id.item_nav_drawer_video ->
+                {
+                    switchToVideo()
+                    binding.mainBottomNav.selectedItemId = R.id.menuVideo
+                }
 
             }
 
-            binding.root.closeDrawer(GravityCompat.START)
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
     }
@@ -130,7 +148,8 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
             .replace(R.id.fragment_holder, TrangChuFragment.newInstance())
-            .addToBackStack(null).commit()
+            .addToBackStack(null)
+            .commit()
         curFrag = "trang_chu"
     }
 
@@ -140,7 +159,8 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
             .replace(R.id.fragment_holder, ArticlesFragment.newInstance(-1))
-            .addToBackStack(null).commit()
+            .addToBackStack(null)
+            .commit()
         curFrag = "trending"
     }
 
@@ -155,7 +175,7 @@ class MainActivity : AppCompatActivity() {
         curFrag = "audio"
     }
 
-    fun switchToVideo() {
+    private fun switchToVideo() {
         if (curFrag == "video") return
 
         supportFragmentManager.beginTransaction()
@@ -165,13 +185,13 @@ class MainActivity : AppCompatActivity() {
             .commit()
         curFrag = "video"
     }
-    fun switchToShare() {
+
+    private fun switchToShare() {
         if (curFrag == "share") return
 
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
             .replace(R.id.fragment_holder, CommentFragment.newInstance(574750))
-            .addToBackStack(null)
             .commit()
         curFrag = "share"
     }
@@ -180,7 +200,12 @@ class MainActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.activity_main_menu, menu)
         return true
     }
+    private fun hasNetworkAvailable(context: Context): Boolean {
+        val service = Context.CONNECTIVITY_SERVICE
+        val manager = context.getSystemService(service) as ConnectivityManager?
+        val network = manager?.activeNetworkInfo
+        return (network != null)
+    }}
 
 
 
-}

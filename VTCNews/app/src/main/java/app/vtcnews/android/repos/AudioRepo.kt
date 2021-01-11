@@ -14,6 +14,7 @@ class AudioRepo @Inject constructor(private val audioService: AllPodcastService)
     val listAllPodCast = MutableLiveData<List<AllPodCast>>()
     var listChannelPodcast = listOf<ChannelPodcast>()
     var listAlbumDetail = listOf<ListPodcast>()
+    var listAlbumPaging = listOf<AlbumPaging>()
 
     suspend fun getAllPodcast(): Resource<List<AllPodCast>> = performNetworkCall {
         audioService.getAllPodcast()
@@ -33,8 +34,17 @@ class AudioRepo @Inject constructor(private val audioService: AllPodcastService)
         return respon
     }
 
-    suspend fun getAlbumPaging(channelid: Long): Resource<List<AlbumPaging>> = performNetworkCall {
-        audioService.getAlbumPaging(channelid)
+    suspend fun getAlbumPaging(channelid: Long): Resource<List<AlbumPaging>> {
+        val res = performNetworkCall {
+            audioService.getAlbumPaging(channelid)
+        }
+
+        if(res is Resource.Success)
+        {
+            listAlbumPaging = res.data
+        }
+        return res
+
     }
 
     suspend fun getAlbumDetail(id: Long):

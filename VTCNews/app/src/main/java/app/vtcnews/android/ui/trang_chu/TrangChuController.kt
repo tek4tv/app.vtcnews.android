@@ -1,11 +1,20 @@
 package app.vtcnews.android.ui.trang_chu
 
 import app.vtcnews.android.model.Article
+import app.vtcnews.android.model.Audio.AlbumPaging
+import app.vtcnews.android.model.HotChannel
 import app.vtcnews.android.model.TrangChuData
+import app.vtcnews.android.model.Video
 import com.airbnb.epoxy.TypedEpoxyController
 
 class TrangChuController : TypedEpoxyController<TrangChuData>() {
-    var articleClickListener : (Article) -> Unit = {}
+    var articleClickListener: (Article) -> Unit = {}
+    var hotChannelClickListener: (HotChannel) -> Unit = {}
+    var videoClickListener: (Video) -> Unit = {}
+    var btXemThemVideoClickListener: () -> Unit = {}
+
+    var audioClickListener: (AlbumPaging) -> Unit = {}
+    var btXemThemAudioClickListener: () -> Unit = {}
 
     override fun buildModels(data: TrangChuData?) {
 
@@ -28,6 +37,7 @@ class TrangChuController : TypedEpoxyController<TrangChuData>() {
         hotChannel {
             id("hotChannels")
             channels(Pair(data.hotChannels[0], data.hotChannels[1]))
+            onClickListener(hotChannelClickListener)
         }
 
         var firstArticles = listOf<Article>()
@@ -51,6 +61,8 @@ class TrangChuController : TypedEpoxyController<TrangChuData>() {
             videoSection {
                 id("videos")
                 videoList(data.videos)
+                clickListener(videoClickListener)
+                btClickListener(btXemThemVideoClickListener)
             }
 
         if (firstArticles.isNotEmpty()) {
@@ -61,6 +73,13 @@ class TrangChuController : TypedEpoxyController<TrangChuData>() {
                     articleClickListener(articleClickListener)
                 }
             }
+        }
+
+        audioSection {
+            id("audioSection")
+            listAudio(data.audio)
+            clickListener(audioClickListener)
+            btClickListener(btXemThemAudioClickListener)
         }
 
         remainArticle.forEach {

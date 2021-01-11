@@ -5,16 +5,25 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#e0990b">
-
+    <ImageView
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:src="@drawable/ichotarticle"
+        android:id="@+id/icVideo"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="@dimen/_10sdp"
+        app:layout_constraintBottom_toTopOf="@id/cardView"
+        app:layout_constraintStart_toStartOf="parent"
+        />
     <TextView
         android:id="@+id/textView"
         style="@style/TextAppearance.MaterialComponents.Headline4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_margin="@dimen/_10sdp"
         android:text="@string/chuyen_de_nong"
         android:textColor="#a3161d"
-        android:textSize="30sp"
+        android:textSize="@dimen/_20sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="parent"

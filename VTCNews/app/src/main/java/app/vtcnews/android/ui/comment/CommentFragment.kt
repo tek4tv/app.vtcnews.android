@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
@@ -33,6 +34,7 @@ class CommentFragment : Fragment() {
         viewModelCM.getComment(requireArguments().getLong("articleID"), 1)
         setUpObser()
         buttonClick()
+
     }
 
     fun setUpObser() {
@@ -50,10 +52,13 @@ class CommentFragment : Fragment() {
             binding.rvComment.adapter = adapter
             binding.rvComment.layoutManager = layoutManager
 
+
+            binding.btShowmoreCm.isVisible = it.size > 3
         }
+
         viewModelCM.totalComment.observe(viewLifecycleOwner)
         {
-            binding.tvTotalCm.setText(it.toString())
+            binding.tvTotalCm.text = it.toString()
         }
     }
     fun buttonClick()

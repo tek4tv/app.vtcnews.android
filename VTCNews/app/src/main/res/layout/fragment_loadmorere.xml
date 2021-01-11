@@ -23,6 +23,7 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:id="@+id/itemHeaderPdChild"
                     app:cardCornerRadius="@dimen/_6sdp"
                     app:layout_constraintDimensionRatio="H, 1:1"
                     app:layout_constraintEnd_toEndOf="parent"

@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
@@ -34,9 +36,10 @@ class FragmentVideoPage : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.pbLoading.isVisible = true
         viewModel.getVideoHome()
         dataObserVideo()
-
+        binding.pbLoading.isVisible = false
     }
 
     fun dataObserVideo() {
@@ -47,17 +50,18 @@ class FragmentVideoPage : Fragment() {
             binding.rvVideoHome.adapter = adapter
             binding.rvVideoHome.layoutManager = layoutManager
             val navBottom = requireActivity().findViewById<BottomNavigationView>(R.id.main_bottom_nav)
+            val toolbar = requireActivity().findViewById<Toolbar>(R.id.toolbar)
             adapter.clickListen = {
                 val frame_player =
                     requireActivity().findViewById<FrameLayout>(R.id.frame_player_podcast)
                 val frame_hoder = requireActivity().findViewById<FrameLayout>(R.id.fragment_holder)
                 val params = frame_player.layoutParams
                 params.width = FrameLayout.LayoutParams.MATCH_PARENT
-                params.height = frame_hoder.height + navBottom.height
+                params.height = frame_hoder.height + navBottom.height + toolbar.height
                 frame_player.layoutParams = params
                 requireActivity().supportFragmentManager.beginTransaction()
                     .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_right,0,R.anim.exit_to_right)
-                    .add(
+                    .replace(
                         R.id.frame_player_podcast,
                         FragmentChitietVideo.newInstance(it.title, it.id, it.categoryID)
                     ).addToBackStack(null).commit()

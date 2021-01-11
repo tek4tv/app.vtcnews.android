@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.vtcnews.android.R
 import app.vtcnews.android.databinding.FragmentLoadmorereBinding
 import app.vtcnews.android.viewmodels.AudioHomeFragViewModel
@@ -57,11 +58,8 @@ class FragmentLoadMoreChild : Fragment() {
         viewModel.getAlbumPaging(requireArguments().getLong("id"))
         setUpObser()
 
-
-
     }
     fun setUpObser()
-
     {   val layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL,false)
         viewModel.listAlbumPaging.observe(viewLifecycleOwner)
         {
@@ -69,6 +67,14 @@ class FragmentLoadMoreChild : Fragment() {
             if (it.isNotEmpty()) {
                 binding.tvTitle.text = it[0].name
                 Picasso.get().load(it[0].image360360).into(binding.ivHeader)
+                binding.itemHeaderPdChild.setOnClickListener{view ->
+                    requireActivity().supportFragmentManager.beginTransaction()
+                        .add(
+                            R.id.fragment_holder,
+                            FragmentChiTietAudio.newInstance(it[0].id)
+                        )
+                        .addToBackStack(null).commit()
+                }
                 binding.rvPcChild.adapter = adapter
                 binding.rvPcChild.layoutManager = layoutManager
                 adapter.clickListen = {
@@ -104,8 +110,8 @@ class FragmentLoadMoreChild : Fragment() {
             param.setMargins(0,0,0,0)
             layout.layoutParams = param
         }
-    }
 
+    }
 
     companion object {
         fun newInstance(trangThai: String,id:Long) =
