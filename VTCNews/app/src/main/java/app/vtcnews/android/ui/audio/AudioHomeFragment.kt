@@ -11,6 +11,7 @@ import androidx.lifecycle.observe
 import app.vtcnews.android.databinding.ActivityAudioHomeBinding
 import app.vtcnews.android.model.Audio.AllPodCast
 import app.vtcnews.android.viewmodels.AudioHomeFragViewModel
+import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -44,11 +45,17 @@ class AudioHomeFragment : Fragment() {
 
     fun setUpob()
     {
+        val listHeaderAudio = listOf<String>("Sách nói","Âm nhạc","Podcast")
         viewModel.listAllPodCast.observe(viewLifecycleOwner)
         {
             it.forEach {AllPodCast ->
                 adapter.addFrag(PodcastFragment.newInstance(AllPodCast.name,AllPodCast.id))
+
+                TabLayoutMediator(binding.tabAudioHome, binding.vpPager) { tab, position ->
+                    tab.text = listHeaderAudio[position]
+                }.attach()
             }
+
         }
     }
 }

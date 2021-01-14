@@ -7,10 +7,13 @@ import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
 import android.view.Menu
+import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.GravityCompat
 import androidx.core.view.get
+import androidx.core.view.isVisible
 import app.vtcnews.android.databinding.ActivityMainBinding
 import app.vtcnews.android.ui.audio.AudioHomeFragment
 import app.vtcnews.android.ui.comment.CommentFragment
@@ -27,59 +30,92 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        supportActionBar?.hide()
         setSupportActionBar(binding.toolbar)
         supportActionBar?.title = ""
-
-//        binding.refreshlayout.setOnRefreshListener{
-//            binding.refreshlayout.isRefreshing = false
-//            finish()
-//            overridePendingTransition(0, 0)
-//            startActivity(intent)
-//            overridePendingTransition(0, 0)
-//
-//        }
-
-        supportFragmentManager.apply {
-            addOnBackStackChangedListener {
-                fragments.lastOrNull()?.let { curFragment ->
-                    when (curFragment) {
-                        is TrangChuFragment -> binding.mainBottomNav.menu[0].isChecked = true
-                        is ArticlesFragment -> binding.mainBottomNav.menu[1].isChecked = true
-                        is FragmentVideoPage -> binding.mainBottomNav.menu[2].isChecked = true
-                        is AudioHomeFragment -> binding.mainBottomNav.menu[3].isChecked = true
-                        else -> Log.d("MainActivity", "Unknown Fragment type!")
+        binding.refreshlayout.setOnRefreshListener {
+            if (hasNetworkAvailable(this)) {
+                binding.tvNoInternet.visibility = View.GONE
+                when (curFrag) {
+                    "trang_chu" -> {
+                        binding.refreshlayout.isRefreshing = false
+                        switchToTrangChu()
                     }
+                    "trending" -> {
+                        binding.refreshlayout.isRefreshing = false
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.fragment_holder, ArticlesFragment.newInstance(-1))
+                            .addToBackStack(null)
+                            .commit()
+                    }
+                    "audio" -> {
+                        binding.refreshlayout.isRefreshing = false
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.fragment_holder, AudioHomeFragment.newInstance())
+                            .addToBackStack(null)
+                            .commit()
+                    }
+                    "video" -> {
+                        binding.refreshlayout.isRefreshing = false
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.fragment_holder, FragmentVideoPage.newInstance())
+                            .addToBackStack(null)
+                            .commit()
+                    }
+                    //"share" -> switchTo
                 }
+            } else {
+                binding.refreshlayout.isRefreshing = false
             }
         }
 
-        supportFragmentManager.beginTransaction()
-            .add(R.id.fragment_holder, TrangChuFragment.newInstance())
-            .commit()
+        if (hasNetworkAvailable(this)) {
+            binding.tvNoInternet.visibility = View.GONE
+            supportFragmentManager.beginTransaction()
+                .add(R.id.fragment_holder, TrangChuFragment.newInstance())
+                .commit()
 
-        binding.mainBottomNav.setOnNavigationItemSelectedListener {
-            when (it.itemId) {
-                R.id.menuTrangChu -> {
-                    switchToTrangChu()
-                }
+            binding.mainBottomNav.setOnNavigationItemSelectedListener {
+                when (it.itemId) {
+                    R.id.menuTrangChu -> {
+                        switchToTrangChu()
+                    }
 
-                R.id.menuTrending -> {
-                    switchToTrending()
-                }
+                    R.id.menuTrending -> {
+                        switchToTrending()
+                    }
 
-                R.id.menuAudio -> {
-                    switchToAudio()
-                }
-                R.id.menuVideo -> {
-                    switchToVideo()
-                }
-                R.id.menuShare -> {
+                    R.id.menuAudio -> {
+                        switchToAudio()
+                    }
+                    R.id.menuVideo -> {
+                        switchToVideo()
+                    }
+                    R.id.menuShare -> {
 //                    switchToShare()
+                    }
+                }
+                true
+            }
+
+            supportFragmentManager.apply {
+                addOnBackStackChangedListener {
+                    fragments.lastOrNull()?.let { curFragment ->
+                        when (curFragment) {
+                            is TrangChuFragment -> binding.mainBottomNav.menu[0].isChecked = true
+                            is ArticlesFragment -> binding.mainBottomNav.menu[1].isChecked = true
+                            is FragmentVideoPage -> binding.mainBottomNav.menu[2].isChecked = true
+                            is AudioHomeFragment -> binding.mainBottomNav.menu[3].isChecked = true
+                            else -> Log.d("MainActivity", "Unknown Fragment type!")
+                        }
+                    }
                 }
             }
-            true
+        } else {
+            binding.tvNoInternet.isVisible = true
         }
 
         setupNavDrawer()
@@ -112,30 +148,29 @@ class MainActivity : AppCompatActivity() {
         toggle.syncState()
 
         binding.mainNavDrawer.setNavigationItemSelectedListener {
+            if (hasNetworkAvailable(this)) {
+                when (it.itemId) {
+                    R.id.item_nav_drawer_trang_chu -> {
+                        switchToTrangChu()
+                        binding.mainBottomNav.selectedItemId = R.id.menuTrangChu
+                    }
 
-            when (it.itemId) {
-                R.id.item_nav_drawer_trang_chu -> {
-                    switchToTrangChu()
-                    binding.mainBottomNav.selectedItemId = R.id.menuTrangChu
-                }
+                    R.id.item_nav_drawer_trending -> {
+                        switchToTrending()
+                        binding.mainBottomNav.selectedItemId = R.id.menuTrending
+                    }
 
-                R.id.item_nav_drawer_trending -> {
-                    switchToTrending()
-                    binding.mainBottomNav.selectedItemId = R.id.menuTrending
-                }
+                    R.id.item_nav_drawer_audio -> {
+                        switchToAudio()
+                        binding.mainBottomNav.selectedItemId = R.id.menuAudio
+                    }
+                    R.id.item_nav_drawer_video -> {
+                        switchToVideo()
+                        binding.mainBottomNav.selectedItemId = R.id.menuVideo
+                    }
 
-                R.id.item_nav_drawer_audio -> {
-                    switchToAudio()
-                    binding.mainBottomNav.selectedItemId = R.id.menuAudio
                 }
-                R.id.item_nav_drawer_video ->
-                {
-                    switchToVideo()
-                    binding.mainBottomNav.selectedItemId = R.id.menuVideo
-                }
-
             }
-
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
@@ -143,47 +178,56 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun switchToTrangChu() {
-        if (curFrag == "trang_chu") return
+        if (curFrag == "trang chu") {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_holder, TrangChuFragment.newInstance())
+                .commit()
+            curFrag = "trang_chu"
+        } else {
+            supportFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
+                .replace(R.id.fragment_holder, TrangChuFragment.newInstance())
+                .commit()
+            curFrag = "trang_chu"
+        }
 
-        supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
-            .replace(R.id.fragment_holder, TrangChuFragment.newInstance())
-            .addToBackStack(null)
-            .commit()
-        curFrag = "trang_chu"
     }
 
     private fun switchToTrending() {
+
         if (curFrag == "trending") return
 
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
             .replace(R.id.fragment_holder, ArticlesFragment.newInstance(-1))
-            .addToBackStack(null)
             .commit()
         curFrag = "trending"
+
     }
 
     private fun switchToAudio() {
+
+
         if (curFrag == "audio") return
 
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
             .replace(R.id.fragment_holder, AudioHomeFragment.newInstance())
-            .addToBackStack(null)
             .commit()
         curFrag = "audio"
+
     }
 
     private fun switchToVideo() {
+
         if (curFrag == "video") return
 
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
             .replace(R.id.fragment_holder, FragmentVideoPage.newInstance())
-            .addToBackStack(null)
             .commit()
         curFrag = "video"
+
     }
 
     private fun switchToShare() {
@@ -194,18 +238,24 @@ class MainActivity : AppCompatActivity() {
             .replace(R.id.fragment_holder, CommentFragment.newInstance(574750))
             .commit()
         curFrag = "share"
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.activity_main_menu, menu)
         return true
     }
+
     private fun hasNetworkAvailable(context: Context): Boolean {
         val service = Context.CONNECTIVITY_SERVICE
         val manager = context.getSystemService(service) as ConnectivityManager?
         val network = manager?.activeNetworkInfo
         return (network != null)
-    }}
+    }
+
+
+}
+
 
 
 

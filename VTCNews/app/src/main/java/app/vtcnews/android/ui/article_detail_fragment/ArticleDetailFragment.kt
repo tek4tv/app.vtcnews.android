@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.widget.Toast
+import android.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -30,6 +31,7 @@ import com.bumptech.glide.Glide
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.util.Util
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
 private const val ARG_PARAM1 = "param1"
@@ -39,7 +41,8 @@ class ArticleDetailFragment : Fragment() {
     private var articleId: Int = 0
 
     private lateinit var binding: FragmentArticleDetailBinding
-
+    private lateinit var navBottom: BottomNavigationView
+    private lateinit var toolbar: Toolbar
     private val viewModel by viewModels<ArticleDetailViewModel>()
     private var player: SimpleExoPlayer? = null
 
@@ -62,16 +65,17 @@ class ArticleDetailFragment : Fragment() {
             (requireActivity() as MainActivity).supportActionBar?.show()
             requireActivity().supportFragmentManager.popBackStack()
         }
+        navBottom = requireActivity().findViewById(R.id.main_bottom_nav)
+        navBottom.isVisible = false
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getArticleDetail()
-        viewModel.getArticleByCategory(1, requireArguments().getLong("categoryId"))
+//        viewModel.getArticleByCategory(1, requireArguments().getLong("categoryId"))
         registerObservers()
         addCommentFrag()
-        setRvOber()
         binding.articleDetailRoot.isVisible = true
     }
 
@@ -96,6 +100,7 @@ class ArticleDetailFragment : Fragment() {
         if (Util.SDK_INT >= 24) {
             releasePlayer()
         }
+        navBottom.isVisible = true
     }
 
     override fun onResume() {
@@ -109,6 +114,13 @@ class ArticleDetailFragment : Fragment() {
         super.onDestroyView()
         binding.layoutMenu.isVisible = false
         (requireActivity() as MainActivity).supportActionBar?.show()
+        if(requireActivity().supportFragmentManager.findFragmentByTag("article") != null) {
+            (requireActivity() as MainActivity).supportActionBar?.hide()
+        }
+        else
+        {
+            (requireActivity() as MainActivity).supportActionBar?.show()
+        }
     }
 
     override fun onPause() {
@@ -123,6 +135,7 @@ class ArticleDetailFragment : Fragment() {
         viewModel.articleDetail.observe(viewLifecycleOwner)
         {
             populateArticleUi(it)
+            setupRvMoreArticle(it.relatedArticleList)
         }
 
         viewModel.error.observe(viewLifecycleOwner) {
@@ -135,20 +148,9 @@ class ArticleDetailFragment : Fragment() {
         }
     }
 
-    fun setRvOber() {
-        viewModel.articleListByCategory.observe(viewLifecycleOwner)
-        {
-            setupRvMoreArticle(it, requireArguments().getInt(ARG_PARAM1))
-        }
-    }
 
-    fun setupRvMoreArticle(listArticle: MutableList<Article>, currentID: Int) {
-//        listArticle.forEach {
-//            if(it.id == currentID)
-//            {
-//                listArticle.remove(it)
-//            }
-//        }
+
+    fun setupRvMoreArticle(listArticle: List<Article>) {
         val adapterMoreArticle = ArticleItemAdapter(listArticle.take(8))
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rvMoreArticle.adapter = adapterMoreArticle
@@ -276,7 +278,6 @@ class ArticleDetailFragment : Fragment() {
             videoIdReg.find(it.value)!!.value.drop(9).dropLast(1)
         }.toList()
     }
-
     @SuppressLint("SetJavaScriptEnabled")
     private fun displayContent(data: String) {
 
@@ -297,7 +298,7 @@ class ArticleDetailFragment : Fragment() {
             settings.layoutAlgorithm = WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING
 
             val imageStyle =
-                "<style>img{max-width:100% !important; margin-left:0px;height:auto;display: block;object-fit: fill;}</style>"
+                "<style>img{max-width:100%;height: auto; }</style>"
 
             loadData(
                 "$imageStyle $imgTags",
@@ -318,10 +319,12 @@ class ArticleDetailFragment : Fragment() {
 
         fun openWith(fragmentManager: FragmentManager, articleId: Int, categogyId: Long) {
             fragmentManager.beginTransaction()
-                .replace(R.id.fragment_holder, newInstance(articleId, categogyId))
+                .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
+                .replace(R.id.fragment_holder, newInstance(articleId, categogyId),"article")
                 .addToBackStack(null)
                 .commit()
         }
     }
+
 }
 

@@ -40,4 +40,7 @@
 
     //comment
     <string name="comment">Bình luận</string>
+
+    //MainActivity
+    <string name="nointernet">Không có kết nối Internet</string>
 </resources>

@@ -19,7 +19,7 @@
             android:layout_height="@dimen/_170sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-           />
+            />
 
         <Constraint
             android:id="@+id/txt_video_title_mini"
@@ -158,3 +158,4 @@
             motion:maxVelocity="200" />
     </Transition>
 </MotionScene>
+

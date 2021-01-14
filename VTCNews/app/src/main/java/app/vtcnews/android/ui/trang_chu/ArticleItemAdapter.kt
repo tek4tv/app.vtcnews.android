@@ -11,6 +11,7 @@ import app.vtcnews.android.R
 import app.vtcnews.android.model.Article
 import app.vtcnews.android.ui.trang_chu_sub_section.getDateDiff
 import com.bumptech.glide.Glide
+import com.squareup.picasso.Picasso
 
 class ArticleItemAdapter(private val listArticle: List<Article>) :
     RecyclerView.Adapter<ArticleItemAdapter.ArticleItemViewHolder>() {
@@ -38,9 +39,7 @@ class ArticleItemAdapter(private val listArticle: List<Article>) :
 
     override fun onBindViewHolder(holder: ArticleItemViewHolder, position: Int) {
         val article = listArticle[position]
-        Glide.with(holder.img)
-            .load(article.image169)
-            .into(holder.img)
+        Picasso.get().load(article.imageCrop).into(holder.img)
 
         holder.txtTitle.text = article.title
 

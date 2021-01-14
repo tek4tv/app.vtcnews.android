@@ -37,7 +37,7 @@ class ListHotArticleAdapter(val listArticle : List<Article>):RecyclerView.Adapte
 
         holder.tvTitle.text = article.title
 
-        holder.ivArticle.setOnClickListener {
+        holder.itemArticle.setOnClickListener {
             onClickItem.invoke(article)
         }
 

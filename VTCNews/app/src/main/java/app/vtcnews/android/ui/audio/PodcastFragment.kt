@@ -53,7 +53,7 @@ class PodcastFragment : Fragment() {
         //setUpob()
         setUpObser()
 
-        binding.btLoadMore.setOnClickListener(View.OnClickListener {
+        binding.btLoadMore.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .add(
                     R.id.fragment_holder,
@@ -63,7 +63,7 @@ class PodcastFragment : Fragment() {
                     )
                 )
                 .addToBackStack(null).commit()
-        })
+        }
 
 
     }

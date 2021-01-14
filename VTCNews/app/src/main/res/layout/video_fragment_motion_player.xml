@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <app.vtcnews.android.ui.article_detail_fragment.PlayerScreenMotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -88,7 +87,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:maxLines="2"
                 android:padding="@dimen/_10sdp"
                 android:text="Ngăm vẻ đẹp của trái đất qua 100GB ảnh của NASA"
                 android:textColor="@color/colorTitle"

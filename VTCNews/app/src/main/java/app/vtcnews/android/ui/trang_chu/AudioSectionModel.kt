@@ -79,7 +79,7 @@ class AudioSectionHodel : KotlinEpoxyHolder() {
 
     val item1 by bind<ConstraintLayout>(R.id.audio1)
     val item2 by bind<ConstraintLayout>(R.id.audio2)
-    val item0 by bind<ConstraintLayout>(R.id.audio2)
+    val item0 by bind<ConstraintLayout>(R.id.audio0)
 
     val btXemThemPD by bind<AppCompatButton>(R.id.btXemThemPd)
 

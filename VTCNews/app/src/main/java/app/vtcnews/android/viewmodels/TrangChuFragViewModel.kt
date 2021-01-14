@@ -21,7 +21,6 @@ class TrangChuFragViewModel @ViewModelInject constructor(
 ) : ViewModel() {
     val menuList = MutableLiveData<List<MenuItem>>()
     val error = MutableLiveData<String>()
-
     val data = MutableLiveData<TrangChuData>()
 
     fun getMenuList() {

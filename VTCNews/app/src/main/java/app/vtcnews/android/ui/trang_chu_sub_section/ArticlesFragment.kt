@@ -8,13 +8,13 @@ import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import app.vtcnews.android.MainActivity
 import app.vtcnews.android.R
 import app.vtcnews.android.databinding.FragmentArticlesBinding
 import app.vtcnews.android.ui.article_detail_fragment.ArticleDetailFragment
 import app.vtcnews.android.ui.video.FragmentChitietVideo
 import app.vtcnews.android.viewmodels.PagingArticleFragmentViewModel
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -52,33 +52,28 @@ class ArticlesFragment : Fragment() {
         pagingAdapter.articleClickListener = {
             val fragmentManager = requireActivity().supportFragmentManager
             if (it.isVideoArticle == 1L) {
-                val navBottom =
-                    requireActivity().findViewById<BottomNavigationView>(R.id.main_bottom_nav)
                 val frame_player =
                     requireActivity().findViewById<FrameLayout>(R.id.frame_player_podcast)
-                val frame_hoder = requireActivity().findViewById<FrameLayout>(R.id.fragment_holder)
                 val params = frame_player.layoutParams
                 params.width = FrameLayout.LayoutParams.MATCH_PARENT
-                params.height = frame_hoder.height + navBottom.height
+                params.height = FrameLayout.LayoutParams.MATCH_PARENT
                 frame_player.layoutParams = params
                 val player = SimpleExoPlayer.Builder(requireContext()).build()
                 player.release()
                 fragmentManager.beginTransaction()
-                    .setCustomAnimations(R.anim.enter_from_right,0,0,R.anim.exit_to_right)
+                    .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
                     .replace(
                         R.id.frame_player_podcast, FragmentChitietVideo.newInstance(
                             it.title ?: "",
                             it.id.toLong(),
                             it.categoryID!!.toLong()
-                        )
+                        ),"fragVideo"
                     )
                     .addToBackStack(null)
                     .commit()
-            } else if(it.isVideoArticle == 0L) {
-                ArticleDetailFragment.openWith(fragmentManager, it.id,it.categoryID!!)
-            }
-            else
-            {
+            } else if (it.isVideoArticle == 0L) {
+                ArticleDetailFragment.openWith(fragmentManager, it.id, it.categoryID!!)
+            } else {
                 //
             }
         }

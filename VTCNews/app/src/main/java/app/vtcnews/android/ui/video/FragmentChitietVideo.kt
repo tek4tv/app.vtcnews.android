@@ -1,18 +1,20 @@
 package app.vtcnews.android.ui.video
 
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
-import android.view.KeyEvent
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.FrameLayout
 import android.widget.ImageView
-import androidx.appcompat.widget.Toolbar
+import androidx.activity.OnBackPressedCallback
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.vtcnews.android.MainActivity
 import app.vtcnews.android.R
 import app.vtcnews.android.databinding.VideoFragmentMotionPlayerBinding
@@ -30,6 +32,8 @@ class FragmentChitietVideo : Fragment() {
     private var player: SimpleExoPlayer? = null
     private val viewModel: VideoHomeFragViewModel by viewModels()
     private lateinit var navBottom: BottomNavigationView
+    private var fullscreen = false
+    private var refreshLayout: SwipeRefreshLayout? = null
 
     companion object {
         fun newInstance(title: String, idVideoDetail: Long, categoryId: Long) =
@@ -40,7 +44,6 @@ class FragmentChitietVideo : Fragment() {
                     putLong("categoryid", categoryId)
                 }
             }
-
     }
 
     override fun onCreateView(
@@ -50,6 +53,8 @@ class FragmentChitietVideo : Fragment() {
     ): View? {
         binding = VideoFragmentMotionPlayerBinding.inflate(layoutInflater, container, false)
         (requireActivity() as MainActivity).supportActionBar?.hide()
+        refreshLayout = activity?.findViewById(R.id.refreshlayout)
+        refreshLayout?.isEnabled = false
 
         return binding.root
     }
@@ -74,15 +79,24 @@ class FragmentChitietVideo : Fragment() {
         buttonClick()
         navBottom = requireActivity().findViewById(R.id.main_bottom_nav)
         navBottom.isVisible = false
-        view.isFocusableInTouchMode = true
-        view.requestFocus()
-        view.setOnKeyListener(View.OnKeyListener { view, i, keyEvent ->
-            if (i == KeyEvent.KEYCODE_BACK) {
-                navBottom.isVisible = true
 
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(requireActivity(), object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (isEnabled) {
+                        isEnabled = false
+                        navBottom.isVisible = true
+                        requireActivity().supportFragmentManager.beginTransaction()
+                            .setCustomAnimations(0, R.anim.exit_to_right, 0, R.anim.exit_to_right)
+                            .remove(
+                                this@FragmentChitietVideo
+                            )
+                            .commit()
+                    }
+                }
             }
-            false
-        })
+            )
 
 
     }
@@ -103,8 +117,6 @@ class FragmentChitietVideo : Fragment() {
                 binding.videoView.hideController()
                 player?.play()
             }
-
-
         }
     }
 
@@ -119,11 +131,9 @@ class FragmentChitietVideo : Fragment() {
             adapter.clickListen = { article: Article ->
                 val frame_player =
                     requireActivity().findViewById<FrameLayout>(R.id.frame_player_podcast)
-                val toolbar = requireActivity().findViewById<Toolbar>(R.id.toolbar)
-                val frame_hoder = requireActivity().findViewById<FrameLayout>(R.id.fragment_holder)
                 val params = frame_player.layoutParams
                 params.width = FrameLayout.LayoutParams.MATCH_PARENT
-                params.height = frame_hoder.height + navBottom.height + toolbar.height
+                params.height = FrameLayout.LayoutParams.MATCH_PARENT
                 frame_player.layoutParams = params
                 player?.release()
                 requireActivity().supportFragmentManager.beginTransaction().remove(this).commit()
@@ -150,11 +160,11 @@ class FragmentChitietVideo : Fragment() {
             if (player!!.isPlaying) {
                 player!!.pause()
                 binding.btnPlayPauseMini.setImageResource(R.drawable.ic_play_arrow)
-                btPlay?.setImageResource(R.drawable.ic_baseline_play_arrow)
+                btPlay.setImageResource(R.drawable.ic_baseline_play_arrow)
             } else {
                 player!!.play()
                 binding.btnPlayPauseMini.setImageResource(R.drawable.ic_pause)
-                btPlay?.setImageResource(R.drawable.ic_baseline_pause)
+                btPlay.setImageResource(R.drawable.ic_baseline_pause)
             }
         }
 
@@ -162,11 +172,11 @@ class FragmentChitietVideo : Fragment() {
             if (player!!.isPlaying) {
                 player!!.pause()
                 binding.btnPlayPauseMini.setImageResource(R.drawable.ic_play_arrow)
-                btPlay?.setImageResource(R.drawable.ic_baseline_play_arrow)
+                btPlay.setImageResource(R.drawable.ic_baseline_play_arrow)
             } else {
                 player!!.play()
                 binding.btnPlayPauseMini.setImageResource(R.drawable.ic_pause)
-                btPlay?.setImageResource(R.drawable.ic_baseline_pause)
+                btPlay.setImageResource(R.drawable.ic_baseline_pause)
             }
         }
 
@@ -178,18 +188,42 @@ class FragmentChitietVideo : Fragment() {
         }
         binding.btBack.setOnClickListener {
             (requireActivity() as MainActivity).supportActionBar?.show()
-            requireActivity().supportFragmentManager.popBackStack()
+            refreshLayout?.isEnabled = false
+            requireActivity().supportFragmentManager.beginTransaction()
+                .setCustomAnimations(0, R.anim.exit_to_right, 0, R.anim.exit_to_right).remove(this)
+                .commit()
+        }
+        btFullsc?.setOnClickListener {
+//
         }
     }
+
+
 
     override fun onStop() {
         super.onStop()
         navBottom.isVisible = true
+        refreshLayout?.isEnabled = false
         player?.release()
+
+        (requireActivity() as MainActivity).supportActionBar?.show()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    override fun onPause() {
+        super.onPause()
+        refreshLayout?.isEnabled = false
+        val frame_player =
+            requireActivity().findViewById<FrameLayout>(R.id.frame_player_podcast)
+        val params = frame_player.layoutParams
+        params.width = FrameLayout.LayoutParams.MATCH_PARENT
+        params.height = FrameLayout.LayoutParams.MATCH_PARENT
+        frame_player.layoutParams = params
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        refreshLayout?.isEnabled =
+            requireActivity().supportFragmentManager.findFragmentByTag("fragVideo") == null
         (requireActivity() as MainActivity).supportActionBar?.show()
     }
 
