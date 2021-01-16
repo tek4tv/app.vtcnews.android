@@ -22,6 +22,7 @@ class VideoHomeAdapter(private val listVideo: List<Video>) :
         val tvTitleVideo = v.findViewById<TextView>(R.id.tvTitleVideo)
         val tvTimeDiffVideo = v.findViewById<TextView>(R.id.tvTimeDiff)
         val tvCategoryVideo = v.findViewById<TextView>(R.id.tvCategoryVideo)
+        val tvChannel = v.findViewById<TextView>(R.id.tvChannel)
         val itemVideo = v.findViewById<LinearLayout>(R.id.itemVideo)
 
     }
@@ -35,6 +36,7 @@ class VideoHomeAdapter(private val listVideo: List<Video>) :
 
     override fun onBindViewHolder(holder: VideoHomeAdapter.ViewHolder, position: Int) {
         val video = listVideo[position]
+        holder.tvChannel.visibility = View.GONE
         holder.tvTitleVideo.setText(video.title)
         Picasso.get().load(video.image169_Large).fit().into(holder.ivVideo)
         holder.tvCategoryVideo.setText(video.categoryName)

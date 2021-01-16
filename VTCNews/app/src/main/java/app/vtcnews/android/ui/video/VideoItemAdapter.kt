@@ -8,9 +8,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import app.vtcnews.android.R
-import app.vtcnews.android.model.Article
-import app.vtcnews.android.model.Audio.AlbumPaging
-import app.vtcnews.android.model.Video
+import app.vtcnews.android.model.Article.Article
 import com.squareup.picasso.Picasso
 
 class VideoItemAdapter(private val listArticle: List<Article>) :

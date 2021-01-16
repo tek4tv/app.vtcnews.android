@@ -1,20 +1,16 @@
 package app.vtcnews.android.ui.trang_chu
 
-import android.content.res.Resources
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import app.vtcnews.android.R
-import app.vtcnews.android.model.Article
+import app.vtcnews.android.model.Article.Article
 import app.vtcnews.android.ui.KotlinEpoxyHolder
 import app.vtcnews.android.ui.trang_chu_sub_section.getDateDiff
 import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.bumptech.glide.Glide
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.math.abs
 
 @EpoxyModelClass(layout = R.layout.hot_artice_header)
 abstract class HotArticleHeaderModel : EpoxyModelWithHolder<HotArticleViewHolder>() {

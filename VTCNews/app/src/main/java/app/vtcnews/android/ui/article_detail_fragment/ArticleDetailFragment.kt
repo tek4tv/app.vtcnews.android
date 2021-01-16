@@ -14,6 +14,10 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import app.vtcnews.android.databinding.FragmentArticleDetailBinding
+<<<<<<< Updated upstream
+=======
+import app.vtcnews.android.model.Article.Article
+>>>>>>> Stashed changes
 import app.vtcnews.android.model.ArticleDetail
 import app.vtcnews.android.ui.trang_chu_sub_section.getDateDiff
 import app.vtcnews.android.viewmodels.ArticleDetailViewModel
@@ -27,6 +31,10 @@ class ArticleDetailFragment : Fragment() {
 
     private lateinit var binding: FragmentArticleDetailBinding
 
+<<<<<<< Updated upstream
+=======
+    private lateinit var toolbar: Toolbar
+>>>>>>> Stashed changes
     private val viewModel by viewModels<ArticleDetailViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,13 +50,78 @@ class ArticleDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentArticleDetailBinding.inflate(inflater, container, false)
+<<<<<<< Updated upstream
+=======
+        (requireActivity() as MainActivity).supportActionBar?.hide()
+        binding.btBack.setOnClickListener {
+            binding.layoutMenu.isVisible = false
+            (requireActivity() as MainActivity).supportActionBar?.show()
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+>>>>>>> Stashed changes
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         registerObservers()
+<<<<<<< Updated upstream
         viewModel.getArticleDetail()
+=======
+        addCommentFrag()
+        binding.articleDetailRoot.isVisible = true
+    }
+
+    fun addCommentFrag() {
+        parentFragmentManager.beginTransaction()
+            .add(
+                R.id.comment_frag_holder,
+                CommentFragment.newInstance(requireArguments().getInt(ARG_PARAM1).toLong())
+            )
+            .commit()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (Util.SDK_INT >= 24) {
+            initPlayer()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (Util.SDK_INT >= 24) {
+            releasePlayer()
+        }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (Util.SDK_INT < 24) {
+            initPlayer()
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding.layoutMenu.isVisible = false
+        (requireActivity() as MainActivity).supportActionBar?.show()
+        if(requireActivity().supportFragmentManager.findFragmentByTag("article") != null) {
+            (requireActivity() as MainActivity).supportActionBar?.hide()
+        }
+        else
+        {
+            (requireActivity() as MainActivity).supportActionBar?.show()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (Util.SDK_INT < 24) {
+            releasePlayer()
+        }
+>>>>>>> Stashed changes
     }
 
     private fun registerObservers() {

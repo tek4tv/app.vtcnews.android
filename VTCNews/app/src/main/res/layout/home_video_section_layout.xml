@@ -6,6 +6,7 @@
     android:background="#101949">
 
     <TextView
+        android:textStyle="bold"
         android:id="@+id/textView2"
         style="@style/TextAppearance.MaterialComponents.Headline4"
         android:layout_width="wrap_content"

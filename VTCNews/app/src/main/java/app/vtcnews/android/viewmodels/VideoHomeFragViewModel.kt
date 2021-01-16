@@ -1,17 +1,15 @@
 package app.vtcnews.android.viewmodels
 
-import android.provider.MediaStore
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.vtcnews.android.model.Article
+import app.vtcnews.android.model.Article.Article
 import app.vtcnews.android.model.Video
 import app.vtcnews.android.model.VideoDetail
 import app.vtcnews.android.repos.ArticleRepo
 import app.vtcnews.android.repos.VideoRepo
 import kotlinx.coroutines.launch
-import javax.annotation.Resource
 
 class VideoHomeFragViewModel @ViewModelInject constructor(
     private val videoRepo: VideoRepo,

@@ -1,7 +1,7 @@
 package app.vtcnews.android.paging
 
 import androidx.paging.PagingSource
-import app.vtcnews.android.model.Article
+import app.vtcnews.android.model.Article.Article
 import app.vtcnews.android.network.Resource
 import app.vtcnews.android.repos.ArticleRepo
 

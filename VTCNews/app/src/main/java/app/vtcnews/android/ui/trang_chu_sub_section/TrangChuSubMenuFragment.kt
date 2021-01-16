@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import app.vtcnews.android.R
 import app.vtcnews.android.databinding.FragmentTrangChuSubSectionBinding
 import app.vtcnews.android.viewmodels.TrangChuSubMenuViewModel
 import com.google.android.material.tabs.TabLayoutMediator
@@ -20,6 +22,7 @@ class TrangChuSubMenuFragment : Fragment() {
     private val viewModel by viewModels<TrangChuSubMenuViewModel>()
     private lateinit var vpAdapter : SubMenuStateAdapter
     private lateinit var binding : FragmentTrangChuSubSectionBinding
+    private var refreshLayout: SwipeRefreshLayout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +36,8 @@ class TrangChuSubMenuFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentTrangChuSubSectionBinding.inflate(inflater,container,false)
+        refreshLayout = activity?.findViewById(R.id.refreshlayout)
+        refreshLayout?.isEnabled = false
         return binding.root
     }
 
@@ -60,6 +65,11 @@ class TrangChuSubMenuFragment : Fragment() {
             tab, pos->
             tab.text = viewModel.menuItem.value!![pos].title
         }.attach()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        refreshLayout?.isEnabled = true
     }
 
     companion object {

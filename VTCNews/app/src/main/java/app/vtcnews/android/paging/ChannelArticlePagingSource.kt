@@ -1,18 +1,15 @@
 package app.vtcnews.android.paging
 
 import androidx.paging.PagingSource
-import app.vtcnews.android.model.Article.Article
+import androidx.paging.PagingState
+import app.vtcnews.android.model.HotChannel
 import app.vtcnews.android.network.Resource
 import app.vtcnews.android.repos.ArticleRepo
 
-class TrendingArticlePagingSource(
-    private val articleRepo: ArticleRepo
-) : PagingSource<Int, Article>() {
-
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Article> {
+class ChannelArticlePagingSource(val articleRepo: ArticleRepo) : PagingSource<Int,HotChannel>() {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, HotChannel> {
         val page = params.key ?: 1
-
-        return when (val res = articleRepo.getTrendingArticles(page)) {
+        return when (val res = articleRepo.getListChannel(page)) {
             is Resource.Success -> LoadResult.Page(
                 data = res.data,
                 prevKey = if (page == 1) null else page - 1,
@@ -21,4 +18,6 @@ class TrendingArticlePagingSource(
             is Resource.Error -> LoadResult.Error(Exception(res.message))
         }
     }
+
+
 }

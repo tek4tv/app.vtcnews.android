@@ -51,7 +51,10 @@ class FragmentVideoPage : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getVideoHome()
         dataObserVideo()
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
     }
 
     fun dataObserVideo() {

@@ -2,8 +2,7 @@ package app.vtcnews.android.model
 
 import com.squareup.moshi.Json
 
-
-data class HotChannel(
+data class HotChannel (
     @Json(name = "ImageUrl")
     val imageURL: String,
 
@@ -47,7 +46,11 @@ data class HotChannel(
     val isHotNews: Boolean,
 
     @Json(name = "Order")
+<<<<<<< Updated upstream
     val order: Long,
+=======
+    val order: Any? = null,
+>>>>>>> Stashed changes
 
     @Json(name = "TitleWithoutUnicode")
     val titleWithoutUnicode: String,
@@ -59,11 +62,20 @@ data class HotChannel(
     val createdDate: String,
 
     @Json(name = "ImageBanner")
+<<<<<<< Updated upstream
     val imageBanner: Long,
+=======
+    val imageBanner: Long? = null,
+>>>>>>> Stashed changes
 
     @Json(name = "ImageBannerMobile")
     val imageBannerMobile: Any? = null,
 
     @Json(name = "image16_9")
+<<<<<<< Updated upstream
     val image169: String
 )
+=======
+    val image169: String? = null
+        )
+>>>>>>> Stashed changes

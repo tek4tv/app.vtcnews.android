@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import app.vtcnews.android.R
 import app.vtcnews.android.databinding.ArticeItemBinding
-import app.vtcnews.android.model.Article
+import app.vtcnews.android.model.Article.Article
 import com.bumptech.glide.Glide
 import java.text.SimpleDateFormat
 import java.util.*

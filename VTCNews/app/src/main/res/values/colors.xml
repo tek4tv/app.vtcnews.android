@@ -28,4 +28,7 @@
     //video
     <color name="colorTimeDiff">#D2C6C4C4</color>
 
+    //channel
+    <color name="backroundArticle">#61000000</color>
+
 </resources>

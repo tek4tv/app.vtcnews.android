@@ -99,6 +99,7 @@
         <FrameLayout
             android:id="@+id/fragment_holder"
             android:layout_width="match_parent"
+<<<<<<< Updated upstream
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@+id/main_bottom_nav"
             app:layout_constraintEnd_toEndOf="parent"
@@ -132,6 +133,84 @@
             app:layout_constraintBottom_toBottomOf="@+id/fragment_holder"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
+=======
+            android:layout_height="match_parent"
+            tools:context=".MainActivity">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                style="@style/ToolbarTheme"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                android:elevation="0dp"
+                app:logo="@drawable/logovtc"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" >
+
+            </androidx.appcompat.widget.Toolbar>
+
+            <FrameLayout
+                android:id="@+id/fragment_holder"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/main_bottom_nav"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    android:id="@+id/tvNoInternet"
+                    android:layout_gravity="center"
+                    android:textColor="@color/vtcBackground"
+                    android:textSize="@dimen/_15sdp"
+                    android:text="@string/nointernet"/>
+
+            </FrameLayout>
+
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/main_bottom_nav"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                app:itemBackground="@drawable/bnv_item_background"
+                app:itemIconTint="@color/bnv_tab_item"
+                app:itemTextColor="@color/bnv_tab_item"
+                app:labelVisibilityMode="labeled"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:menu="@menu/main_bottom_nav">
+
+            </com.google.android.material.bottomnavigation.BottomNavigationView>
+
+            <FrameLayout
+                android:id="@+id/frame_player_podcast"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_50sdp"
+                app:layout_constraintBottom_toTopOf="@id/main_bottom_nav"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/main_nav_drawer"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:headerLayout="@layout/nav_drawer_header"
+            app:menu="@menu/main_nav_drawer" />
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+>>>>>>> Stashed changes
 
         </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>-->

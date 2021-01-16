@@ -1,6 +1,11 @@
 package app.vtcnews.android
 
 import android.content.res.Configuration
+<<<<<<< Updated upstream
+=======
+import android.net.ConnectivityManager
+import android.os.Build
+>>>>>>> Stashed changes
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
@@ -11,6 +16,11 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.get
 import app.vtcnews.android.databinding.ActivityMainBinding
 import app.vtcnews.android.ui.audio.AudioHomeFragment
+<<<<<<< Updated upstream
+=======
+import app.vtcnews.android.ui.comment.CommentFragment
+import app.vtcnews.android.ui.trang_chu.HotChannelFragment
+>>>>>>> Stashed changes
 import app.vtcnews.android.ui.trang_chu.TrangChuFragment
 import app.vtcnews.android.ui.trang_chu_sub_section.ArticlesFragment
 import com.example.vtclive.Video.FragmentVideoPage
@@ -20,10 +30,11 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var toggle: ActionBarDrawerToggle
-    private var curFrag = "trang_chu"
+    private var curFrag = "home"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+<<<<<<< Updated upstream
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
@@ -36,6 +47,47 @@ class MainActivity : AppCompatActivity() {
                         is ArticlesFragment -> binding.mainBottomNav.menu[1].isChecked = true
                         is AudioHomeFragment -> binding.mainBottomNav.menu[3].isChecked = true
                         else -> Log.d("MainActivity", "Unknown Fragment type!")
+=======
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.Q)
+        {
+            supportActionBar?.hide()
+            setSupportActionBar(binding.toolbar)
+            supportActionBar?.title = ""
+        }
+
+
+        binding.refreshlayout.setOnRefreshListener {
+            if (hasNetworkAvailable(this)) {
+                binding.tvNoInternet.visibility = View.GONE
+                when (curFrag) {
+                    "home" -> {
+                        binding.refreshlayout.isRefreshing = false
+                        switchToTrangChu()
+                    }
+                    "trending" -> {
+                        binding.refreshlayout.isRefreshing = false
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.fragment_holder, ArticlesFragment.newInstance(-1))
+                            .addToBackStack(null)
+                            .commit()
+                    }
+                    "audio" -> {
+                        binding.refreshlayout.isRefreshing = false
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.fragment_holder, AudioHomeFragment.newInstance())
+                            .addToBackStack(null)
+                            .commit()
+                    }
+                    "video" -> {
+                        binding.refreshlayout.isRefreshing = false
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.fragment_holder, FragmentVideoPage.newInstance())
+                            .addToBackStack(null)
+                            .commit()
+>>>>>>> Stashed changes
                     }
                 }
             }
@@ -51,8 +103,20 @@ class MainActivity : AppCompatActivity() {
                     switchToTrangChu()
                 }
 
+<<<<<<< Updated upstream
                 R.id.menuTrending -> {
                     switchToTrending()
+=======
+                    R.id.menuAudio -> {
+                        switchToAudio()
+                    }
+                    R.id.menuVideo -> {
+                        switchToVideo()
+                    }
+                    R.id.menuShare -> {
+                      switchToShare()
+                    }
+>>>>>>> Stashed changes
                 }
 
                 R.id.menuAudio -> {
@@ -120,7 +184,21 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun switchToTrangChu() {
+<<<<<<< Updated upstream
         if (curFrag == "trang_chu") return
+=======
+        if (curFrag == "home") {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_holder, TrangChuFragment.newInstance())
+                .commit()
+        } else {
+            supportFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
+                .replace(R.id.fragment_holder, TrangChuFragment.newInstance())
+                .commit()
+        }
+        curFrag = "home"
+>>>>>>> Stashed changes
 
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
@@ -159,6 +237,21 @@ class MainActivity : AppCompatActivity() {
             .addToBackStack(null)
             .commit()
         curFrag = "video"
+<<<<<<< Updated upstream
+=======
+
+    }
+
+    private fun switchToShare() {
+        if (curFrag == "share") return
+
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
+            .replace(R.id.fragment_holder, HotChannelFragment.newInstance())
+            .commit()
+        curFrag = "share"
+
+>>>>>>> Stashed changes
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

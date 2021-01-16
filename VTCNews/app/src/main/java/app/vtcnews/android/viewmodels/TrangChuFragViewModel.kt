@@ -5,6 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.vtcnews.android.model.*
+<<<<<<< Updated upstream
+=======
+import app.vtcnews.android.model.Article.Article
+import app.vtcnews.android.model.Article.ChannelPaging.ItemChannel
+import app.vtcnews.android.model.Audio.AlbumPaging
+>>>>>>> Stashed changes
 import app.vtcnews.android.network.Resource
 import app.vtcnews.android.repos.ArticleRepo
 import app.vtcnews.android.repos.MenuRepo
@@ -49,6 +55,7 @@ class TrangChuFragViewModel @ViewModelInject constructor(
                 is Resource.Success -> articleSuggestionHome = res.data
                 is Resource.Error -> error.value = res.message
             }
+
 
             var videos = listOf<Video>()
             if(videoRepo.videoList.isNotEmpty()) videos = videoRepo.videoList.take(5)

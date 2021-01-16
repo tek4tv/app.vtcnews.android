@@ -3,6 +3,7 @@
     <!-- Base application theme. -->
     <style name="Theme.VTCNews" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
+        <item name="windowActionBar">false</item>
         <item name="colorPrimary">@color/red</item>
         <item name="colorPrimaryVariant">@color/red</item>
         <item name="colorOnPrimary">@color/white</item>
@@ -17,12 +18,22 @@
 
     </style>
 
+<<<<<<< Updated upstream
     <style name="RedTabTheme" parent="Theme.VTCNews">
         <item name="android:background">@color/red</item>
         <item name="tabIconTint">@color/white</item>
         <item name="tabIndicatorColor">@color/white</item>
         <item name="tabTextColor">@color/white</item>
     </style>
+=======
+
+<!--    <style name="RedTabTheme" parent="Theme.VTCNews">-->
+<!--        <item name="android:background">@color/red</item>-->
+<!--        <item name="tabIconTint">@color/white</item>-->
+<!--        <item name="tabIndicatorColor">@color/white</item>-->
+<!--        <item name="tabTextColor">@color/white</item>-->
+<!--    </style>-->
+>>>>>>> Stashed changes
 
     <style name="ArticleTitle" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="android:textColor">@color/black</item>

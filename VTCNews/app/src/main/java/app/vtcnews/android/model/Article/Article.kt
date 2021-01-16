@@ -1,4 +1,4 @@
-package app.vtcnews.android.model
+package app.vtcnews.android.model.Article
 
 import com.squareup.moshi.Json
 

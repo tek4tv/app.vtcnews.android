@@ -4,9 +4,17 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+<<<<<<< Updated upstream
+=======
+import app.vtcnews.android.model.Article.Article
+>>>>>>> Stashed changes
 import app.vtcnews.android.model.ArticleDetail
 import app.vtcnews.android.network.Resource
 import app.vtcnews.android.repos.ArticleRepo
+<<<<<<< Updated upstream
+=======
+import app.vtcnews.android.repos.VideoRepo
+>>>>>>> Stashed changes
 import kotlinx.coroutines.launch
 
 class ArticleDetailViewModel @ViewModelInject constructor(

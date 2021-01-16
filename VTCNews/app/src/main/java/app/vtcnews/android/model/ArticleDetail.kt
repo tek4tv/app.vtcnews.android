@@ -1,5 +1,6 @@
 package app.vtcnews.android.model
 
+import app.vtcnews.android.model.Article.Article
 import com.squareup.moshi.Json
 
 data class ArticleDetail(
@@ -146,7 +147,7 @@ data class DetailData(
     val publishedDateInt: Long,
 
     @Json(name = "SEODescription")
-    val seoDescription: Any? = null,
+    val seoDescription: Any ?= null,
 
     @Json(name = "SEOTitle")
     val seoTitle: Any? = null,

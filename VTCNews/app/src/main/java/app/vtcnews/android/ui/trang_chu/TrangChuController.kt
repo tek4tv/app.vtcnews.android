@@ -1,6 +1,12 @@
 package app.vtcnews.android.ui.trang_chu
 
+<<<<<<< Updated upstream
 import app.vtcnews.android.model.Article
+=======
+import app.vtcnews.android.model.Article.Article
+import app.vtcnews.android.model.Audio.AlbumPaging
+import app.vtcnews.android.model.HotChannel
+>>>>>>> Stashed changes
 import app.vtcnews.android.model.TrangChuData
 import com.airbnb.epoxy.TypedEpoxyController
 
