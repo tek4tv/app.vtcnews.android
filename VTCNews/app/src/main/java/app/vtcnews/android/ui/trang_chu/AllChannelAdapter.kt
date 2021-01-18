@@ -1,6 +1,7 @@
 package app.vtcnews.android.ui.trang_chu
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -37,12 +38,17 @@ class AllChannelHoldel(val binding : VideoItemLayoutBinding) : RecyclerView.View
     val imgChannel = binding.ivVideo
     val titleChannel = binding.tvTitleVideo
     val tvTimeDiff = binding.tvTimeDiff
+    val icPlay = binding.icPlay
+    val itemChannel = binding.itemVideo
     fun bind(hotChannel: HotChannel, clickItemChannel : (HotChannel) -> Unit)
     {
+        icPlay.visibility = View.GONE
         Picasso.get().load(hotChannel.image169).into(imgChannel)
         titleChannel.text = hotChannel.title
         tvTimeDiff.text = hotChannel.createdDate?.let { getDateDiff(it,tvTimeDiff.resources) }
-
+        itemChannel.setOnClickListener{
+            clickItemChannel.invoke(hotChannel)
+        }
     }
 
     companion object {

@@ -4,15 +4,15 @@ import com.squareup.moshi.Json
 
 data class MenuItem(
     @Json(name = "Id")
-    var id: Int,
+    var id: Int? = null,
     @Json(name = "SEOSlug")
-    var seoSlug: String,
+    var seoSlug: String? = null,
     @Json(name = "Title")
-    var title: String,
+    var title: String? = null,
     @Json(name = "ParentId")
     var parentId: Int? = null,
     @Json(name = "OrderMobile")
-    var orderMobile: Int,
+    var orderMobile: Int? = null,
     @Json(name = "IsShowMenu")
-    var isShowMenu: Boolean
+    var isShowMenu: Boolean? = null
 )

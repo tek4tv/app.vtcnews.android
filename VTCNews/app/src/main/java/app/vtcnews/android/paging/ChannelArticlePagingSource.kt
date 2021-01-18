@@ -1,5 +1,6 @@
 package app.vtcnews.android.paging
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import app.vtcnews.android.model.HotChannel
@@ -15,7 +16,9 @@ class ChannelArticlePagingSource(val articleRepo: ArticleRepo) : PagingSource<In
                 prevKey = if (page == 1) null else page - 1,
                 nextKey = if (res.data.isEmpty()) null else page + 1
             )
-            is Resource.Error -> LoadResult.Error(Exception(res.message))
+            is Resource.Error -> {
+                LoadResult.Error(Exception(res.message))
+            }
         }
     }
 

@@ -37,8 +37,8 @@ class ListHotArticleFragment : Fragment() {
         {
             val adapter = ListHotArticleAdapter(it)
             val layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
-           binding.rvListHotArticle.adapter = adapter
-           binding.rvListHotArticle.layoutManager = layoutManager
+            binding.rvListHotArticle.adapter = adapter
+            binding.rvListHotArticle.layoutManager = layoutManager
             adapter.onClickItem = {itemChannel ->
                 ArticleDetailFragment.openWith(parentFragmentManager, itemChannel.id,itemChannel.categoryID!!)
             }
@@ -46,9 +46,11 @@ class ListHotArticleFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(id : Long) = ListHotArticleFragment().apply {
+        fun newInstance(id : Long?=null) = ListHotArticleFragment().apply {
             arguments = Bundle().apply {
-                putLong("id",id)
+                if (id != null) {
+                    putLong("id",id)
+                }
             }
         }
     }

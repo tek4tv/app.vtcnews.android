@@ -9,7 +9,8 @@
     <item
         android:id="@+id/item_nav_drawer_trending"
         android:title="@string/tin_moi" />
-    <item android:title="@string/video" />
+    <item android:title="@string/video"
+        android:id="@+id/item_nav_drawer_video"/>
     <item
         android:id="@+id/item_nav_drawer_audio"
         android:title="@string/audio" />

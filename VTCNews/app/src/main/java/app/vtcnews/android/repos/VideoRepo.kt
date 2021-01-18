@@ -1,5 +1,6 @@
 package app.vtcnews.android.repos
 
+import app.vtcnews.android.model.ArticleVideo
 import app.vtcnews.android.model.Video
 import app.vtcnews.android.model.VideoDetail
 import app.vtcnews.android.network.Resource
@@ -23,5 +24,6 @@ class VideoRepo @Inject constructor(private val videoService: VideoService) {
         videoService.getVideoDetail(id)
     }
 
-
+    suspend fun getArticleVideo(id: String) : Resource<List<ArticleVideo>> =
+        performNetworkCall { videoService.getArticleVideoById(id) }
 }

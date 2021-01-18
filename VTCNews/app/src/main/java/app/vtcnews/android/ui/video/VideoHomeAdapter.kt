@@ -8,27 +8,28 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import app.vtcnews.android.R
-import app.vtcnews.android.model.Audio.AlbumPaging
 import app.vtcnews.android.model.Video
 import app.vtcnews.android.ui.trang_chu_sub_section.getDateDiff
 import com.squareup.picasso.Picasso
 
 class VideoHomeAdapter(private val listVideo: List<Video>) :
     RecyclerView.Adapter<VideoHomeAdapter.ViewHolder>() {
-    var clickListen : (Video) -> Unit = {}
+    var clickListen: (Video) -> Unit = {}
 
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         val ivVideo = v.findViewById<ImageView>(R.id.ivVideo)
         val tvTitleVideo = v.findViewById<TextView>(R.id.tvTitleVideo)
         val tvTimeDiffVideo = v.findViewById<TextView>(R.id.tvTimeDiff)
         val tvCategoryVideo = v.findViewById<TextView>(R.id.tvCategoryVideo)
-        val tvChannel = v.findViewById<TextView>(R.id.tvChannel)
         val itemVideo = v.findViewById<LinearLayout>(R.id.itemVideo)
+        val tvChannel = v.findViewById<TextView>(R.id.tvChannel)
+
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoHomeAdapter.ViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.video_item_layout,parent,false)
+        val itemView =
+            LayoutInflater.from(parent.context).inflate(R.layout.video_item_layout, parent, false)
         return ViewHolder(itemView)
     }
 
@@ -40,7 +41,12 @@ class VideoHomeAdapter(private val listVideo: List<Video>) :
         holder.tvTitleVideo.setText(video.title)
         Picasso.get().load(video.image169_Large).fit().into(holder.ivVideo)
         holder.tvCategoryVideo.setText(video.categoryName)
-        holder.tvTimeDiffVideo.setText(getDateDiff(video.publishedDate,holder.tvTimeDiffVideo.context.resources))
+        holder.tvTimeDiffVideo.setText(
+            getDateDiff(
+                video.publishedDate,
+                holder.tvTimeDiffVideo.context.resources
+            )
+        )
         holder.itemVideo.setOnClickListener(View.OnClickListener {
             clickListen.invoke(video)
         })

@@ -4,13 +4,13 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import app.vtcnews.android.R
-import app.vtcnews.android.model.Article.Article
+import app.vtcnews.android.model.Article
 import app.vtcnews.android.ui.KotlinEpoxyHolder
 import app.vtcnews.android.ui.trang_chu_sub_section.getDateDiff
 import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
-import com.bumptech.glide.Glide
+import com.squareup.picasso.Picasso
 
 @EpoxyModelClass(layout = R.layout.hot_artice_header)
 abstract class HotArticleHeaderModel : EpoxyModelWithHolder<HotArticleViewHolder>() {
@@ -22,9 +22,8 @@ abstract class HotArticleHeaderModel : EpoxyModelWithHolder<HotArticleViewHolder
 
     override fun bind(holder: HotArticleViewHolder) {
         holder.apply {
-            Glide.with(img)
-                .load(hotArticle.image169_Large)
-                .into(img)
+
+            Picasso.get().load(hotArticle.image169_Large).into(img)
 
             txtTitle.text = hotArticle.title
 
@@ -40,7 +39,7 @@ abstract class HotArticleHeaderModel : EpoxyModelWithHolder<HotArticleViewHolder
             txtCategory.text = hotArticle.categoryName
 
             //time: 2020-12-28T09:45:00
-            txtDate.text = getDateDiff(hotArticle.publishedDate, txtDate.context.applicationContext.resources)
+            txtDate.text = getDateDiff(hotArticle.publishedDate!!, txtDate.context.applicationContext.resources)
 
             holder.root.setOnClickListener {
                 articleClickListener.invoke(hotArticle)

@@ -1,6 +1,5 @@
 package app.vtcnews.android.ui.trang_chu_sub_section
 
-import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,15 +8,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import app.vtcnews.android.R
 import app.vtcnews.android.databinding.ArticeItemBinding
-import app.vtcnews.android.model.Article.Article
-import com.bumptech.glide.Glide
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.math.abs
+import app.vtcnews.android.model.Article
+import com.squareup.picasso.Picasso
 
-class ArticleAdapter() : PagingDataAdapter<Article, ArticleHolder>(ArticleDiffCallback) {
+class ArticleAdapter : PagingDataAdapter<Article, ArticleHolder>(ArticleDiffCallback) {
+
+    var articleClickListener : (Article) -> Unit = {}
+
     override fun onBindViewHolder(holder: ArticleHolder, position: Int) {
-        holder.bind(getItem(position)!!)
+        holder.bind(getItem(position)!!, articleClickListener)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleHolder {
@@ -41,12 +40,17 @@ class ArticleHolder(private val binding: ArticeItemBinding) :
     private val txtDate = binding.txtHotArticleDate
     private val txtCategory = binding.txtHotArticleCategory
 
-    fun bind(article: Article) {
-        Glide.with(img)
-            .load(article.image169)
-            .into(img)
+    fun bind(article: Article, articleClickListener : (Article) -> Unit) {
+//        Glide.with(img)
+//            .load(article.image169)
+//            .into(img)
+        Picasso.get().load(article.image169).into(img)
 
         txtTitle.text = article.title
+
+        binding.root.setOnClickListener {
+            articleClickListener(article)
+        }
 
         when {
             article.isPhotoArticle == 1L -> {
@@ -64,7 +68,7 @@ class ArticleHolder(private val binding: ArticeItemBinding) :
 
         txtCategory.text = article.categoryName
 
-        txtDate.text = getDateDiff(article.publishedDate, txtDate.context.applicationContext.resources)
+        txtDate.text = getDateDiff(article.publishedDate!!, txtDate.context.applicationContext.resources)
     }
 
     companion object {

@@ -2,13 +2,15 @@ package app.vtcnews.android.ui.trang_chu
 
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatButton
+import androidx.constraintlayout.widget.ConstraintLayout
 import app.vtcnews.android.R
 import app.vtcnews.android.model.Video
 import app.vtcnews.android.ui.KotlinEpoxyHolder
 import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
-import com.bumptech.glide.Glide
+import com.squareup.picasso.Picasso
 
 @EpoxyModelClass(layout = R.layout.home_video_section_layout)
 abstract class VideoSectionModel : EpoxyModelWithHolder<VideoSectionHolder>() {
@@ -18,6 +20,9 @@ abstract class VideoSectionModel : EpoxyModelWithHolder<VideoSectionHolder>() {
 
     @EpoxyAttribute
     var clickListener : (Video) -> Unit = {}
+
+    @EpoxyAttribute
+    var btClickListener : () -> Unit = {}
 
     override fun bind(holder: VideoSectionHolder) {
         super.bind(holder)
@@ -39,18 +44,31 @@ abstract class VideoSectionModel : EpoxyModelWithHolder<VideoSectionHolder>() {
                 add(txtTitle3)
                 add(txtTitle4)
             }
+            val itemVideo = mutableListOf<ConstraintLayout>().apply {
+                add(itemVideoHeader)
+                add(itemVideo1)
+                add(itemVideo2)
+                add(itemVideo3)
+                add(itemVideo4)
+            }
+            itemVideo.forEachIndexed{index, constraintLayout ->
+                constraintLayout.setOnClickListener{
+                    clickListener.invoke(videoList[index])
+                }
+            }
 
             imgs.forEachIndexed { index, imageView ->
                 val thumbUrl = if(index == 0) videoList[index].image169_Large
                 else videoList[index].image169
-                Glide.with(imageView)
-                    .load(thumbUrl!!)
-                    .into(imageView)
-
-                imageView.setOnClickListener {
-                    clickListener.invoke(videoList[index])
-                }
+//                Glide.with(imageView)
+//                    .load(thumbUrl!!)
+//                    .into(imageView)
+                Picasso.get().load(thumbUrl).into(imageView)
             }
+            btXemthem.setOnClickListener{
+               btClickListener.invoke()
+            }
+
 
             txt.forEachIndexed { index, textView ->
                 textView.text = videoList[index].title
@@ -72,4 +90,12 @@ class VideoSectionHolder : KotlinEpoxyHolder()
     val txtTitle2 by bind<TextView>(R.id.txt_video_title_2)
     val txtTitle3 by bind<TextView>(R.id.txt_video_title_3)
     val txtTitle4 by bind<TextView>(R.id.txt_video_title_4)
+
+    val itemVideoHeader by bind<ConstraintLayout>(R.id.itemVideoHeader)
+    val itemVideo1 by bind<ConstraintLayout>(R.id.itemVideo1)
+    val itemVideo2 by bind<ConstraintLayout>(R.id.itemVideo2)
+    val itemVideo3 by bind<ConstraintLayout>(R.id.itemVideo3)
+    val itemVideo4 by bind<ConstraintLayout>(R.id.itemVideo4)
+
+    val btXemthem by bind<AppCompatButton>(R.id.btXemThemVideo)
 }

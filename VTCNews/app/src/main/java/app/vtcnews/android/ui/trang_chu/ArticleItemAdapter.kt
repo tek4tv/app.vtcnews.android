@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import app.vtcnews.android.R
-import app.vtcnews.android.model.Article.Article
+import app.vtcnews.android.model.Article
 import app.vtcnews.android.ui.trang_chu_sub_section.getDateDiff
 import com.squareup.picasso.Picasso
 

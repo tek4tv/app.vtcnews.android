@@ -8,10 +8,9 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import app.vtcnews.android.R
-import app.vtcnews.android.model.Article.Article
-import app.vtcnews.android.model.Article.ChannelPaging.ItemChannel
+import app.vtcnews.android.model.ItemChannel
 import app.vtcnews.android.ui.trang_chu_sub_section.getDateDiff
-import com.bumptech.glide.Glide
+import com.squareup.picasso.Picasso
 
 class ListHotArticleAdapter(val listItemChannel : List<ItemChannel>):RecyclerView.Adapter<ListHotArticleAdapter.HotArticleHolder>() {
     var onClickItem:(ItemChannel) -> Unit = {}
@@ -32,9 +31,10 @@ class ListHotArticleAdapter(val listItemChannel : List<ItemChannel>):RecyclerVie
 
     override fun onBindViewHolder(holder: HotArticleHolder, position: Int) {
         val ItemChannel = listItemChannel[position]
-        Glide.with(holder.ivArticle)
-            .load(ItemChannel.image169)
-            .into(holder.ivArticle)
+//        Glide.with(holder.ivArticle)
+//            .load(ItemChannel.image169)
+//            .into(holder.ivArticle)
+        Picasso.get().load(ItemChannel.image169).into(holder.ivArticle)
 
         holder.tvTitle.text = ItemChannel.title
 

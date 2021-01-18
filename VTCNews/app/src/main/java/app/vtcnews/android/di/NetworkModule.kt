@@ -2,6 +2,7 @@ package app.vtcnews.android.di
 
 import app.vtcnews.android.network.ArticleService
 import app.vtcnews.android.network.Audio.AllPodcastService
+import app.vtcnews.android.network.CommentService
 import app.vtcnews.android.network.MenuService
 import app.vtcnews.android.network.VideoService
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -54,5 +55,8 @@ object NetworkModule {
     fun provideAudioService(retrofit: Retrofit) : AllPodcastService =
         retrofit.create(AllPodcastService::class.java)
 
-
+    @Provides
+    @Singleton
+    fun provideComment(retrofit: Retrofit) : CommentService=
+        retrofit.create(CommentService::class.java)
 }

@@ -7,7 +7,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingSource
 import androidx.paging.cachedIn
-import app.vtcnews.android.model.Article.Article
+import app.vtcnews.android.model.Article
 import app.vtcnews.android.paging.CategoryArticlePagingSource
 import app.vtcnews.android.paging.TrendingArticlePagingSource
 import app.vtcnews.android.repos.ArticleRepo
@@ -24,7 +24,7 @@ class PagingArticleFragmentViewModel @ViewModelInject constructor(
 
     var dataSource: PagingSource<Int, Article>? = null
     val pagingData = Pager(
-        config = PagingConfig(pageSize = 20)
+        config = PagingConfig(pageSize = 30)
     ) {
         dataSource!!
     }

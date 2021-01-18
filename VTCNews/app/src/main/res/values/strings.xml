@@ -31,8 +31,6 @@
     <string name="vtc_addr">Tầng 12A, Tòa nhà 18 Tam Trinh, Hai Bà Trưng, TP.Hà Nội.</string>
     <string name="vtc_tel">024.3632.1588</string>
     <string name="vtc_email">toasoan@vtc.gov.vn</string>
-<<<<<<< Updated upstream
-=======
     <string name="share">Chia sẻ</string>
 
 
@@ -45,7 +43,4 @@
 
     //MainActivity
     <string name="nointernet">Không có kết nối Internet</string>
-    // size video player
-    <dimen name="video_height">270dp</dimen>
->>>>>>> Stashed changes
 </resources>

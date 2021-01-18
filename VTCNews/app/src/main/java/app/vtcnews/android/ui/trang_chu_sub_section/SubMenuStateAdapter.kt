@@ -15,6 +15,6 @@ class SubMenuStateAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int = menuList.size
 
     override fun createFragment(position: Int): Fragment {
-        return ArticlesFragment.newInstance(menuList[position].id)
+        return ArticlesFragment.newInstance(menuList[position].id!!)
     }
 }

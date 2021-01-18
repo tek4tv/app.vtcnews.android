@@ -1,15 +1,17 @@
 package app.vtcnews.android.viewmodels
 
+import android.provider.MediaStore
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.vtcnews.android.model.Article.Article
+import app.vtcnews.android.model.Article
 import app.vtcnews.android.model.Video
 import app.vtcnews.android.model.VideoDetail
 import app.vtcnews.android.repos.ArticleRepo
 import app.vtcnews.android.repos.VideoRepo
 import kotlinx.coroutines.launch
+import javax.annotation.Resource
 
 class VideoHomeFragViewModel @ViewModelInject constructor(
     private val videoRepo: VideoRepo,
@@ -44,7 +46,7 @@ class VideoHomeFragViewModel @ViewModelInject constructor(
     fun getVideoByCategory(page : Int, id:Long)
     {
         viewModelScope.launch {
-            when (val res:app.vtcnews.android.network.Resource<List<Article>> = articleRepo.getArticleByCategory(page,id))
+            when (val res:app.vtcnews.android.network.Resource<MutableList<Article>> = articleRepo.getArticleByCategory(page,id))
             {
                 is app.vtcnews.android.network.Resource.Success ->listVideoByCategory.value = res.data
                 is app.vtcnews.android.network.Resource.Error -> error.value = res.message

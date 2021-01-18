@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.google.android.material.card.MaterialCardView
+    <LinearLayout
+        android:id="@+id/itemVideo"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_280sdp">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/itemVideo"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:weightSum="4">
+            android:layout_height="wrap_content">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="3">
-
-<<<<<<< Updated upstream
-                <ImageView
-                    android:id="@+id/ivVideo"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@color/colorButton" />
-=======
             <ImageView
+                android:id="@+id/ivVideo"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:src="@color/colorButton"
+                app:layout_constraintBottom_toTopOf="parent"
+                app:layout_constraintDimensionRatio="H,16:9"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/icPlay"
                 android:layout_width="@dimen/_50sdp"
                 android:layout_height="@dimen/_50sdp"
                 android:src="@drawable/icroundplay"
@@ -44,65 +44,53 @@
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
->>>>>>> Stashed changes
 
-                <ImageView
-                    android:layout_width="@dimen/_50sdp"
-                    android:layout_height="@dimen/_50sdp"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/icroundplay" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </RelativeLayout>
+        <TextView
+            android:id="@+id/tvTitleVideo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:padding="@dimen/_5sdp"
+            android:text="Ngăm vẻ đẹp của trái đất qua 100GB ảnh của NASA"
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/_18sdp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/_5sdp">
 
             <TextView
-                android:id="@+id/tvTitleVideo"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.5"
-                android:ellipsize="end"
-                android:textStyle="bold"
-                android:maxLines="2"
-                android:padding="@dimen/_5sdp"
-                android:text="Ngăm vẻ đẹp của trái đất qua 100GB ảnh của NASA"
-                android:textColor="@color/colorTitle"
-                android:textSize="@dimen/_18sdp" />
+                android:id="@+id/tvTimeDiff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:text="12' trước"
+                android:textSize="@dimen/_15sdp" />
 
-            <LinearLayout
-                android:padding="@dimen/_5sdp"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.5"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:id="@+id/tvTimeDiff"
-                    android:text="12' trước"
-                    android:layout_marginRight="@dimen/_5sdp"
-                    android:textSize="@dimen/_15sdp" />
-
-                <TextView
-                    android:id="@+id/tvCategoryVideo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="Chính trị xã hội"
-                    android:textColor="@color/vtcBackground"
-                    android:textSize="@dimen/_15sdp" />
-
-            </LinearLayout>
-            <View
-                android:layout_marginRight="@dimen/_10sdp"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:background="@color/text_color_titlelistchitiet" />
-
+            <TextView
+                android:id="@+id/tvCategoryVideo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="Chính trị xã hội"
+                android:textColor="@color/vtcBackground"
+                android:textSize="@dimen/_15sdp" />
 
         </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:background="@color/text_color_titlelistchitiet" />
+    </LinearLayout>
 </layout>

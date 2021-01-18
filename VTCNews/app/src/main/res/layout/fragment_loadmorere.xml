@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/backgroundLoadmorechild"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -23,6 +23,7 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:id="@+id/itemHeaderPdChild"
                     app:cardCornerRadius="@dimen/_6sdp"
                     app:layout_constraintDimensionRatio="H, 1:1"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -67,7 +68,7 @@
             <!-- end header-->
 
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 
 </layout><!-- <LinearLayout

@@ -4,7 +4,7 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.vtcnews.android.model.Article.ChannelPaging.ItemChannel
+import app.vtcnews.android.model.ItemChannel
 import app.vtcnews.android.repos.ArticleRepo
 import kotlinx.coroutines.launch
 

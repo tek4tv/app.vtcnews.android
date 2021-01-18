@@ -5,14 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.vtcnews.android.model.*
-<<<<<<< Updated upstream
-=======
-import app.vtcnews.android.model.Article.Article
-import app.vtcnews.android.model.Article.ChannelPaging.ItemChannel
 import app.vtcnews.android.model.Audio.AlbumPaging
->>>>>>> Stashed changes
 import app.vtcnews.android.network.Resource
 import app.vtcnews.android.repos.ArticleRepo
+import app.vtcnews.android.repos.AudioRepo
 import app.vtcnews.android.repos.MenuRepo
 import app.vtcnews.android.repos.VideoRepo
 import kotlinx.coroutines.launch
@@ -20,11 +16,11 @@ import kotlinx.coroutines.launch
 class TrangChuFragViewModel @ViewModelInject constructor(
     private val menuRepo: MenuRepo,
     private val articleRepo: ArticleRepo,
-    private val videoRepo: VideoRepo
+    private val videoRepo: VideoRepo,
+    private val audioRepo : AudioRepo
 ) : ViewModel() {
     val menuList = MutableLiveData<List<MenuItem>>()
     val error = MutableLiveData<String>()
-
     val data = MutableLiveData<TrangChuData>()
 
     fun getMenuList() {
@@ -56,7 +52,6 @@ class TrangChuFragViewModel @ViewModelInject constructor(
                 is Resource.Error -> error.value = res.message
             }
 
-
             var videos = listOf<Video>()
             if(videoRepo.videoList.isNotEmpty()) videos = videoRepo.videoList.take(5)
             else
@@ -66,12 +61,22 @@ class TrangChuFragViewModel @ViewModelInject constructor(
                     is Resource.Error -> error.value = res.message
                 }
             }
+            var audioList = listOf<AlbumPaging>()
+            if(audioRepo.listAlbumPaging.isNotEmpty()) audioList = audioRepo.listAlbumPaging.take(3)
+            else
+            {
+                when (val res = audioRepo.getAlbumPaging(5)) {
+                    is Resource.Success ->audioList = res.data.take(3)
+                    is Resource.Error -> error.value = res.message
+                }
+            }
 
             data.value = TrangChuData(
                 hotChannels = hotChannels,
                 hotArticles = hotArticles,
                 articlesSuggestionsHome = articleSuggestionHome,
-                videos = videos
+                videos = videos,
+                audio = audioList
             )
         }
     }

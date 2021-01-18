@@ -2,12 +2,13 @@ package app.vtcnews.android.ui.trang_chu
 
 import android.view.View
 import app.vtcnews.android.R
-import app.vtcnews.android.model.Article.Article
+import app.vtcnews.android.model.Article
 import app.vtcnews.android.ui.trang_chu_sub_section.getDateDiff
 import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
-import com.bumptech.glide.Glide
+import com.squareup.picasso.Picasso
+import java.util.*
 
 @EpoxyModelClass(layout = R.layout.artice_item)
 abstract class ArticleModel : EpoxyModelWithHolder<HotArticleViewHolder>() {
@@ -20,9 +21,8 @@ abstract class ArticleModel : EpoxyModelWithHolder<HotArticleViewHolder>() {
     override fun bind(holder: HotArticleViewHolder) {
         holder.apply {
 
-            Glide.with(img)
-                .load(article.image169)
-                .into(img)
+
+            Picasso.get().load(article.image169).into(img)
 
             txtTitle.text = article.title
 
@@ -42,7 +42,7 @@ abstract class ArticleModel : EpoxyModelWithHolder<HotArticleViewHolder>() {
 
             txtCategory.text = article.categoryName
 
-            txtDate.text = getDateDiff(article.publishedDate, txtDate.context.applicationContext.resources)
+            txtDate.text = getDateDiff(article.publishedDate!!, txtDate.context.applicationContext.resources)
             holder.root.setOnClickListener {
                 articleClickListener.invoke(article)
             }

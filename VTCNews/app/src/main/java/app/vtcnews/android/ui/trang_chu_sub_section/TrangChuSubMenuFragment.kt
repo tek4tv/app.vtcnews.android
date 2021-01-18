@@ -23,7 +23,6 @@ class TrangChuSubMenuFragment : Fragment() {
     private lateinit var vpAdapter : SubMenuStateAdapter
     private lateinit var binding : FragmentTrangChuSubSectionBinding
     private var refreshLayout: SwipeRefreshLayout? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -37,7 +36,7 @@ class TrangChuSubMenuFragment : Fragment() {
     ): View? {
         binding = FragmentTrangChuSubSectionBinding.inflate(inflater,container,false)
         refreshLayout = activity?.findViewById(R.id.refreshlayout)
-        refreshLayout?.isEnabled = false
+        refreshLayout?.isEnabled =false
         return binding.root
     }
 
@@ -46,6 +45,15 @@ class TrangChuSubMenuFragment : Fragment() {
         viewModel.getMenuItem(parentMenuId)
         setupViewPager()
         setupObservers()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.root.post {
+            binding.root.post {
+                binding.tabMenuItem.scrollTo(0, 0)
+            }
+        }
     }
 
     private fun setupObservers()
@@ -67,11 +75,6 @@ class TrangChuSubMenuFragment : Fragment() {
         }.attach()
     }
 
-    override fun onStop() {
-        super.onStop()
-        refreshLayout?.isEnabled = true
-    }
-
     companion object {
         @JvmStatic
         fun newInstance(parentMenuId:Int) =
@@ -80,5 +83,15 @@ class TrangChuSubMenuFragment : Fragment() {
                     putInt(ARG_PARAM1, parentMenuId)
                 }
             }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        refreshLayout?.isEnabled = true
+    }
+
+    override fun onPause() {
+        super.onPause()
+        refreshLayout?.isEnabled = true
     }
 }

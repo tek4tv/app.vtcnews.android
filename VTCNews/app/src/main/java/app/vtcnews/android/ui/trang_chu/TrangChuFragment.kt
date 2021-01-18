@@ -32,6 +32,7 @@ class TrangChuFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // Inflate the layout for this fragment
         binding = FragmentTrangChuBinding.inflate(layoutInflater, container, false)
 
         return binding.root
@@ -114,6 +115,12 @@ class TrangChuFragment : Fragment() {
                 .addToBackStack(null)
                 .commit()
         }
+        controller.hotChannelHeaderClickListener ={
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_holder, AllChannelFragment.newInstance())
+                .addToBackStack(null)
+                .commit()
+        }
         controller.videoClickListener =
             {
                 val frame_player =
@@ -155,7 +162,6 @@ class TrangChuFragment : Fragment() {
             requireActivity().supportFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
                 .replace(R.id.fragment_holder, AudioHomeFragment.newInstance())
-                .addToBackStack(null)
                 .commit()
         }
 
