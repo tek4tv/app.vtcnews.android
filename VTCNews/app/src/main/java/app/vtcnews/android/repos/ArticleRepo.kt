@@ -2,6 +2,7 @@ package app.vtcnews.android.repos
 
 import app.vtcnews.android.model.Article
 import app.vtcnews.android.model.ArticleDetail
+import app.vtcnews.android.model.ChannelPaging
 import app.vtcnews.android.model.HotChannel
 import app.vtcnews.android.network.ArticleService
 import app.vtcnews.android.network.Resource
@@ -27,8 +28,17 @@ class ArticleRepo @Inject constructor(
     }
 
     suspend fun getTrendingArticles(page: Int): Resource<List<Article>> =
-       performNetworkCall { articleService.getTrendingArticles(page) }
+        performNetworkCall { articleService.getTrendingArticles(page) }
 
-    suspend fun getArticleDetail(articleId : Int) : Resource<ArticleDetail> =
+    suspend fun getArticleDetail(articleId: Int): Resource<ArticleDetail> =
         performNetworkCall { articleService.getArticleDetail(articleId) }
+
+    suspend fun getListChannel(page: Int): Resource<List<HotChannel>> = performNetworkCall {
+        articleService.getListChannel(page)
+    }
+
+    suspend fun getChannelPaging(page: Int, id: Long): Resource<ChannelPaging> =
+        performNetworkCall {
+            articleService.getIndexChannelPaging(page, id)
+        }
 }

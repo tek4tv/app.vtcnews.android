@@ -35,7 +35,35 @@
             android:src="@drawable/ic_share_24" />
     </RelativeLayout>
     <!--End Menu Header-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutVideo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/article_video"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            app:buffered_color="#ffffff"
+            app:controller_layout_id="@layout/layout_exoplayer_control_view"
+            app:fastforward_increment="5000"
+            app:layout_constraintDimensionRatio="H, 16:9"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:played_color="#ff1111"
+            app:rewind_increment="5000"
+            app:scrubber_color="#ff3333"
+            app:surface_type="texture_view"
+            app:unplayed_color="#ff888888"
+            app:use_controller="true" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.core.widget.NestedScrollView
+
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -111,26 +139,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <com.google.android.exoplayer2.ui.PlayerView
-                    android:id="@+id/article_video"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:visibility="gone"
-                    android:background="@color/black"
-                    android:scaleType="centerCrop"
-                    app:buffered_color="#ffffff"
-                    app:controller_layout_id="@layout/layout_exoplayer_control_view"
-                    app:fastforward_increment="5000"
-                    app:played_color="#ff1111"
-                    app:rewind_increment="5000"
-                    app:scrubber_color="#ff3333"
-                    app:surface_type="texture_view"
-                    app:unplayed_color="#ff888888"
-                    app:use_controller="true"
-                    app:layout_constraintDimensionRatio="H, 16:9"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/txt_article_author"

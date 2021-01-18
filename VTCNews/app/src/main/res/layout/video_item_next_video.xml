@@ -36,13 +36,17 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
+        android:maxLines="2"
+        android:ellipsize="end"
         android:id="@+id/tvTitleNext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/_8sdp"
-        android:textColor="@color/colorTitle"
         android:text="TextView"
-        android:textSize="15sp" />
+        android:textColor="@color/colorTitle"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </LinearLayout>

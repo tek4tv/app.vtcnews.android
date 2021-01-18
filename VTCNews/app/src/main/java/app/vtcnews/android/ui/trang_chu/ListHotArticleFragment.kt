@@ -9,13 +9,14 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.vtcnews.android.databinding.ListHotarticleFragmentBinding
 import app.vtcnews.android.ui.article_detail_fragment.ArticleDetailFragment
+import app.vtcnews.android.viewmodels.ChannelPagingViewModel
 import app.vtcnews.android.viewmodels.TrangChuFragViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ListHotArticleFragment : Fragment() {
     lateinit var binding: ListHotarticleFragmentBinding
-    private val viewModel: TrangChuFragViewModel by viewModels()
+    private val viewModel: ChannelPagingViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -27,24 +28,30 @@ class ListHotArticleFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getData()
+        viewModel.getChannelPaging(1,requireArguments().getLong("id"))
         setUpListHotObeser()
     }
     fun setUpListHotObeser()
     {
-        viewModel.data.observe(viewLifecycleOwner)
+        viewModel.listChannelPaging.observe(viewLifecycleOwner)
         {
-            val adapter = ListHotArticleAdapter(it.hotArticles)
+            val adapter = ListHotArticleAdapter(it)
             val layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
-           binding.rvListHotArticle.adapter = adapter
-           binding.rvListHotArticle.layoutManager = layoutManager
-            adapter.onClickItem = {
-                ArticleDetailFragment.openWith(parentFragmentManager, it.id,it.categoryID!!)
+            binding.rvListHotArticle.adapter = adapter
+            binding.rvListHotArticle.layoutManager = layoutManager
+            adapter.onClickItem = {itemChannel ->
+                ArticleDetailFragment.openWith(parentFragmentManager, itemChannel.id,itemChannel.categoryID!!)
             }
         }
     }
 
     companion object {
-        fun newInstance() = ListHotArticleFragment()
+        fun newInstance(id : Long?=null) = ListHotArticleFragment().apply {
+            arguments = Bundle().apply {
+                if (id != null) {
+                    putLong("id",id)
+                }
+            }
+        }
     }
 }

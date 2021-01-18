@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import app.vtcnews.android.R
 import app.vtcnews.android.databinding.ArticeItemBinding
 import app.vtcnews.android.model.Article
-import com.bumptech.glide.Glide
+import com.squareup.picasso.Picasso
 
 class ArticleAdapter : PagingDataAdapter<Article, ArticleHolder>(ArticleDiffCallback) {
 
@@ -41,9 +41,10 @@ class ArticleHolder(private val binding: ArticeItemBinding) :
     private val txtCategory = binding.txtHotArticleCategory
 
     fun bind(article: Article, articleClickListener : (Article) -> Unit) {
-        Glide.with(img)
-            .load(article.image169)
-            .into(img)
+//        Glide.with(img)
+//            .load(article.image169)
+//            .into(img)
+        Picasso.get().load(article.image169).into(img)
 
         txtTitle.text = article.title
 

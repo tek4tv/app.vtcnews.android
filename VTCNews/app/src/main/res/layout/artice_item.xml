@@ -27,6 +27,8 @@
 
 
     <TextView
+        android:maxLines="2"
+        android:ellipsize="end"
         android:id="@+id/txt_hot_article_title"
         style="@style/ArticleTitle"
         android:layout_width="0dp"

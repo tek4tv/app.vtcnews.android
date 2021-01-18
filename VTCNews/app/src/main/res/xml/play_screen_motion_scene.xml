@@ -13,14 +13,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
         <Constraint
-            android:id="@+id/video_view"
-            app:layout_constraintTop_toBottomOf="@+id/layoutMenu"
+            android:id="@+id/layoutMenu"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_170sdp"
+            android:layout_height="?attr/actionBarSize"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <Constraint
+            android:id="@+id/video_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutMenu"
+            app:layout_constraintBottom_toTopOf="@id/svVideo"
             />
-
+        <Constraint
+            android:id="@+id/svVideo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/video_view" />
         <Constraint
             android:id="@+id/txt_video_title_mini"
             android:layout_width="0dp"
@@ -41,23 +55,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="parent"
             app:layout_editor_absoluteY="59dp" />
-        <Constraint
-            android:id="@+id/svVideo"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/video_view" />
 
-        <Constraint
-            android:id="@+id/layoutMenu"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
-            app:layout_constraintBottom_toTopOf="@id/video_view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/player_background_view"  />
+
     </ConstraintSet>
     <ConstraintSet android:id="@+id/end">
         <Constraint
@@ -110,12 +109,11 @@
             app:layout_constraintTop_toBottomOf="@id/player_background_view" />
         <Constraint
             android:id="@+id/layoutMenu"
-            android:visibility="invisible"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            />
+            app:layout_constraintStart_toStartOf="parent" />
 
     </ConstraintSet>
 
@@ -155,6 +153,7 @@
             app:dragDirection="dragDown"
             app:touchAnchorId="@id/video_view"
             app:touchAnchorSide="top"
+            app:nestedScrollFlags=""
             motion:maxVelocity="200" />
     </Transition>
 </MotionScene>

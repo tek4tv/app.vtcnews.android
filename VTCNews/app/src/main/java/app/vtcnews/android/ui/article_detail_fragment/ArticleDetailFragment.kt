@@ -2,14 +2,17 @@ package app.vtcnews.android.ui.article_detail_fragment
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.webkit.WebSettings
-import android.webkit.WebView
-import android.widget.Toast
-import android.widget.Toolbar
+import android.widget.*
+import androidx.activity.OnBackPressedCallback
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -27,11 +30,11 @@ import app.vtcnews.android.ui.comment.CommentFragment
 import app.vtcnews.android.ui.trang_chu.ArticleItemAdapter
 import app.vtcnews.android.ui.trang_chu_sub_section.getDateDiff
 import app.vtcnews.android.viewmodels.ArticleDetailViewModel
-import com.bumptech.glide.Glide
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.util.Util
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 
 private const val ARG_PARAM1 = "param1"
@@ -39,10 +42,7 @@ private const val ARG_PARAM1 = "param1"
 @AndroidEntryPoint
 class ArticleDetailFragment : Fragment() {
     private var articleId: Int = 0
-
     private lateinit var binding: FragmentArticleDetailBinding
-    private lateinit var navBottom: BottomNavigationView
-    private lateinit var toolbar: Toolbar
     private val viewModel by viewModels<ArticleDetailViewModel>()
     private var player: SimpleExoPlayer? = null
 
@@ -52,6 +52,7 @@ class ArticleDetailFragment : Fragment() {
             articleId = it.getInt(ARG_PARAM1)
         }
         viewModel.articleId = articleId
+
     }
 
     override fun onCreateView(
@@ -60,26 +61,60 @@ class ArticleDetailFragment : Fragment() {
     ): View? {
         binding = FragmentArticleDetailBinding.inflate(inflater, container, false)
         (requireActivity() as MainActivity).supportActionBar?.hide()
-        binding.btBack.setOnClickListener {
-            binding.layoutMenu.isVisible = false
-            (requireActivity() as MainActivity).supportActionBar?.show()
-            requireActivity().supportFragmentManager.popBackStack()
-        }
-        navBottom = requireActivity().findViewById(R.id.main_bottom_nav)
-        navBottom.isVisible = false
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getArticleDetail()
-//        viewModel.getArticleByCategory(1, requireArguments().getLong("categoryId"))
+//      viewModel.getArticleByCategory(1, requireArguments().getLong("categoryId"))
         registerObservers()
         addCommentFrag()
+        buttonClick()
         binding.articleDetailRoot.isVisible = true
+        val param = binding.articleVideo.layoutParams
+        param.height = resources.getDimension(R.dimen._170sdp).toInt()
+        binding.articleVideo.layoutParams = param
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(requireActivity(), object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    val navBottom = activity?.findViewById<BottomNavigationView>(R.id.main_bottom_nav)
+                    binding.layoutMenu.isVisible = true
+                    navBottom?.isVisible = true
+                    binding.articleDetailRoot.isVisible = true
+                    binding.layoutMenu.isVisible = false
+                    if (isEnabled) {
+                        val orientation = resources.configuration.orientation
+                        requireActivity().requestedOrientation =
+                            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                                val r = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                                activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+                                r
+                            } else {
+                                isEnabled = false
+                                (requireActivity() as MainActivity).supportActionBar?.show()
+                                requireActivity().supportFragmentManager.beginTransaction()
+                                    .setCustomAnimations(
+                                        0,
+                                        R.anim.exit_to_right,
+                                        0,
+                                        R.anim.exit_to_right
+                                    )
+                                    .remove(
+                                        this@ArticleDetailFragment
+                                    )
+                                    .commit()
+                            }
+                    }
+                }
+            }
+            )
+
     }
 
-    fun addCommentFrag() {
+    private fun addCommentFrag() {
         parentFragmentManager.beginTransaction()
             .add(
                 R.id.comment_frag_holder,
@@ -88,32 +123,43 @@ class ArticleDetailFragment : Fragment() {
             .commit()
     }
 
-    override fun onStart() {
-        super.onStart()
-        if (Util.SDK_INT >= 24) {
-            initPlayer()
-        }
-    }
 
     override fun onStop() {
         super.onStop()
-        if (Util.SDK_INT >= 24) {
+        if(Util.SDK_INT >= 24) {
             releasePlayer()
         }
-        navBottom.isVisible = true
+
     }
+
+    override fun onStart() {
+        super.onStart()
+        if(Util.SDK_INT >= 24)
+        {
+        initPlayer()
+    }}
 
     override fun onResume() {
         super.onResume()
-        if (Util.SDK_INT < 24) {
-            initPlayer()
+        if(Util.SDK_INT < 24)
+        {
+        initPlayer()}
+        val btPlay = activity?.findViewById<ImageView>(R.id.bt_exo_play)
+        if (player!!.isPlaying) {
+
+            player!!.pause()
+            btPlay?.setImageResource(R.drawable.ic_baseline_play_arrow)
+
+        } else {
+            player!!.play()
+            btPlay?.setImageResource(R.drawable.ic_baseline_pause)
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+
+    override fun onDestroy() {
+        super.onDestroy()
         binding.layoutMenu.isVisible = false
-        (requireActivity() as MainActivity).supportActionBar?.show()
         if(requireActivity().supportFragmentManager.findFragmentByTag("article") != null) {
             (requireActivity() as MainActivity).supportActionBar?.hide()
         }
@@ -121,14 +167,15 @@ class ArticleDetailFragment : Fragment() {
         {
             (requireActivity() as MainActivity).supportActionBar?.show()
         }
+
     }
 
     override fun onPause() {
         super.onPause()
-        if (Util.SDK_INT < 24) {
+        if(Util.SDK_INT < 24)
+        {
             releasePlayer()
-        }
-    }
+    }}
 
 
     private fun registerObservers() {
@@ -149,8 +196,7 @@ class ArticleDetailFragment : Fragment() {
     }
 
 
-
-    fun setupRvMoreArticle(listArticle: List<Article>) {
+    private fun setupRvMoreArticle(listArticle: List<Article>) {
         val adapterMoreArticle = ArticleItemAdapter(listArticle.take(8))
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rvMoreArticle.adapter = adapterMoreArticle
@@ -166,7 +212,8 @@ class ArticleDetailFragment : Fragment() {
     private fun setupVideoList(videoList: List<ArticleVideo>) {
         viewModel.curVideo = videoList[0]
         player?.clearMediaItems()
-        videoList.forEach {
+        playVideo(videoList.first())
+        videoList.drop(1).forEach {
             val mediaItem = MediaItem.fromUri("https://media.vtc.vn${it.url}")
             player?.addMediaItem(mediaItem)
         }
@@ -229,8 +276,7 @@ class ArticleDetailFragment : Fragment() {
 
             loadVideo(videoList)
         } else {
-            Glide.with(binding.imgArticleThumb)
-                .load("https://image.vtc.vn${articleDetail.detailData.imageURL}")
+            Picasso.get().load("https://image.vtc.vn${articleDetail.detailData.imageURL}")
                 .into(binding.imgArticleThumb)
         }
 
@@ -306,6 +352,60 @@ class ArticleDetailFragment : Fragment() {
             )
         }
     }
+    private fun buttonClick()
+    {  val navBottom = activity?.findViewById<BottomNavigationView>(R.id.main_bottom_nav)
+        val btPlay = activity?.findViewById<ImageView>(R.id.bt_exo_play)
+        binding.btBack.setOnClickListener {
+            binding.layoutMenu.isVisible = false
+            (requireActivity() as MainActivity).supportActionBar?.show()
+            requireActivity().supportFragmentManager.beginTransaction()
+                .setCustomAnimations(
+                    0,
+                    R.anim.exit_to_right,
+                    0,
+                    R.anim.exit_to_right
+                )
+                .remove(
+                    this@ArticleDetailFragment
+                )
+                .commit()
+        }
+        val btFullsc = activity?.findViewById<ImageView>(R.id.bt_exo_fullscreen)
+        btFullsc?.setOnClickListener {
+            val orientation = resources.configuration.orientation
+            requireActivity().requestedOrientation =
+                if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+                    binding.layoutMenu.isVisible = true
+                    navBottom?.isVisible = true
+                    binding.articleDetailRoot.isVisible = true
+                    val param = binding.articleVideo.layoutParams
+                    param.height = resources.getDimension(R.dimen._170sdp).toInt()
+                    binding.articleVideo.layoutParams = param
+                    val r = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                    r
+                } else {
+                    activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+                    binding.articleDetailRoot.isVisible = false
+                    binding.layoutMenu.isVisible = false
+                    navBottom?.isVisible = false
+                    val param = binding.articleVideo.layoutParams
+                    param.height = ConstraintLayout.LayoutParams.MATCH_PARENT
+                    binding.articleVideo.layoutParams = param
+                    val r = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+                    r
+                }
+        }
+        btPlay!!.setOnClickListener {
+            if (player!!.isPlaying) {
+                player!!.pause()
+                btPlay.setImageResource(R.drawable.ic_baseline_play_arrow)
+            } else {
+                player!!.play()
+                btPlay.setImageResource(R.drawable.ic_baseline_pause)
+            }
+        }
+    }
 
     companion object {
         @JvmStatic
@@ -320,7 +420,7 @@ class ArticleDetailFragment : Fragment() {
         fun openWith(fragmentManager: FragmentManager, articleId: Int, categogyId: Long) {
             fragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
-                .replace(R.id.fragment_holder, newInstance(articleId, categogyId),"article")
+                .add(R.id.fragment_holder, newInstance(articleId, categogyId),"article")
                 .addToBackStack(null)
                 .commit()
         }

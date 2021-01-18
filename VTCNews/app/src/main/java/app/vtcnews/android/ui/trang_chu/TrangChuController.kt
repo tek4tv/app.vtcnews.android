@@ -10,6 +10,7 @@ import com.airbnb.epoxy.TypedEpoxyController
 class TrangChuController : TypedEpoxyController<TrangChuData>() {
     var articleClickListener: (Article) -> Unit = {}
     var hotChannelClickListener: (HotChannel) -> Unit = {}
+    var hotChannelHeaderClickListener: () -> Unit = {}
     var videoClickListener: (Video) -> Unit = {}
     var btXemThemVideoClickListener: () -> Unit = {}
 
@@ -38,6 +39,7 @@ class TrangChuController : TypedEpoxyController<TrangChuData>() {
             id("hotChannels")
             channels(Pair(data.hotChannels[0], data.hotChannels[1]))
             onClickListener(hotChannelClickListener)
+            onHeaderClick(hotChannelHeaderClickListener)
         }
 
         var firstArticles = listOf<Article>()
@@ -75,11 +77,13 @@ class TrangChuController : TypedEpoxyController<TrangChuData>() {
             }
         }
 
-        audioSection {
-            id("audioSection")
-            listAudio(data.audio)
-            clickListener(audioClickListener)
-            btClickListener(btXemThemAudioClickListener)
+        if (data.audio.isNotEmpty()) {
+            audioSection {
+                id("audioSection")
+                listAudio(data.audio)
+                clickListener(audioClickListener)
+                btClickListener(btXemThemAudioClickListener)
+            }
         }
 
         remainArticle.forEach {

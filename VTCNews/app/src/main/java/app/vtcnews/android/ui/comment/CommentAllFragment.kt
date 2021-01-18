@@ -6,26 +6,37 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import app.vtcnews.android.MainActivity
 import app.vtcnews.android.R
 import app.vtcnews.android.databinding.CommentTotalLayoutBinding
 import app.vtcnews.android.model.comment.CommentItem
 import app.vtcnews.android.viewmodels.CommentFragViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class CommentAllFragment : Fragment() {
     lateinit var binding: CommentTotalLayoutBinding
     val viewModelCM: CommentFragViewModel by viewModels()
+    lateinit var navBottom : BottomNavigationView
+    private var refreshLayout: SwipeRefreshLayout? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = CommentTotalLayoutBinding.inflate(layoutInflater, container, false)
+        (requireActivity() as MainActivity).supportActionBar?.hide()
+        navBottom = requireActivity().findViewById(R.id.main_bottom_nav)
+        navBottom.isVisible = false
+        refreshLayout = activity?.findViewById(R.id.refreshlayout)
+        refreshLayout?.isEnabled = false
         return binding.root
     }
 
@@ -33,6 +44,11 @@ class CommentAllFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModelCM.getComment(requireArguments().getLong("articleId"), 1)
         setUpObser()
+        binding.btBack.setOnClickListener{
+            refreshLayout?.isEnabled = true
+            (requireActivity() as MainActivity).supportActionBar?.show()
+            requireActivity().supportFragmentManager.popBackStack()
+        }
     }
 
     fun setUpObser() {
@@ -68,6 +84,12 @@ class CommentAllFragment : Fragment() {
                 putLong("articleId", articleId)
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        refreshLayout?.isEnabled = true
+        (requireActivity() as MainActivity).supportActionBar?.hide()
     }
 
 }

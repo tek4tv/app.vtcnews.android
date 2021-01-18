@@ -51,9 +51,16 @@ class CommentFragment : Fragment() {
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             binding.rvComment.adapter = adapter
             binding.rvComment.layoutManager = layoutManager
-
-
             binding.btShowmoreCm.isVisible = it.size > 3
+            adapter.clickListener = { commentItem ->
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
+                    .replace(
+                        R.id.fragment_holder,
+                        CommentReplyFragment.newInstance(commentItem)
+                    )
+                    .addToBackStack(null).commit()
+            }
         }
 
         viewModelCM.totalComment.observe(viewLifecycleOwner)

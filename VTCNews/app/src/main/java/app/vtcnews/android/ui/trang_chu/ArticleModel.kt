@@ -1,6 +1,5 @@
 package app.vtcnews.android.ui.trang_chu
 
-import android.content.res.Resources
 import android.view.View
 import app.vtcnews.android.R
 import app.vtcnews.android.model.Article
@@ -8,10 +7,8 @@ import app.vtcnews.android.ui.trang_chu_sub_section.getDateDiff
 import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
-import com.bumptech.glide.Glide
-import java.text.SimpleDateFormat
+import com.squareup.picasso.Picasso
 import java.util.*
-import kotlin.math.abs
 
 @EpoxyModelClass(layout = R.layout.artice_item)
 abstract class ArticleModel : EpoxyModelWithHolder<HotArticleViewHolder>() {
@@ -24,9 +21,8 @@ abstract class ArticleModel : EpoxyModelWithHolder<HotArticleViewHolder>() {
     override fun bind(holder: HotArticleViewHolder) {
         holder.apply {
 
-            Glide.with(img)
-                .load(article.image169)
-                .into(img)
+
+            Picasso.get().load(article.image169).into(img)
 
             txtTitle.text = article.title
 

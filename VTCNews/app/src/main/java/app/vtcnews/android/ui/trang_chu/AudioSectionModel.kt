@@ -1,5 +1,6 @@
 package app.vtcnews.android.ui.trang_chu
 
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
@@ -10,7 +11,7 @@ import app.vtcnews.android.ui.KotlinEpoxyHolder
 import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
-import com.bumptech.glide.Glide
+import com.squareup.picasso.Picasso
 
 @EpoxyModelClass(layout = R.layout.audio_inhome_layout)
 abstract class AudioSectionModel : EpoxyModelWithHolder<AudioSectionHodel>() {
@@ -36,15 +37,19 @@ abstract class AudioSectionModel : EpoxyModelWithHolder<AudioSectionHodel>() {
                 add(title1)
                 add(title2)
             }
+
             imgs.forEachIndexed { index, imageView ->
-                val thumbUrl = if(index == 0) listAudio[index].image360360
-                else listAudio[index].image182182
-                Glide.with(imageView)
-                    .load(thumbUrl!!)
-                    .into(imageView)
+                if(listAudio.isNotEmpty()) {
+                    val thumbUrl = if (index == 0) listAudio[index].image360360
+                    else listAudio[index].image182182
+                    Picasso.get().load(thumbUrl!!).into(imageView)
+                }
+
             }
             txt.forEachIndexed { index, textView ->
-                textView.text = listAudio[index].name
+                if(listAudio.isNotEmpty()) {
+                    textView.text = listAudio[index].name
+                }
             }
 
             btXemThemPD.setOnClickListener{

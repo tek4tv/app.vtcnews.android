@@ -17,6 +17,7 @@ import androidx.core.view.isVisible
 import app.vtcnews.android.databinding.ActivityMainBinding
 import app.vtcnews.android.ui.audio.AudioHomeFragment
 import app.vtcnews.android.ui.comment.CommentFragment
+import app.vtcnews.android.ui.trang_chu.AllChannelFragment
 import app.vtcnews.android.ui.trang_chu.TrangChuFragment
 import app.vtcnews.android.ui.trang_chu_sub_section.ArticlesFragment
 import com.example.vtclive.Video.FragmentVideoPage
@@ -26,21 +27,23 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var toggle: ActionBarDrawerToggle
-    private var curFrag = "trang_chu"
+    private var curFrag = "home"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         binding = ActivityMainBinding.inflate(layoutInflater)
+
         setContentView(binding.root)
         supportActionBar?.hide()
         setSupportActionBar(binding.toolbar)
         supportActionBar?.title = ""
+
         binding.refreshlayout.setOnRefreshListener {
             if (hasNetworkAvailable(this)) {
                 binding.tvNoInternet.visibility = View.GONE
                 when (curFrag) {
-                    "trang_chu" -> {
+                    "home" -> {
                         binding.refreshlayout.isRefreshing = false
                         switchToTrangChu()
                     }
@@ -95,7 +98,7 @@ class MainActivity : AppCompatActivity() {
                         switchToVideo()
                     }
                     R.id.menuShare -> {
-//                    switchToShare()
+//                      switchToShare()
                     }
                 }
                 true
@@ -178,17 +181,17 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun switchToTrangChu() {
-        if (curFrag == "trang chu") {
+        if (curFrag == "home") {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_holder, TrangChuFragment.newInstance())
                 .commit()
-            curFrag = "trang_chu"
+            curFrag = "home"
         } else {
             supportFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
                 .replace(R.id.fragment_holder, TrangChuFragment.newInstance())
                 .commit()
-            curFrag = "trang_chu"
+            curFrag = "home"
         }
 
     }

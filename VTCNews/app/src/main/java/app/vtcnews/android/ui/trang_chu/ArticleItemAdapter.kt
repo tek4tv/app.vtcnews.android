@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import app.vtcnews.android.R
 import app.vtcnews.android.model.Article
 import app.vtcnews.android.ui.trang_chu_sub_section.getDateDiff
-import com.bumptech.glide.Glide
 import com.squareup.picasso.Picasso
 
 class ArticleItemAdapter(private val listArticle: List<Article>) :

@@ -111,7 +111,13 @@ class TrangChuFragment : Fragment() {
 
         controller.hotChannelClickListener = {
             parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_holder, ListHotArticleFragment.newInstance())
+                .replace(R.id.fragment_holder, ListHotArticleFragment.newInstance(it.id))
+                .addToBackStack(null)
+                .commit()
+        }
+        controller.hotChannelHeaderClickListener ={
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_holder, AllChannelFragment.newInstance())
                 .addToBackStack(null)
                 .commit()
         }
@@ -156,7 +162,6 @@ class TrangChuFragment : Fragment() {
             requireActivity().supportFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
                 .replace(R.id.fragment_holder, AudioHomeFragment.newInstance())
-                .addToBackStack(null)
                 .commit()
         }
 

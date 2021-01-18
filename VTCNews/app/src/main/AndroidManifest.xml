@@ -26,7 +26,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"/>
+
+        <activity android:name=".MainActivity"
+            android:theme="@style/MainActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+
+
         <receiver android:name=".ui.audio.NotifiAudioBroadcast">
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON"/>

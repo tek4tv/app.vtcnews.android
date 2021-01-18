@@ -8,12 +8,12 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import app.vtcnews.android.R
-import app.vtcnews.android.model.Article
+import app.vtcnews.android.model.ItemChannel
 import app.vtcnews.android.ui.trang_chu_sub_section.getDateDiff
-import com.bumptech.glide.Glide
+import com.squareup.picasso.Picasso
 
-class ListHotArticleAdapter(val listArticle : List<Article>):RecyclerView.Adapter<ListHotArticleAdapter.HotArticleHolder>() {
-    var onClickItem:(Article) -> Unit = {}
+class ListHotArticleAdapter(val listItemChannel : List<ItemChannel>):RecyclerView.Adapter<ListHotArticleAdapter.HotArticleHolder>() {
+    var onClickItem:(ItemChannel) -> Unit = {}
     class HotArticleHolder(v:View) : RecyclerView.ViewHolder(v) {
         val ivArticle = v.findViewById<ImageView>(R.id.img_hot_article)
         val icType = v.findViewById<ImageView>(R.id.img_hot_article_media_type)
@@ -30,23 +30,24 @@ class ListHotArticleAdapter(val listArticle : List<Article>):RecyclerView.Adapte
     }
 
     override fun onBindViewHolder(holder: HotArticleHolder, position: Int) {
-        val article = listArticle[position]
-        Glide.with(holder.ivArticle)
-            .load(article.image169)
-            .into(holder.ivArticle)
+        val ItemChannel = listItemChannel[position]
+//        Glide.with(holder.ivArticle)
+//            .load(ItemChannel.image169)
+//            .into(holder.ivArticle)
+        Picasso.get().load(ItemChannel.image169).into(holder.ivArticle)
 
-        holder.tvTitle.text = article.title
+        holder.tvTitle.text = ItemChannel.title
 
         holder.itemArticle.setOnClickListener {
-            onClickItem.invoke(article)
+            onClickItem.invoke(ItemChannel)
         }
 
         when {
-            article.isPhotoArticle == 1L -> {
+            ItemChannel.isPhotoArticle == 1L -> {
                 holder.icType.visibility = View.VISIBLE
                 holder.icType.setImageResource(R.drawable.ic_camera_24)
             }
-            article.isVideoArticle == 1L -> {
+            ItemChannel.isVideoArticle == 1L -> {
                 holder.icType.visibility = View.VISIBLE
                 holder.icType.setImageResource(R.drawable.ic_videocam_24)
             }
@@ -55,10 +56,10 @@ class ListHotArticleAdapter(val listArticle : List<Article>):RecyclerView.Adapte
             }
         }
 
-        holder.tvCategory.text = article.categoryName
+        holder.tvCategory.text = ItemChannel.categoryName
 
-        holder.tvTimeDiff.text = getDateDiff(article.publishedDate!!, holder.tvTimeDiff.context.applicationContext.resources)
+        holder.tvTimeDiff.text = getDateDiff(ItemChannel.publishedDate!!, holder.tvTimeDiff.context.applicationContext.resources)
     }
 
-    override fun getItemCount(): Int = listArticle.size
+    override fun getItemCount(): Int = listItemChannel.size
 }
