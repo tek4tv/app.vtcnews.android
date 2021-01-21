@@ -1,17 +1,16 @@
 package app.vtcnews.android.ui.audio
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.vtcnews.android.R
 import app.vtcnews.android.databinding.FragmentLoadmorereBinding
 import app.vtcnews.android.viewmodels.AudioHomeFragViewModel
@@ -27,28 +26,9 @@ class FragmentLoadMoreChild : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-       binding = FragmentLoadmorereBinding.inflate(layoutInflater,container,false)
-        when (arguments?.getString("trangthai")) {
-            "Podcast" -> {
-                binding.backgroundLoadmorechild.setBackgroundColor(ContextCompat.getColor(requireContext(),
-                    R.color.podcast
-                ))
-
-
-            }
-            "Sách nói" -> {
-                binding.backgroundLoadmorechild.setBackgroundColor(ContextCompat.getColor(requireContext(),
-                    R.color.sachnoi
-                ))
-
-            }
-            "Âm nhạc" -> {
-                binding.backgroundLoadmorechild.setBackgroundColor(ContextCompat.getColor(requireContext(),
-                    R.color.amnhac
-                ))
-
-            }
-        }
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        binding = FragmentLoadmorereBinding.inflate(layoutInflater, container, false)
+        setUpLayout()
 
         return binding.root
     }
@@ -59,62 +39,99 @@ class FragmentLoadMoreChild : Fragment() {
         setUpObser()
 
     }
-    fun setUpObser()
-    {   val layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL,false)
+
+    fun setUpObser() {
+        val layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
         viewModel.listAlbumPaging.observe(viewLifecycleOwner)
         {
             val adapter = ItemAudioAdapter(it.drop(1))
             if (it.isNotEmpty()) {
-                binding.tvTitle.text = it[0].name
-                Picasso.get().load(it[0].image360360).into(binding.ivHeader)
-                binding.itemHeaderPdChild.setOnClickListener{view ->
-                    requireActivity().supportFragmentManager.beginTransaction()
-                        .add(
-                            R.id.fragment_holder,
-                            FragmentChiTietAudio.newInstance(it[0].id)
-                        )
-                        .addToBackStack(null).commit()
+                if (it.isNotEmpty()) {
+                    binding.tvNodata.visibility = View.GONE
+                    binding.tvTitle.text = it[0].name
+                    Picasso.get().load(it[0].image360360).into(binding.ivHeader)
+                    binding.itemHeaderPdChild.setOnClickListener { view ->
+                        requireActivity().supportFragmentManager.beginTransaction()
+                            .add(
+                                R.id.fragment_holder,
+                                FragmentChiTietAudio.newInstance(it[0].id)
+                            )
+                            .addToBackStack(null).commit()
+                    }
+                    binding.rvPcChild.adapter = adapter
+                    binding.rvPcChild.layoutManager = layoutManager
+                    adapter.clickListen = {
+                        requireActivity().supportFragmentManager.beginTransaction()
+                            .add(
+                                R.id.fragment_holder,
+                                FragmentChiTietAudio.newInstance(it.id)
+                            )
+                            .addToBackStack(null).commit()
+                    }
                 }
-                binding.rvPcChild.adapter = adapter
-                binding.rvPcChild.layoutManager = layoutManager
-                adapter.clickListen = {
-                    requireActivity().supportFragmentManager.beginTransaction()
-                        .add(
-                            R.id.fragment_holder,
-                            FragmentChiTietAudio.newInstance(it.id)
-                        )
-                        .addToBackStack(null).commit()
-                }
+            } else {
+                binding.tvNodata.visibility = View.VISIBLE
             }
         }
 
     }
 
+    fun setUpLayout() {
+        when (arguments?.getString("trangthai")) {
+            "Podcast" -> {
+                binding.backgroundLoadmorechild.setBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.podcast
+                    )
+                )
+
+
+            }
+            "Sách nói" -> {
+                binding.backgroundLoadmorechild.setBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.sachnoi
+                    )
+                )
+
+            }
+            "Âm nhạc" -> {
+                binding.backgroundLoadmorechild.setBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.amnhac
+                    )
+                )
+
+            }
+        }
+    }
+
     override fun onResume() {
         super.onResume()
-        if(requireActivity().supportFragmentManager.findFragmentByTag("player") != null)
-        {
+        if (requireActivity().supportFragmentManager.findFragmentByTag("player") != null) {
             val layout = requireActivity().findViewById<RecyclerView>(R.id.rvPcChild)
             val param = layout.layoutParams as ViewGroup.MarginLayoutParams
-            param.setMargins(0,0,0,200)
+            param.setMargins(0, 0, 0, 200)
             layout.layoutParams = param
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        if(requireActivity().supportFragmentManager.findFragmentByTag("player") != null)
-        {
+        if (requireActivity().supportFragmentManager.findFragmentByTag("player") != null) {
             val layout = requireActivity().findViewById<RecyclerView>(R.id.rvPcChild)
             val param = layout.layoutParams as ViewGroup.MarginLayoutParams
-            param.setMargins(0,0,0,0)
+            param.setMargins(0, 0, 0, 0)
             layout.layoutParams = param
         }
 
     }
 
     companion object {
-        fun newInstance(trangThai: String,id:Long) =
+        fun newInstance(trangThai: String, id: Long) =
             FragmentLoadMoreChild().apply {
                 arguments = Bundle().apply {
                     putString("trangthai", trangThai)

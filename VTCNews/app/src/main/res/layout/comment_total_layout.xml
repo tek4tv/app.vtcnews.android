@@ -5,34 +5,6 @@
     android:orientation="vertical"
     android:background="@color/white"
     >
-    <RelativeLayout
-        android:id="@+id/layoutMenu"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/vtcBackground">
-
-        <ImageButton
-            android:id="@+id/btBack"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_alignParentStart="true"
-            android:background="@null"
-            android:src="@drawable/ic_arrow_back_24" />
-
-        <ImageView
-            android:layout_width="@dimen/_90sdp"
-            android:layout_height="@dimen/_30sdp"
-            android:layout_centerInParent="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/logovtc" />
-
-        <ImageButton
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_alignParentRight="true"
-            android:background="@null"
-            android:src="@drawable/ic_share_24" />
-    </RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_marginTop="@dimen/_10sdp"

@@ -1,13 +1,14 @@
 package app.vtcnews.android.ui.trang_chu
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.observe
 import app.vtcnews.android.R
 import app.vtcnews.android.databinding.FragmentTrangChuBinding
 import app.vtcnews.android.model.TrangChuData
@@ -21,6 +22,7 @@ import com.example.vtclive.Video.FragmentVideoPage
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 
+
 @AndroidEntryPoint
 class TrangChuFragment : Fragment() {
     private lateinit var binding: FragmentTrangChuBinding
@@ -32,19 +34,25 @@ class TrangChuFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentTrangChuBinding.inflate(layoutInflater, container, false)
-
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         setupRecycleView()
         setupTab()
         viewModel.getMenuList()
         viewModel.getData()
         registerObservers()
+        binding.refreshlayoutHome.setOnRefreshListener{
+            binding.refreshlayoutHome.isRefreshing = false
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_holder, TrangChuFragment.newInstance())
+                .commit()
+        }
     }
 
     override fun onResume() {
@@ -72,7 +80,11 @@ class TrangChuFragment : Fragment() {
 
             viewModel.error.observe(viewLifecycleOwner)
             {
-                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    resources.getString(R.string.nointernet),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
             viewModel.data.observe(viewLifecycleOwner)
@@ -86,12 +98,6 @@ class TrangChuFragment : Fragment() {
     private fun setupRecycleView() {
         controller.articleClickListener = {
             if (it.isVideoArticle == 1L) {
-                val frame_player =
-                    requireActivity().findViewById<FrameLayout>(R.id.frame_player_podcast)
-                val params = frame_player.layoutParams
-                params.width = FrameLayout.LayoutParams.MATCH_PARENT
-                params.height = FrameLayout.LayoutParams.MATCH_PARENT
-                frame_player.layoutParams = params
                 requireActivity().supportFragmentManager.beginTransaction()
                     .setCustomAnimations(
                         R.anim.enter_from_right,
@@ -101,7 +107,11 @@ class TrangChuFragment : Fragment() {
                     )
                     .replace(
                         R.id.frame_player_podcast,
-                        FragmentChitietVideo.newInstance(it.title ?: "", it.id.toLong(), it.categoryID?: 0.toLong()),"fragVideo"
+                        FragmentChitietVideo.newInstance(
+                            it.title ?: "",
+                            it.id.toLong(),
+                            it.categoryID ?: 0.toLong()
+                        ), "fragVideo"
                     ).addToBackStack(null).commit()
 
             } else {
@@ -111,7 +121,7 @@ class TrangChuFragment : Fragment() {
 
         controller.hotChannelClickListener = {
             parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_holder, ListHotArticleFragment.newInstance(it.id))
+                .add(R.id.fragment_holder, ListHotArticleFragment.newInstance(it.id))
                 .addToBackStack(null)
                 .commit()
         }
@@ -123,12 +133,6 @@ class TrangChuFragment : Fragment() {
         }
         controller.videoClickListener =
             {
-                val frame_player =
-                    requireActivity().findViewById<FrameLayout>(R.id.frame_player_podcast)
-                val params = frame_player.layoutParams
-                params.width = FrameLayout.LayoutParams.MATCH_PARENT
-                params.height = FrameLayout.LayoutParams.MATCH_PARENT
-                frame_player.layoutParams = params
                 requireActivity().supportFragmentManager.beginTransaction()
                     .setCustomAnimations(
                         R.anim.enter_from_right,
@@ -138,7 +142,8 @@ class TrangChuFragment : Fragment() {
                     )
                     .replace(
                         R.id.frame_player_podcast,
-                        FragmentChitietVideo.newInstance(it.title, it.id, it.categoryID),"fragVideo"
+                        FragmentChitietVideo.newInstance(it.title, it.id, it.categoryID),
+                        "fragVideo"
                     ).addToBackStack(null).commit()
             }
         controller.btXemThemVideoClickListener =
@@ -162,10 +167,13 @@ class TrangChuFragment : Fragment() {
             requireActivity().supportFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
                 .replace(R.id.fragment_holder, AudioHomeFragment.newInstance())
+                .addToBackStack(null)
                 .commit()
         }
 
         binding.rvTrangchu.setController(controller)
+        binding.rvTrangchu.setHasFixedSize(true)
+        binding.rvTrangchu.setItemViewCacheSize(10)
     }
 
     private fun resetData() {

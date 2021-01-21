@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import app.vtcnews.android.databinding.ListHotarticleFragmentBinding
 import app.vtcnews.android.ui.article_detail_fragment.ArticleDetailFragment
 import app.vtcnews.android.viewmodels.ChannelPagingViewModel
-import app.vtcnews.android.viewmodels.TrangChuFragViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,28 +27,32 @@ class ListHotArticleFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getChannelPaging(1,requireArguments().getLong("id"))
+        viewModel.getChannelPaging(1, requireArguments().getLong("id"))
         setUpListHotObeser()
     }
-    fun setUpListHotObeser()
-    {
+
+    fun setUpListHotObeser() {
         viewModel.listChannelPaging.observe(viewLifecycleOwner)
         {
             val adapter = ListHotArticleAdapter(it)
-            val layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
+            val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             binding.rvListHotArticle.adapter = adapter
             binding.rvListHotArticle.layoutManager = layoutManager
-            adapter.onClickItem = {itemChannel ->
-                ArticleDetailFragment.openWith(parentFragmentManager, itemChannel.id,itemChannel.categoryID!!)
+            adapter.onClickItem = { itemChannel ->
+                ArticleDetailFragment.openWith(
+                    parentFragmentManager,
+                    itemChannel.id,
+                    itemChannel.categoryID!!
+                )
             }
         }
     }
 
     companion object {
-        fun newInstance(id : Long?=null) = ListHotArticleFragment().apply {
+        fun newInstance(id: Long? = null) = ListHotArticleFragment().apply {
             arguments = Bundle().apply {
                 if (id != null) {
-                    putLong("id",id)
+                    putLong("id", id)
                 }
             }
         }

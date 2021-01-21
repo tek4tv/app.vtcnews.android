@@ -5,36 +5,14 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical">
-    <!--Menu Header-->
-    <RelativeLayout
-        android:id="@+id/layoutMenu"
+
+    <ProgressBar
+        android:id="@+id/pb"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/vtcBackground">
+        android:layout_height="@dimen/_50sdp"
+        android:theme="@style/progressBarBlue"
+      />
 
-        <ImageButton
-            android:id="@+id/btBack"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_alignParentStart="true"
-            android:background="@null"
-            android:src="@drawable/ic_arrow_back_24" />
-
-        <ImageView
-            android:layout_width="@dimen/_90sdp"
-            android:layout_height="@dimen/_30sdp"
-            android:layout_centerInParent="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/logovtc" />
-
-        <ImageButton
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_alignParentRight="true"
-            android:background="@null"
-            android:src="@drawable/ic_share_24" />
-    </RelativeLayout>
-    <!--End Menu Header-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutVideo"
         android:layout_width="match_parent"
@@ -42,6 +20,7 @@
 
         <com.google.android.exoplayer2.ui.PlayerView
             android:id="@+id/article_video"
+            app:show_buffering="when_playing"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/black"
@@ -63,7 +42,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.core.widget.NestedScrollView
-
+        android:id="@+id/svContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -85,10 +64,11 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
                     android:textColor="@color/black"
-                    android:textSize="30sp"
+                    android:textSize="@dimen/_25sdp"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/img_article_thumb" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/txt_date"
@@ -127,17 +107,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txt_description" />
-
-                <ImageView
-                    android:id="@+id/img_article_thumb"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:scaleType="fitXY"
-                    app:layout_constraintDimensionRatio="H, 16:9"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
 
                 <TextView

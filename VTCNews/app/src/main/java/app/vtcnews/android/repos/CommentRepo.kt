@@ -1,6 +1,5 @@
 package app.vtcnews.android.repos
 
-import app.vtcnews.android.model.Audio.AlbumPaging
 import app.vtcnews.android.model.comment.Comment
 import app.vtcnews.android.network.CommentService
 import app.vtcnews.android.network.Resource
@@ -15,4 +14,6 @@ class CommentRepo @Inject constructor(
     suspend fun getComment(id:Long,page:Int): Resource<Comment> = performNetworkCall {
         commentService.getComment(id,page)
     }
+    suspend fun postComment(username:String,email:String,articleId : String,idCm:String,value:String):Resource<Long>
+    = performNetworkCall { commentService.postCommentQuery(username,email,articleId,idCm ,value) }
 }

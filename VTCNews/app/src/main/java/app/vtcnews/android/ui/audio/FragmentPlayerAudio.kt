@@ -12,6 +12,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.media.session.MediaSessionCompat
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +29,9 @@ import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.lang.NullPointerException
 import javax.inject.Inject
+import kotlin.math.log
 
 @AndroidEntryPoint
 class FragmentPlayerAudio : Fragment() {
@@ -46,7 +49,11 @@ class FragmentPlayerAudio : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentPlayerAudioBinding.inflate(layoutInflater, container, false)
-
+        val fragment = requireActivity().supportFragmentManager.findFragmentByTag("fragVideo")
+        if(fragment != null)
+        {
+            requireActivity().supportFragmentManager.beginTransaction().remove(fragment).commit()
+        }
 
         return binding.root
     }
@@ -64,7 +71,7 @@ class FragmentPlayerAudio : Fragment() {
         mediaPlayer.start()
         listPodcast = audioRepo.listAlbumDetail
         buttonClick()
-//        changeLayoutPDHome()
+        changeLayoutPDHome()
 
         val listPodcast = audioRepo.listAlbumDetail
         currntPos = requireArguments().getInt("curent")
@@ -76,7 +83,7 @@ class FragmentPlayerAudio : Fragment() {
         override fun onReceive(context: Context, intent: Intent) {
             listPodcast = audioRepo.listAlbumDetail
             try {
-                when (intent?.getStringExtra("actionname")) {
+                when (intent.getStringExtra("actionname")) {
                     "actionpre" -> {
                         mediaPlayer.release()
                         if (currntPos <= 0) {
@@ -224,6 +231,10 @@ class FragmentPlayerAudio : Fragment() {
                     .setMediaSession(mediaSessionCompat.sessionToken)
             ).setPriority(NotificationManager.IMPORTANCE_DEFAULT)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            mbuild.setDefaults(0)
+//            mbuild.setDefaults(Notification.DEFAULT_LIGHTS or Notification.DEFAULT_SOUND)
+            mbuild.setVibrate(longArrayOf(0))
+
             notificationManager.notify(1, mbuild.build())
         }
 
@@ -233,19 +244,28 @@ class FragmentPlayerAudio : Fragment() {
     fun createChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel =
-                NotificationChannel("1", "PC Player", NotificationManager.IMPORTANCE_DEFAULT)
+                NotificationChannel("1", "PC Player", NotificationManager.IMPORTANCE_LOW
+                )
+            channel.enableVibration(false)
             notificationManager =
                 requireActivity().getSystemService(NotificationManager::class.java)
+//            channel.enableVibration(false)
             notificationManager.createNotificationChannel(channel)
         }
     }
 
 
     fun changeLayoutPDHome() {
-        val btLoadmore = requireActivity().findViewById<AppCompatButton>(R.id.btLoadMore)
-        val param = btLoadmore.layoutParams as ViewGroup.MarginLayoutParams
-        param.setMargins(0, 0, 0, 200)
-        btLoadmore.layoutParams = param
+        try {
+            val btLoadmore = activity?.findViewById<AppCompatButton>(R.id.btLoadMore)
+            val param = btLoadmore?.layoutParams as ViewGroup.MarginLayoutParams
+            param.setMargins(0, 0, 0, 200)
+            btLoadmore.layoutParams = param
+        }
+        catch (e:NullPointerException)
+        {
+            Log.e("audioButtonMargin", "Err :" + e.message  )
+        }
     }
 
     fun buttonClick() {
@@ -351,10 +371,16 @@ class FragmentPlayerAudio : Fragment() {
         requireActivity().supportFragmentManager.beginTransaction()
             .setCustomAnimations(0, R.anim.exit_to_right, 0, R.anim.exit_to_right)
             .remove(this@FragmentPlayerAudio).commit()
-//        val backgroundPC = requireActivity().findViewById<AppCompatButton>(R.id.btLoadMore)
-//        val param = backgroundPC.layoutParams as ViewGroup.MarginLayoutParams
-//        param.setMargins(0, 0, 0, 50)
-//        backgroundPC.layoutParams = param
+        try {
+            val backgroundPC = activity?.findViewById<AppCompatButton>(R.id.btLoadMore)
+            val param = backgroundPC?.layoutParams as ViewGroup.MarginLayoutParams
+            param.setMargins(0, 0, 0, 50)
+            backgroundPC.layoutParams = param
+        }
+        catch (e : NullPointerException)
+        {
+            Log.e("audioPdNull", "IsNull:" + e.message)
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             notificationManager.cancelAll()
         }

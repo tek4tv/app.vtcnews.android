@@ -1,17 +1,14 @@
 package com.example.vtclive.Video
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import androidx.core.view.isVisible
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.vtcnews.android.R
 import app.vtcnews.android.databinding.LayoutVideoPageBinding
 import app.vtcnews.android.ui.video.FragmentChitietVideo
@@ -30,7 +27,7 @@ class FragmentVideoPage : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = LayoutVideoPageBinding.inflate(layoutInflater, container, false)
-
+//        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         return binding.root
     }
 
@@ -38,6 +35,12 @@ class FragmentVideoPage : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getVideoHome()
         dataObserVideo()
+        binding.refreshlayoutVideo.setOnRefreshListener{
+            binding.refreshlayoutVideo.isRefreshing = false
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_holder, FragmentVideoPage.newInstance())
+                .commit()
+        }
     }
 
     fun dataObserVideo() {
@@ -48,12 +51,7 @@ class FragmentVideoPage : Fragment() {
             binding.rvVideoHome.adapter = adapter
             binding.rvVideoHome.layoutManager = layoutManager
             adapter.clickListen = { video ->
-                var frame_player =
-                    requireActivity().findViewById<FrameLayout>(R.id.frame_player_podcast)
-                var params = frame_player.layoutParams
-                params.width = FrameLayout.LayoutParams.MATCH_PARENT
-                params.height = FrameLayout.LayoutParams.MATCH_PARENT
-                frame_player.layoutParams = params
+
                 if(requireActivity().supportFragmentManager.findFragmentByTag("fragVideo") != null)
                 {
                     requireActivity().supportFragmentManager.popBackStack()
@@ -70,6 +68,10 @@ class FragmentVideoPage : Fragment() {
                         FragmentChitietVideo.newInstance(video.title, video.id, video.categoryID),"fragVideo"
                     ).addToBackStack(null).commit()
             }
+        }
+        viewModel.error.observe(viewLifecycleOwner)
+        {
+            Toast.makeText(requireContext(), resources.getString(R.string.nointernet), Toast.LENGTH_SHORT).show()
         }
     }
 

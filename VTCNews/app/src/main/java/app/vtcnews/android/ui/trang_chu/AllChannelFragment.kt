@@ -36,7 +36,6 @@ class AllChannelFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val layout = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
-
         binding.rvVideoHome.layoutManager = layout
         binding.rvVideoHome.adapter = pagingChannelAdapter
         pagingChannelAdapter.clickItemChannel = {

@@ -5,35 +5,35 @@ import java.io.Serializable
 
 data class Comment (
     @Json(name = "CurrentPage")
-    val currentPage: Int,
+    val currentPage: Int? = null,
 
     @Json(name = "PageSize")
-    val pageSize: Int,
+    val pageSize: Int? = null,
 
     @Json(name = "TotalRecord")
-    val totalRecord: Int,
+    val totalRecord: Int? = null,
 
     @Json(name = "TotalAllRecord")
-    val totalAllRecord: Int,
+    val totalAllRecord: Int? = null,
 
     @Json(name = "TotalPage")
-    val totalPage: Int,
+    val totalPage: Int? = null,
 
     @Json(name = "PageNumber")
-    val pageNumber: Int,
+    val pageNumber: Int? = null,
 
     @Json(name = "Items")
     val items: List<CommentItem>
 )
 data class CommentItem(
     @Json(name = "Id")
-    val id: Long,
+    var id: Long,
 
     @Json(name = "CustomerName")
-    val customerName: String,
+    val customerName: String? = null,
 
     @Json(name = "Content")
-    val content: String,
+    val content: String? = null,
 
     @Json(name = "CreatedDate")
     val createdDate: String,
@@ -42,13 +42,13 @@ data class CommentItem(
     val createdDateFormatText: Any? = null,
 
     @Json(name = "Avatar")
-    val avatar: String,
+    val avatar: String? = null,
 
     @Json(name = "ParentId")
     val parentID: Int,
 
     @Json(name = "AccountId")
-    val accountID: Int,
+    val accountID: Int? = null,
 
     @Json(name = "CountChild")
     val countChild: Int,

@@ -8,17 +8,20 @@
         android:title="@string/trang_chu" />
     <item
         android:id="@+id/item_nav_drawer_trending"
+        android:icon="@drawable/icnews"
         android:title="@string/tin_moi" />
-    <item android:title="@string/video"
-        android:id="@+id/item_nav_drawer_video"/>
+    <item
+        android:id="@+id/item_nav_drawer_video"
+        android:icon="@drawable/ic_baseline_videocam_24"
+        android:title="@string/video" />
     <item
         android:id="@+id/item_nav_drawer_audio"
+        android:icon="@drawable/ic_baseline_mic_24"
         android:title="@string/audio" />
 
-    <group
-        android:id="@+id/nav_drawer_footer">
+    <group android:id="@+id/nav_drawer_footer">
         <item
             android:id="@+id/footer"
-            app:actionLayout="@layout/nav_drawer_footer"/>
+            app:actionLayout="@layout/nav_drawer_footer" />
     </group>
 </menu>

@@ -11,11 +11,12 @@
     <application
         android:name=".BaseApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/icapp"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.VTCNews"
+        android:largeHeap="true"
         android:usesCleartextTraffic="true">
         <activity
             android:name=".SplashScreen"
@@ -29,9 +30,8 @@
 
         <activity android:name=".MainActivity"
             android:theme="@style/MainActivity"
-            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
             android:configChanges="keyboardHidden|orientation|screenSize"/>
-
 
         <receiver android:name=".ui.audio.NotifiAudioBroadcast">
             <intent-filter>

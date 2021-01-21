@@ -1,18 +1,26 @@
 package app.vtcnews.android.ui.audio
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
-import androidx.viewpager2.widget.ViewPager2
 import app.vtcnews.android.R
-import app.vtcnews.android.databinding.ActivityAudioHomeBinding
 import app.vtcnews.android.databinding.ActivityLoadmoreBinding
+import app.vtcnews.android.ui.share.ShareFragment
+import app.vtcnews.android.ui.trang_chu.TrangChuFragment
+import app.vtcnews.android.ui.trang_chu_sub_section.ArticlesFragment
 import app.vtcnews.android.viewmodels.AudioHomeFragViewModel
-import com.google.android.material.tabs.TabLayout
+import com.example.vtclive.Video.FragmentVideoPage
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,6 +34,8 @@ class FragmentLoadMoreAudio : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = ActivityLoadmoreBinding.inflate(layoutInflater, container, false)
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
         return binding.root
     }
 
@@ -66,5 +76,9 @@ class FragmentLoadMoreAudio : Fragment() {
                 }
             }
     }
+
+
+
+
 
 }

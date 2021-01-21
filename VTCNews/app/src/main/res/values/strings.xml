@@ -42,5 +42,15 @@
     <string name="comment">Bình luận</string>
 
     //MainActivity
-    <string name="nointernet">Không có kết nối Internet</string>
+    <string name="nointernet">Không lấy được dữ liệu</string>
+    <string name="noData">Dữ liệu đang được cập nhật</string>
+    <string name="noOption">Chức năng đang được cập nhật</string>
+
+    //comment
+
+    <string name="commentDialog">Gửi bình luận</string>
+    <string name="btcanclecomment">Hủy</string>
+    <string name="btsendcomment">Gửi</string>
+    <string name="txt_send_succes">Gửi bình luận thành công</string>
+    <string name="txt_wait_cm">Mời bạn  quay lại bài viết xem bình luận sau ít phút</string>
 </resources>

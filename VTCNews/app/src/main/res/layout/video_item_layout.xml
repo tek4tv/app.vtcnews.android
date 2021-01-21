@@ -52,7 +52,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:padding="@dimen/_5sdp"
+            android:paddingLeft="@dimen/_10sdp"
+            android:paddingRight="@dimen/_10sdp"
+            android:paddingTop="@dimen/_5sdp"
             android:text="Ngăm vẻ đẹp của trái đất qua 100GB ảnh của NASA"
             android:textColor="@color/colorTitle"
             android:textSize="@dimen/_18sdp"
@@ -62,7 +64,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="@dimen/_5sdp">
+            android:paddingBottom="@dimen/_10sdp"
+            android:paddingLeft="@dimen/_10sdp"
+            android:paddingRight="@dimen/_10sdp"
+            android:paddingTop="@dimen/_5sdp">
 
             <TextView
                 android:id="@+id/tvTimeDiff"
@@ -71,7 +76,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="@dimen/_5sdp"
                 android:text="12' trước"
-                android:textSize="@dimen/_15sdp" />
+                android:textSize="@dimen/_12sdp" />
 
             <TextView
                 android:id="@+id/tvCategoryVideo"
@@ -80,7 +85,7 @@
                 android:layout_gravity="center_vertical"
                 android:text="Chính trị xã hội"
                 android:textColor="@color/vtcBackground"
-                android:textSize="@dimen/_15sdp" />
+                android:textSize="@dimen/_12sdp" />
 
         </LinearLayout>
 

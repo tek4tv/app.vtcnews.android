@@ -14,8 +14,19 @@
         android:layout_height="wrap_content"
         app:tabMode="scrollable"
         app:tabGravity="center"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:text="@string/noData"
+        android:id="@+id/tvNodata"
+        android:visibility="invisible"
+        android:textSize="@dimen/_15sdp"
+        android:textColor="@color/vtcBackground"
+        android:layout_margin="@dimen/_10sdp"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"/>
 
     <androidx.viewpager2.widget.ViewPager2
+        android:layout_marginTop="@dimen/_10sdp"
         android:id="@+id/vp_sub_section_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.vtcnews.android.R
@@ -12,6 +13,7 @@ import app.vtcnews.android.databinding.FragmentTrangChuSubSectionBinding
 import app.vtcnews.android.viewmodels.TrangChuSubMenuViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import java.lang.NullPointerException
 
 private const val ARG_PARAM1 = "param1"
 
@@ -22,7 +24,6 @@ class TrangChuSubMenuFragment : Fragment() {
     private val viewModel by viewModels<TrangChuSubMenuViewModel>()
     private lateinit var vpAdapter : SubMenuStateAdapter
     private lateinit var binding : FragmentTrangChuSubSectionBinding
-    private var refreshLayout: SwipeRefreshLayout? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -35,8 +36,6 @@ class TrangChuSubMenuFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentTrangChuSubSectionBinding.inflate(inflater,container,false)
-        refreshLayout = activity?.findViewById(R.id.refreshlayout)
-        refreshLayout?.isEnabled =false
         return binding.root
     }
 
@@ -45,6 +44,7 @@ class TrangChuSubMenuFragment : Fragment() {
         viewModel.getMenuItem(parentMenuId)
         setupViewPager()
         setupObservers()
+
     }
 
     override fun onResume() {
@@ -60,7 +60,14 @@ class TrangChuSubMenuFragment : Fragment() {
     {
         viewModel.menuItem.observe(viewLifecycleOwner)
         {
-            vpAdapter.menuList = it
+            if(it.isNotEmpty()) {
+                binding.tvNodata.isVisible = false
+                vpAdapter.menuList = it
+            }
+            else
+            {
+                binding.tvNodata.isVisible = true
+            }
         }
     }
 
@@ -85,13 +92,4 @@ class TrangChuSubMenuFragment : Fragment() {
             }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        refreshLayout?.isEnabled = true
-    }
-
-    override fun onPause() {
-        super.onPause()
-        refreshLayout?.isEnabled = true
-    }
 }

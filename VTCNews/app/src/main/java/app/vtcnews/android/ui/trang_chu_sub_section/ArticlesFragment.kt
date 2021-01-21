@@ -1,17 +1,18 @@
 package app.vtcnews.android.ui.trang_chu_sub_section
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import app.vtcnews.android.MainActivity
 import app.vtcnews.android.R
 import app.vtcnews.android.databinding.FragmentArticlesBinding
 import app.vtcnews.android.ui.article_detail_fragment.ArticleDetailFragment
+import app.vtcnews.android.ui.trang_chu.TrangChuFragment
 import app.vtcnews.android.ui.video.FragmentChitietVideo
 import app.vtcnews.android.viewmodels.PagingArticleFragmentViewModel
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -43,21 +44,18 @@ class ArticlesFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentArticlesBinding.inflate(inflater, container, false)
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.rvArticlesList.adapter = pagingAdapter
+        binding.rvArticlesList.setHasFixedSize(true)
+        binding.rvArticlesList.setItemViewCacheSize(15)
         pagingAdapter.articleClickListener = {
             val fragmentManager = requireActivity().supportFragmentManager
             if (it.isVideoArticle == 1L) {
-                val frame_player =
-                    requireActivity().findViewById<FrameLayout>(R.id.frame_player_podcast)
-                val params = frame_player.layoutParams
-                params.width = FrameLayout.LayoutParams.MATCH_PARENT
-                params.height = FrameLayout.LayoutParams.MATCH_PARENT
-                frame_player.layoutParams = params
                 val player = SimpleExoPlayer.Builder(requireContext()).build()
                 player.release()
                 fragmentManager.beginTransaction()
@@ -67,22 +65,40 @@ class ArticlesFragment : Fragment() {
                             it.title ?: "",
                             it.id.toLong(),
                             it.categoryID!!.toLong()
-                        ),"fragVideo"
+                        ), "fragVideo"
                     )
                     .addToBackStack(null)
                     .commit()
             } else if (it.isVideoArticle == 0L) {
                 ArticleDetailFragment.openWith(fragmentManager, it.id, it.categoryID!!)
-            } else {
-                //
             }
         }
         setupObservers()
+
+        binding.refreshlayoutArticle.setOnRefreshListener {
+            binding.refreshlayoutArticle.isRefreshing = false
+            if (requireActivity().supportFragmentManager.findFragmentByTag("trending") != null) {
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_holder, ArticlesFragment.newInstance(-1))
+                    .commit()
+            }
+            else
+            {
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_holder, TrangChuFragment.newInstance())
+                    .commit()
+                val toolbar = requireActivity().findViewById<Toolbar>(R.id.toolbar)
+                requireActivity().supportFragmentManager.popBackStack()
+                toolbar.setNavigationIcon(R.drawable.ic_baseline_hambug)
+            }
+        }
+
     }
 
     private fun setupObservers() {
         lifecycleScope.launch {
             viewModel.pagingData.collectLatest {
+                binding.tvNodata.visibility = View.GONE
                 pagingAdapter.submitData(it)
             }
         }

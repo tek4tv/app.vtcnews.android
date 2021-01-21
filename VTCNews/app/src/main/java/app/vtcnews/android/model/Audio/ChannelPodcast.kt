@@ -16,8 +16,8 @@ data class ChannelPodcast(
     val keyword: Any? = null,
 
     @Json(name = "Podcast")
-    val podcast: Long,
+    val podcast: Long? = null,
 
     @Json(name = "Slug")
-    val slug: String
+    val slug: String? = null
 )

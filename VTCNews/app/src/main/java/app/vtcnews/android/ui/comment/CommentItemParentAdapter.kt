@@ -52,6 +52,10 @@ class CommentItemParentAdapter(val listCM: List<CommentItem>) :
         holder.isHaveChild.setOnClickListener {
             clickListener.invoke(commentItem)
         }
+        holder.tvReply.setOnClickListener{
+            clickListener.invoke(commentItem)
+
+        }
         if(commentItem.countChild > 0)
         {
             holder.tvCountChild.text = ((commentItem.countChild ).toString())

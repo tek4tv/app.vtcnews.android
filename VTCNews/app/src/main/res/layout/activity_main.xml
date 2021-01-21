@@ -2,10 +2,10 @@
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/refreshlayout"
-
+    android:id="@+id/mainActivityLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <androidx.drawerlayout.widget.DrawerLayout
@@ -28,18 +28,8 @@
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" >
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                <ImageView
-                    android:layout_centerInParent="true"
-                    android:layout_width="@dimen/_90sdp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/logovtc" />
-                </RelativeLayout>
-            </androidx.appcompat.widget.Toolbar>
+                app:layout_constraintTop_toTopOf="parent"
+                app:logo="@drawable/logovtc"></androidx.appcompat.widget.Toolbar>
 
             <FrameLayout
                 android:id="@+id/fragment_holder"
@@ -49,24 +39,13 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="invisible"
-                    android:id="@+id/tvNoInternet"
-                    android:layout_gravity="center"
-                    android:textColor="@color/vtcBackground"
-                    android:textSize="@dimen/_15sdp"
-                    android:text="@string/nointernet"/>
-
-            </FrameLayout>
+                app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/main_bottom_nav"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="@dimen/_40sdp"
                 app:itemBackground="@drawable/bnv_item_background"
                 app:itemIconTint="@color/bnv_tab_item"
                 app:itemTextColor="@color/bnv_tab_item"
@@ -81,11 +60,23 @@
 
             <FrameLayout
                 android:id="@+id/frame_player_podcast"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/_50sdp"
-                app:layout_constraintBottom_toTopOf="@id/main_bottom_nav"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/main_bottom_nav"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+            <FrameLayout
+                android:id="@+id/frame_player_audio"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_50sdp"
+                app:layout_constraintBottom_toTopOf="@+id/main_bottom_nav"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

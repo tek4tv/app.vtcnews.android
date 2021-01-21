@@ -1,23 +1,25 @@
 package app.vtcnews.android
 
 import android.content.Context
+import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
 import android.view.Menu
-import android.view.View
+import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.GravityCompat
 import androidx.core.view.get
-import androidx.core.view.isVisible
+import androidx.drawerlayout.widget.DrawerLayout
 import app.vtcnews.android.databinding.ActivityMainBinding
+import app.vtcnews.android.ui.article_detail_fragment.PlayerScreenMotionLayout
 import app.vtcnews.android.ui.audio.AudioHomeFragment
-import app.vtcnews.android.ui.comment.CommentFragment
-import app.vtcnews.android.ui.trang_chu.AllChannelFragment
+import app.vtcnews.android.ui.share.ShareFragment
 import app.vtcnews.android.ui.trang_chu.TrangChuFragment
 import app.vtcnews.android.ui.trang_chu_sub_section.ArticlesFragment
 import com.example.vtclive.Video.FragmentVideoPage
@@ -33,96 +35,146 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         binding = ActivityMainBinding.inflate(layoutInflater)
-
         setContentView(binding.root)
-        supportActionBar?.hide()
         setSupportActionBar(binding.toolbar)
-        supportActionBar?.title = ""
+        binding.mainActivityLayout.isEnabled = false
 
-        binding.refreshlayout.setOnRefreshListener {
+
             if (hasNetworkAvailable(this)) {
-                binding.tvNoInternet.visibility = View.GONE
-                when (curFrag) {
-                    "home" -> {
-                        binding.refreshlayout.isRefreshing = false
-                        switchToTrangChu()
+                supportFragmentManager.beginTransaction()
+                    .add(R.id.fragment_holder, TrangChuFragment.newInstance())
+                    .commit()
+                binding.mainBottomNav.setOnNavigationItemSelectedListener {
+                    when (it.itemId) {
+                        R.id.menuTrangChu -> {
+                            switchToTrangChu()
+                        }
+
+                        R.id.menuTrending -> {
+                            switchToTrending()
+                        }
+
+                        R.id.menuAudio -> {
+                            switchToAudio()
+                        }
+                        R.id.menuVideo -> {
+                            switchToVideo()
+                        }
+                        R.id.menuShare -> {
+                            switchToShare()
+                        }
                     }
-                    "trending" -> {
-                        binding.refreshlayout.isRefreshing = false
-                        supportFragmentManager.beginTransaction()
-                            .replace(R.id.fragment_holder, ArticlesFragment.newInstance(-1))
-                            .addToBackStack(null)
-                            .commit()
+                    val fragment = supportFragmentManager.findFragmentByTag("fragVideo")
+                    if (fragment != null) {
+                        try {
+                            val motionLaout = findViewById<PlayerScreenMotionLayout>(R.id.root_layout)
+                            motionLaout.transitionToEnd()
+                        }
+                        catch (e: NullPointerException)
+                        {}
                     }
-                    "audio" -> {
-                        binding.refreshlayout.isRefreshing = false
-                        supportFragmentManager.beginTransaction()
-                            .replace(R.id.fragment_holder, AudioHomeFragment.newInstance())
-                            .addToBackStack(null)
-                            .commit()
+                    if(supportFragmentManager.backStackEntryCount > 0)
+                    {
+                        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+                        binding.toolbar.setNavigationIcon(R.drawable.ic_baseline_hambug)
+                        binding.toolbar.setNavigationOnClickListener {
+                            setupNavDrawer()
+                        }
                     }
-                    "video" -> {
-                        binding.refreshlayout.isRefreshing = false
-                        supportFragmentManager.beginTransaction()
-                            .replace(R.id.fragment_holder, FragmentVideoPage.newInstance())
-                            .addToBackStack(null)
-                            .commit()
-                    }
-                    //"share" -> switchTo
+                    true
                 }
             } else {
-                binding.refreshlayout.isRefreshing = false
-            }
-        }
+                Toast.makeText(this, "Không có kết nối Internet", Toast.LENGTH_SHORT).show()
+                binding.mainActivityLayout.isEnabled = true
+                binding.mainActivityLayout.setOnRefreshListener {
+                    binding.mainActivityLayout.isRefreshing = false
+                    if (hasNetworkAvailable(this)) {
+                        supportFragmentManager.beginTransaction()
+                            .add(R.id.fragment_holder, TrangChuFragment.newInstance())
+                            .commit()
+                        binding.mainActivityLayout.isEnabled = false
+                        binding.mainBottomNav.setOnNavigationItemSelectedListener {
+                            when (it.itemId) {
+                                R.id.menuTrangChu -> {
+                                    switchToTrangChu()
+                                }
 
-        if (hasNetworkAvailable(this)) {
-            binding.tvNoInternet.visibility = View.GONE
-            supportFragmentManager.beginTransaction()
-                .add(R.id.fragment_holder, TrangChuFragment.newInstance())
-                .commit()
+                                R.id.menuTrending -> {
+                                    switchToTrending()
+                                }
 
-            binding.mainBottomNav.setOnNavigationItemSelectedListener {
-                when (it.itemId) {
-                    R.id.menuTrangChu -> {
-                        switchToTrangChu()
-                    }
-
-                    R.id.menuTrending -> {
-                        switchToTrending()
-                    }
-
-                    R.id.menuAudio -> {
-                        switchToAudio()
-                    }
-                    R.id.menuVideo -> {
-                        switchToVideo()
-                    }
-                    R.id.menuShare -> {
-//                      switchToShare()
-                    }
-                }
-                true
-            }
-
-            supportFragmentManager.apply {
-                addOnBackStackChangedListener {
-                    fragments.lastOrNull()?.let { curFragment ->
-                        when (curFragment) {
-                            is TrangChuFragment -> binding.mainBottomNav.menu[0].isChecked = true
-                            is ArticlesFragment -> binding.mainBottomNav.menu[1].isChecked = true
-                            is FragmentVideoPage -> binding.mainBottomNav.menu[2].isChecked = true
-                            is AudioHomeFragment -> binding.mainBottomNav.menu[3].isChecked = true
-                            else -> Log.d("MainActivity", "Unknown Fragment type!")
+                                R.id.menuAudio -> {
+                                    switchToAudio()
+                                }
+                                R.id.menuVideo -> {
+                                    switchToVideo()
+                                }
+                                R.id.menuShare -> {
+                                    switchToShare()
+                                }
+                            }
+                            val fragment = supportFragmentManager.findFragmentByTag("fragVideo")
+                            if (fragment != null) {
+                                try {
+                                    val motionLaout = findViewById<PlayerScreenMotionLayout>(R.id.root_layout)
+                                    motionLaout.transitionToEnd()
+                                }
+                                catch (e: NullPointerException)
+                                {}
+                            }
+                            if(supportFragmentManager.backStackEntryCount > 0)
+                            {
+                                binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+                                binding.toolbar.setNavigationIcon(R.drawable.ic_baseline_hambug)
+                                binding.toolbar.setNavigationOnClickListener {
+                                    setupNavDrawer()
+                                }
+                            }
+                            true
                         }
                     }
                 }
             }
-        } else {
-            binding.tvNoInternet.isVisible = true
-        }
-
         setupNavDrawer()
+        supportFragmentManager.apply {
+            addOnBackStackChangedListener {
+                fragments.lastOrNull()?.let { curFragment ->
+                    when (curFragment) {
+                        is TrangChuFragment -> binding.mainBottomNav.menu[0].isChecked = true
+                        is ArticlesFragment -> binding.mainBottomNav.menu[1].isChecked = true
+                        is FragmentVideoPage -> binding.mainBottomNav.menu[2].isChecked = true
+                        is AudioHomeFragment -> binding.mainBottomNav.menu[3].isChecked = true
+                        is ShareFragment -> binding.mainBottomNav.menu[4].isChecked = true
+                        else -> Log.d("MainActivity", "Unknown Fragment type!")
+                    }
+                }
+                if (supportFragmentManager.backStackEntryCount == 0) {
+                    binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+                    binding.toolbar.setNavigationIcon(R.drawable.ic_baseline_hambug)
+                    binding.toolbar.setNavigationOnClickListener {
+                        setupNavDrawer()
+                    }
+                } else {
+                    binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    binding.toolbar.setNavigationIcon(R.drawable.ic_arrow_back_24)
+                    binding.toolbar.setNavigationOnClickListener {
+                        onBackPressed()
+                    }
+                }
+            }
+        }
     }
+
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        when(item.itemId)
+//        {
+//            R.id.app_bar_search ->
+//            {
+//              Toast.makeText(this,"se",Toast.LENGTH_SHORT).show()
+//            }
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
 
     override fun onPostCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onPostCreate(savedInstanceState, persistentState)
@@ -131,7 +183,46 @@ class MainActivity : AppCompatActivity() {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        toggle.onConfigurationChanged(newConfig)
+//        toggle.onConfigurationChanged(newConfig)
+        binding.mainBottomNav.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.menuTrangChu -> {
+                    switchToTrangChu()
+                }
+
+                R.id.menuTrending -> {
+                    switchToTrending()
+                }
+
+                R.id.menuAudio -> {
+                    switchToAudio()
+                }
+                R.id.menuVideo -> {
+                    switchToVideo()
+                }
+                R.id.menuShare -> {
+                    switchToShare()
+                }
+            }
+            val fragment = supportFragmentManager.findFragmentByTag("fragVideo")
+            if (fragment != null) {
+                try {
+                    val motionLaout = findViewById<PlayerScreenMotionLayout>(R.id.root_layout)
+                    motionLaout.transitionToEnd()
+                }
+                catch (e: NullPointerException)
+                {}
+            }
+            if(supportFragmentManager.backStackEntryCount > 0)
+            {
+                binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+                binding.toolbar.setNavigationIcon(R.drawable.ic_baseline_hambug)
+                binding.toolbar.setNavigationOnClickListener {
+                    setupNavDrawer()
+                }
+            }
+            true
+        }
     }
 
     private fun setupNavDrawer() {
@@ -142,12 +233,8 @@ class MainActivity : AppCompatActivity() {
             R.string.open_drawer,
             R.string.close_drawer
         )
-
         binding.drawerLayout.addDrawerListener(toggle)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        //binding.toolbar.setNavigationIcon(R.drawable.ic_nav_drawer_24)
         supportActionBar?.setHomeButtonEnabled(true)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toggle.syncState()
 
         binding.mainNavDrawer.setNavigationItemSelectedListener {
@@ -173,6 +260,8 @@ class MainActivity : AppCompatActivity() {
                     }
 
                 }
+            } else {
+                Toast.makeText(this, "Không có kết nối Internet", Toast.LENGTH_SHORT).show()
             }
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             true
@@ -202,7 +291,7 @@ class MainActivity : AppCompatActivity() {
 
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
-            .replace(R.id.fragment_holder, ArticlesFragment.newInstance(-1))
+            .replace(R.id.fragment_holder, ArticlesFragment.newInstance(-1), "trending")
             .commit()
         curFrag = "trending"
 
@@ -236,9 +325,13 @@ class MainActivity : AppCompatActivity() {
     private fun switchToShare() {
         if (curFrag == "share") return
 
+//        supportFragmentManager.beginTransaction()
+//            .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
+//            .replace(R.id.fragment_holder, CommentFragment.newInstance(574750))
+//            .commit()
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
-            .replace(R.id.fragment_holder, CommentFragment.newInstance(574750))
+            .replace(R.id.fragment_holder, ShareFragment.newInstance())
             .commit()
         curFrag = "share"
 

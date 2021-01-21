@@ -96,4 +96,5 @@ dependencies {
     def paging_version = "3.0.0-alpha11"
     implementation "androidx.paging:paging-runtime:$paging_version"
     implementation 'com.google.android.exoplayer:exoplayer:2.12.2'
+
 }

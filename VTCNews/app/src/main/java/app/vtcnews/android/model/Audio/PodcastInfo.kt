@@ -10,34 +10,34 @@ data class PodcastInfo (
     val name: String,
 
     @Json(name = "Des")
-    val des: String,
+    val des: String? = null,
 
     @Json(name = "ShowMenu")
     val showMenu: Any? = null,
 
     @Json(name = "SEOSlug")
-    val seoSlug: String,
+    val seoSlug: String? = null,
 
     @Json(name = "SEOKeyword")
-    val seoKeyword: String,
+    val seoKeyword: String? = null,
 
     @Json(name = "SEOTitle")
-    val seoTitle: String,
+    val seoTitle: String? = null,
 
     @Json(name = "SEODes")
-    val seoDES: String,
+    val seoDES: String? = null,
 
     @Json(name = "ImageId")
-    val imageID: Long,
+    val imageID: Long? = null,
 
     @Json(name = "ImageUrl")
-    val imageURL: String,
+    val imageURL: String? = null,
 
     @Json(name = "ChannelId")
-    val channelID: Long,
+    val channelID: Long? = null,
 
     @Json(name = "CreatedDate")
-    val createdDate: String,
+    val createdDate: String? = null,
 
     @Json(name = "LastUpdated")
     val lastUpdated: Any? = null,
@@ -49,14 +49,14 @@ data class PodcastInfo (
     val lastUpdatedBy: Any? = null,
 
     @Json(name = "Author")
-    val author: String,
+    val author: String? = null,
 
     @Json(name = "image182_182")
-    val image182182: String,
+    val image182182: String? = null,
 
     @Json(name = "image360_360")
-    val image360360: String,
+    val image360360: String? = null,
 
     @Json(name = "CountItem")
-    val countItem: Long
+    val countItem: Long? = null
 )

@@ -4,25 +4,24 @@ import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.*
-import android.widget.FrameLayout
 import android.widget.ImageView
-import androidx.activity.OnBackPressedCallback
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import app.vtcnews.android.MainActivity
 import app.vtcnews.android.R
 import app.vtcnews.android.databinding.VideoFragmentMotionPlayerBinding
 import app.vtcnews.android.model.Article
 import app.vtcnews.android.viewmodels.VideoHomeFragViewModel
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.ui.PlayerView.SHOW_BUFFERING_ALWAYS
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 
 
 @AndroidEntryPoint
@@ -31,7 +30,7 @@ class FragmentChitietVideo : Fragment() {
     private var player: SimpleExoPlayer? = null
     private val viewModel: VideoHomeFragViewModel by viewModels()
     private lateinit var navBottom: BottomNavigationView
-    private var refreshLayout: SwipeRefreshLayout? = null
+    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
 
     companion object {
         fun newInstance(title: String, idVideoDetail: Long, categoryId: Long) =
@@ -43,27 +42,61 @@ class FragmentChitietVideo : Fragment() {
                 }
             }
     }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = VideoFragmentMotionPlayerBinding.inflate(layoutInflater, container, false)
-        (requireActivity() as MainActivity).supportActionBar?.hide()
-        refreshLayout = activity?.findViewById(R.id.refreshlayout)
-        refreshLayout?.isEnabled = false
         navBottom = requireActivity().findViewById(R.id.main_bottom_nav)
-        navBottom.isVisible = false
-        val frame_player =
-            requireActivity().findViewById<FrameLayout>(R.id.frame_player_podcast)
-        val params = frame_player.layoutParams
-        params.width = FrameLayout.LayoutParams.MATCH_PARENT
-        params.height = FrameLayout.LayoutParams.MATCH_PARENT
-        frame_player.layoutParams = params
+        toolbar = activity?.findViewById(R.id.toolbar)!!
 
-
+        //delete when video is played
+        val fragment = requireActivity().supportFragmentManager.findFragmentByTag("player")
+        if(fragment != null)
+        {
+            requireActivity().supportFragmentManager.beginTransaction().remove(fragment).commit()
+        }
+        lifecycleScope.launchWhenCreated {
+            delay(1500)
+            requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR
+        }
         return binding.root
+    }
+    //rotate change
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        lifecycleScope.launchWhenCreated {
+            delay(1500)
+            requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR
+        }
+        val orientation = resources.configuration.orientation
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+            navBottom.isVisible = false
+            toolbar.visibility = View.GONE
+            binding.rootLayout.setTransition(R.id.start, R.id.start)
+            binding.rootLayout.getConstraintSet(R.id.start)?.let {
+                it.constrainHeight(
+                    R.id.video_view,
+                    ConstraintLayout.LayoutParams.MATCH_PARENT
+                )
+                binding.videoView.requestLayout()
+            }
+        } else {
+            activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+            binding.rootLayout.getConstraintSet(R.id.start)?.let {
+                it.constrainHeight(
+                    R.id.video_view,
+                    ConstraintLayout.LayoutParams.WRAP_CONTENT
+                )
+                binding.videoView.requestLayout()
+            }
+            binding.rootLayout.setTransition(R.id.transitonVideo)
+            navBottom.isVisible = true
+            toolbar.visibility = View.VISIBLE
+        }
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -92,52 +125,47 @@ class FragmentChitietVideo : Fragment() {
         binding.tvVideoLQ.isVisible = true
 
         buttonClick()
-
-        requireActivity()
-            .onBackPressedDispatcher
-            .addCallback(requireActivity(), object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    if (isEnabled) {
-                        val orientation = resources.configuration.orientation
-                        requireActivity().requestedOrientation =
-                            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                                val r = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-                                activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-                                binding.rootLayout.getConstraintSet(R.id.start)?.let {
-                                    it.setVisibility(R.id.layoutMenu, View.VISIBLE)
-                                    binding.layoutMenu.requestLayout()
-                                }
-                                r
-                            } else {
-                                isEnabled = false
-                                navBottom.isVisible = true
-                                refreshLayout?.isEnabled = true
-                                (requireActivity() as MainActivity).supportActionBar?.show()
-                                requireActivity().supportFragmentManager.beginTransaction()
-                                    .setCustomAnimations(
-                                        0,
-                                        R.anim.exit_to_right,
-                                        0,
-                                        R.anim.exit_to_right
-                                    )
-                                    .remove(
-                                        this@FragmentChitietVideo
-                                    )
-                                    .commit()
-                            }
+        view.isFocusableInTouchMode = true
+        view.requestFocus()
+        view.setOnKeyListener(View.OnKeyListener { view, i, keyEvent ->
+            if (i == KeyEvent.KEYCODE_BACK) {
+                val navBottom =
+                    activity?.findViewById<BottomNavigationView>(R.id.main_bottom_nav)
+                val orientation = resources.configuration.orientation
+                requireActivity().requestedOrientation =
+                    if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                        activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+                        binding.rootLayout.getConstraintSet(R.id.start)?.let {
+                            it.constrainHeight(
+                                R.id.video_view,
+                                resources.getDimension(R.dimen._170sdp).toInt()
+                            )
+                            binding.videoView.requestLayout()
+                        }
+                        binding.rootLayout.getTransition(R.id.transitonVideo).setEnable(true)
+                        navBottom?.isVisible = true
+                        toolbar.visibility = View.VISIBLE
+                        val r = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                        r
+                    } else {
+                        val r = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+//                        activity?.onBackPressed()
+                        r
                     }
-                }
             }
-            )
+            false
+        })
+
     }
 
-    fun dataVideoDetailObser() {
+    private fun dataVideoDetailObser() {
         viewModel.videoDetail.observe(viewLifecycleOwner)
         {
             it.forEach()
             { videoDetail ->
-
                 val url = videoDetail.videoURL
+                if(url.isNotEmpty())
+                {
                 binding.videoView.player = player
                 val mediaItem: MediaItem =
                     MediaItem.fromUri("https://media.vtc.vn/$url")
@@ -146,27 +174,25 @@ class FragmentChitietVideo : Fragment() {
                 player?.playWhenReady = true
                 binding.videoView.hideController()
                 player?.play()
+            }else{
+                binding.videoView.setShowBuffering(SHOW_BUFFERING_ALWAYS)
             }
+            }
+
         }
     }
 
     fun dataListNextVideoObser() {
         viewModel.listVideoByCategory.observe(viewLifecycleOwner)
         { listVideoByCategory ->
-            val adapter = VideoItemAdapter(listVideoByCategory.take(4))
+            val adapter = VideoItemAdapter(listVideoByCategory.take(12))
             val layoutManager = GridLayoutManager(context, 2)
             binding.rvVideoNext.adapter = adapter
             binding.rvVideoNext.layoutManager = layoutManager
 
             adapter.clickListen = { article: Article ->
-                val frame_player =
-                    requireActivity().findViewById<FrameLayout>(R.id.frame_player_podcast)
-                val params = frame_player.layoutParams
-                params.width = FrameLayout.LayoutParams.MATCH_PARENT
-                params.height = FrameLayout.LayoutParams.MATCH_PARENT
-                frame_player.layoutParams = params
                 player?.release()
-                requireActivity().supportFragmentManager.beginTransaction().remove(this).commit()
+                requireActivity().supportFragmentManager.popBackStack()
                 requireActivity().supportFragmentManager.beginTransaction()
                     .setCustomAnimations(0, 0, 0, R.anim.exit_to_right)
                     .replace(
@@ -175,7 +201,7 @@ class FragmentChitietVideo : Fragment() {
                             article.title!!,
                             article.id.toLong(),
                             article.categoryID!!
-                        )
+                        ), "fragVideo"
                     ).addToBackStack(null).commit()
             }
         }
@@ -212,20 +238,7 @@ class FragmentChitietVideo : Fragment() {
 
         binding.closeMiniPlayer.setOnClickListener {
             navBottom.isVisible = true
-            refreshLayout?.isEnabled = true
-            (requireActivity() as MainActivity).supportActionBar?.show()
-
-            requireActivity().supportFragmentManager.beginTransaction()
-                .setCustomAnimations(0, R.anim.exit_to_right, 0, R.anim.exit_to_right).remove(this)
-                .commit()
-        }
-        binding.btBack.setOnClickListener {
-            (requireActivity() as MainActivity).supportActionBar?.show()
-            navBottom.isVisible = true
-            refreshLayout?.isEnabled = true
-            requireActivity().supportFragmentManager.beginTransaction()
-                .setCustomAnimations(0, R.anim.exit_to_right, 0, R.anim.exit_to_right).remove(this)
-                .commit()
+            requireActivity().supportFragmentManager.popBackStack()
         }
         btFullsc?.setOnClickListener {
             val orientation = resources.configuration.orientation
@@ -233,32 +246,36 @@ class FragmentChitietVideo : Fragment() {
                 if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
                     activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
                     binding.rootLayout.getConstraintSet(R.id.start)?.let {
-                        it.setVisibility(R.id.layoutMenu, View.VISIBLE)
                         it.constrainHeight(
                             R.id.video_view,
                             resources.getDimension(R.dimen._170sdp).toInt()
                         )
-                        binding.layoutMenu.requestLayout()
                         binding.videoView.requestLayout()
                     }
+                    binding.rootLayout.getTransition(R.id.transitonVideo).setEnable(true)
+                    navBottom.isVisible = true
+                    toolbar.visibility = View.VISIBLE
                     val r = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
                     r
                 } else {
                     activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-                    val r = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+                    navBottom.isVisible = false
+                    toolbar.visibility = View.GONE
+                    binding.rootLayout.setTransition(R.id.start, R.id.start)
                     binding.rootLayout.getConstraintSet(R.id.start)?.let {
-                        it.setVisibility(R.id.layoutMenu, View.GONE)
                         it.constrainHeight(
                             R.id.video_view,
-                            ConstraintLayout.LayoutParams.WRAP_CONTENT
+                            ConstraintLayout.LayoutParams.MATCH_PARENT
                         )
-                        binding.layoutMenu.requestLayout()
                         binding.videoView.requestLayout()
                     }
+                    val r = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
                     r
+
                 }
         }
     }
+
 
     override fun onResume() {
         super.onResume()
@@ -267,8 +284,6 @@ class FragmentChitietVideo : Fragment() {
             player?.pause()
             binding.btnPlayPauseMini.setImageResource(R.drawable.ic_play_arrow)
             btPlay?.setImageResource(R.drawable.ic_baseline_play_arrow)
-
-
         } else {
             player?.play()
             binding.btnPlayPauseMini.setImageResource(R.drawable.ic_pause)
@@ -282,28 +297,12 @@ class FragmentChitietVideo : Fragment() {
         player?.pause()
     }
 
-    override fun onPause() {
-        super.onPause()
-        val frame_player =
-            requireActivity().findViewById<FrameLayout>(R.id.frame_player_podcast)
-        val params = frame_player.layoutParams
-        params.width = FrameLayout.LayoutParams.MATCH_PARENT
-        params.height = FrameLayout.LayoutParams.MATCH_PARENT
-        frame_player.layoutParams = params
-    }
 
     override fun onDestroy() {
         super.onDestroy()
         player?.release()
-        if (requireActivity().supportFragmentManager.findFragmentByTag("fragVideo") != null) {
-            refreshLayout?.isEnabled = false
-            navBottom.isVisible = false
-            (requireActivity() as MainActivity).supportActionBar?.hide()
-        } else {
-            refreshLayout?.isEnabled = true
-            navBottom.isVisible = true
-            (requireActivity() as MainActivity).supportActionBar?.show()
-        }
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
 
     }
 

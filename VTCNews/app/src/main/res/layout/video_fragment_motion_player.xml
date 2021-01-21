@@ -15,47 +15,13 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         android:orientation="vertical" />
-    <!--Menu Header-->
-    <RelativeLayout
-        android:id="@+id/layoutMenu"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/vtcBackground"
-        app:layout_constraintBottom_toTopOf="@id/video_view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageButton
-            android:id="@+id/btBack"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_alignParentStart="true"
-            android:background="@null"
-            android:src="@drawable/ic_arrow_back_24" />
-
-        <ImageView
-            android:layout_width="@dimen/_90sdp"
-            android:layout_height="@dimen/_30sdp"
-            android:layout_centerInParent="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/logovtc" />
-
-        <ImageButton
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_alignParentRight="true"
-            android:background="@null"
-            android:src="@drawable/ic_share_24" />
-    </RelativeLayout>
-    <!--End Menu Header-->
-
 
     <app.vtcnews.android.ui.article_detail_fragment.CustomPlayerView
         android:id="@+id/video_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/black"
+        app:show_buffering="when_playing"
         android:scaleType="centerCrop"
         app:buffered_color="#ffffff"
         app:controller_layout_id="@layout/layout_exoplayer_control_view"
@@ -65,49 +31,55 @@
         app:scrubber_color="#ff3333"
         app:surface_type="texture_view"
         app:unplayed_color="#ff888888"
-        app:layout_constraintTop_toBottomOf="@id/layoutMenu"
+        app:layout_constraintTop_toBottomOf="@id/player_background_view"
         app:use_controller="true" />
 
     <ScrollView
+        android:fillViewport="true"
         android:id="@+id/svVideo"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/video_view">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
+                android:textStyle="bold"
                 android:id="@+id/tvTitleVideo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:padding="@dimen/_10sdp"
+                android:paddingRight="@dimen/_10sdp"
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingTop="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_8sdp"
                 android:text="Ngăm vẻ đẹp của trái đất qua 100GB ảnh của NASA"
                 android:textColor="@color/colorTitle"
                 android:textSize="@dimen/_18sdp"
-                android:visibility="invisible" />
+                android:visibility="visible" />
 
             <LinearLayout
+                android:layout_below="@id/tvTitleVideo"
                 android:id="@+id/layoutTimeCate"
+                android:paddingLeft="@dimen/_10sdp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:visibility="invisible">
+                android:visibility="visible">
 
                 <TextView
                     android:id="@+id/tvTimeDiff"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:padding="@dimen/_8sdp"
                     android:text="12' trước"
-                    android:textSize="@dimen/_10sdp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <TextView
                     android:id="@+id/tvCategoryVideo"
@@ -116,32 +88,32 @@
                     android:layout_gravity="center_vertical"
                     android:text="Chính trị xã hội"
                     android:textColor="@color/vtcBackground"
-                    android:textSize="@dimen/_10sdp" />
+                    android:textSize="@dimen/_12sdp" />
 
 
             </LinearLayout>
 
             <TextView
+                android:layout_below="@id/layoutTimeCate"
                 android:id="@+id/tvVideoLQ"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_10sdp"
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_5sdp"
                 android:text="Video liên quan"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_15sdp"
                 android:textStyle="bold"
-                android:visibility="invisible" />
+                android:visibility="visible" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvVideoNext"
+                android:layout_below="@+id/tvVideoLQ"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
-                android:nestedScrollingEnabled="true"
-                android:visibility="invisible" />
-
-
-        </LinearLayout>
+                android:nestedScrollingEnabled="false"
+                android:visibility="visible" />
+        </RelativeLayout>
 
 
     </ScrollView>

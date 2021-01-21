@@ -1,8 +1,6 @@
 package app.vtcnews.android.paging
 
-import android.util.Log
 import androidx.paging.PagingSource
-import androidx.paging.PagingState
 import app.vtcnews.android.model.HotChannel
 import app.vtcnews.android.network.Resource
 import app.vtcnews.android.repos.ArticleRepo
