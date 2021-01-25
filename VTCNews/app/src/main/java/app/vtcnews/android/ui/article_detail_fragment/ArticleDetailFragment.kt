@@ -1,19 +1,15 @@
 package app.vtcnews.android.ui.article_detail_fragment
 
 import android.annotation.SuppressLint
-import android.content.ClipData
-import android.content.ContentResolver
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebSettings
+import android.webkit.*
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.content.ContentResolverCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
@@ -28,8 +24,7 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.util.Util
 import dagger.hilt.android.AndroidEntryPoint
-import java.io.FileNotFoundException
-import java.io.IOException
+
 
 private const val ARG_PARAM1 = "param1"
 
@@ -229,25 +224,58 @@ class ArticleDetailFragment : Fragment() {
     @SuppressLint("SetJavaScriptEnabled")
     private fun displayContent(data: String) {
 
-        val imgReg = Regex("<img .*?>")
+        /*val imgReg = Regex("<img .*?>")
         val srcReg = Regex("data-src=\".*?\"")
         val altReg = Regex(" alt=\".*?\"")
         val imgTags = imgReg.replace(data) {
             var res = "<img "
             res += "${altReg.find(it.value)?.value}  ${srcReg.find(it.value)?.value?.drop(5)}>"
             res
-        }
+        }*/
 
         binding.detailLayout.webContent.apply {
             settings.javaScriptEnabled = true
             settings.domStorageEnabled = true
             settings.layoutAlgorithm = WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING
 
+            webChromeClient = object : WebChromeClient() {
+                override fun onConsoleMessage(consoleMessage: ConsoleMessage): Boolean {
+                    Log.d("WebView", consoleMessage.message())
+                    return true
+                }
+            }
+
+            val js = """
+                $(function() {
+                $('.lazy').Lazy();
+                });
+            """.trimIndent()
+
+            webViewClient = object : WebViewClient()
+            {
+                override fun onPageFinished(view: WebView?, url: String?) {
+                    super.onPageFinished(view, url)
+                    evaluateJavascript(js, null)
+                }
+            }
+
             val imageStyle = "<style>img{max-width: 100%; height:auto;}</style>"
+
+
+            val script = """
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+                <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.plugins.min.js"></script>
+                
+            """.trimIndent()
+
+
+
+            //loadDataWithBaseURL(null, js, "text/html", "utf-8", null)
 
             settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
             loadData(
-                "$imageStyle $imgTags",
+                "$script $data",
                 "text/html", "UTF-8",
             )
         }

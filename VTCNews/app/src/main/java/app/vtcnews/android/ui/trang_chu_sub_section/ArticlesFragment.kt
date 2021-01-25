@@ -20,7 +20,7 @@ private const val ARG_CATEGORY_ID = "param1"
 
 @AndroidEntryPoint
 class ArticlesFragment : Fragment() {
-    private var categoryId: Int = 0
+    private var categoryId: Int = -1
     private lateinit var binding : FragmentArticlesBinding
     private val viewModel by viewModels<PagingArticleFragmentViewModel>()
     private val pagingAdapter = ArticleAdapter()
@@ -47,7 +47,9 @@ class ArticlesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.rvArticlesList.adapter = pagingAdapter
         pagingAdapter.articleClickListener = {
-            val fragmentManager = requireParentFragment().requireActivity().supportFragmentManager
+            val fragmentManager = if(categoryId == -1) parentFragmentManager
+            else requireParentFragment().requireActivity().supportFragmentManager
+
             if(it.isVideoArticle == 1L)
             {
                 fragmentManager.beginTransaction()
