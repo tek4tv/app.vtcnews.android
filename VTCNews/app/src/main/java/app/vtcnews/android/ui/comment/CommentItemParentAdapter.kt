@@ -26,6 +26,7 @@ class CommentItemParentAdapter(val listCM: List<CommentItem>) :
         val icLike = v.findViewById(R.id.icLike) as ImageView
         val isHaveChild = v.findViewById(R.id.isHaveChild) as LinearLayout
         val tvCountChild = v.findViewById(R.id.tvCmtChildCount) as TextView
+        val view = v.findViewById<View>(R.id.view)
     }
 
     override fun onCreateViewHolder(
@@ -52,17 +53,14 @@ class CommentItemParentAdapter(val listCM: List<CommentItem>) :
         holder.isHaveChild.setOnClickListener {
             clickListener.invoke(commentItem)
         }
-        holder.tvReply.setOnClickListener{
+        holder.tvReply.setOnClickListener {
             clickListener.invoke(commentItem)
 
         }
-        if(commentItem.countChild > 0)
-        {
-            holder.tvCountChild.text = ((commentItem.countChild ).toString())
+        if (commentItem.countChild > 0) {
+            holder.tvCountChild.text = ((commentItem.countChild).toString())
             holder.isHaveChild.isVisible = true
-        }
-        else
-        {
+        } else {
             holder.isHaveChild.isVisible = false
         }
 
@@ -70,6 +68,9 @@ class CommentItemParentAdapter(val listCM: List<CommentItem>) :
             holder.icLike.setImageResource(R.drawable.icliked)
         } else {
             holder.icLike.setImageResource(R.drawable.iclike)
+        }
+        if (commentItem == listCM.last()) {
+            holder.view.visibility = View.INVISIBLE
         }
     }
 

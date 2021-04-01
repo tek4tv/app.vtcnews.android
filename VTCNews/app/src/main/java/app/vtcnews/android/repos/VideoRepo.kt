@@ -1,6 +1,5 @@
 package app.vtcnews.android.repos
 
-import app.vtcnews.android.model.ArticleVideo
 import app.vtcnews.android.model.Video
 import app.vtcnews.android.model.VideoDetail
 import app.vtcnews.android.network.Resource
@@ -24,6 +23,17 @@ class VideoRepo @Inject constructor(private val videoService: VideoService) {
         videoService.getVideoDetail(id)
     }
 
-    suspend fun getArticleVideo(id: String) : Resource<List<ArticleVideo>> =
-        performNetworkCall { videoService.getArticleVideoById(id) }
+    suspend fun getMenuVideos(): Resource<List<Video>> {
+        val res = performNetworkCall { videoService.getVideoMenuHome() }
+        if (res is Resource.Success)
+            videoList = res.data
+        return res
+    }
+
+    suspend fun getMenuVideosPaging(page: Int): Resource<List<Video>> =
+        performNetworkCall {
+            videoService.getVideoMenuHomePaging(page)
+        }
+
+
 }

@@ -20,32 +20,41 @@ class AllChannelFragment : Fragment() {
     lateinit var binding: LayoutVideoPageBinding
     private val viewModel: HotChannelPagingViewModel by viewModels()
     private val pagingChannelAdapter = AllChannelAdapter()
-    companion object
-    {
+
+    companion object {
         fun newInstance() = AllChannelFragment()
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = LayoutVideoPageBinding.inflate(layoutInflater,container,false)
+        binding = LayoutVideoPageBinding.inflate(layoutInflater, container, false)
+        binding.pbLoading.visibility = View.GONE
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val layout = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
+        val layout = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rvVideoHome.layoutManager = layout
         binding.rvVideoHome.adapter = pagingChannelAdapter
         pagingChannelAdapter.clickItemChannel = {
             parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_holder, ListHotArticleFragment.newInstance(it.id))
+                .setCustomAnimations(
+                    R.anim.enter_from_right,
+                    0,
+                    0,
+                    R.anim.exit_to_right
+                )
+                .add(R.id.fragment_holder, ListHotArticleFragment.newInstance(it.id))
                 .addToBackStack(null)
                 .commit()
         }
         setupObservers()
     }
+
     private fun setupObservers() {
         lifecycleScope.launch {
             viewModel.pagingData.collectLatest {

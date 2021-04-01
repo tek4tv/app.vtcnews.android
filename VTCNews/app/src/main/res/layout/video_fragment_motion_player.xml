@@ -20,25 +20,25 @@
         android:id="@+id/video_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/black"
-        app:show_buffering="when_playing"
-        android:scaleType="centerCrop"
+        android:background="#e5e5e5"
         app:buffered_color="#ffffff"
         app:controller_layout_id="@layout/layout_exoplayer_control_view"
         app:fastforward_increment="5000"
+        app:layout_constraintTop_toBottomOf="@id/player_background_view"
         app:played_color="#ff1111"
+        app:resize_mode="fill"
         app:rewind_increment="5000"
         app:scrubber_color="#ff3333"
+        app:show_buffering="when_playing"
         app:surface_type="texture_view"
         app:unplayed_color="#ff888888"
-        app:layout_constraintTop_toBottomOf="@id/player_background_view"
         app:use_controller="true" />
 
     <ScrollView
-        android:fillViewport="true"
         android:id="@+id/svVideo"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,27 +50,26 @@
             android:orientation="vertical">
 
             <TextView
-                android:textStyle="bold"
                 android:id="@+id/tvTitleVideo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:paddingRight="@dimen/_10sdp"
+                android:fontFamily="@font/helveticaneuebold"
                 android:paddingLeft="@dimen/_10sdp"
                 android:paddingTop="@dimen/_10sdp"
-                android:paddingBottom="@dimen/_8sdp"
+                android:paddingRight="@dimen/_10sdp"
                 android:text="Ngăm vẻ đẹp của trái đất qua 100GB ảnh của NASA"
                 android:textColor="@color/colorTitle"
-                android:textSize="@dimen/_18sdp"
+                android:textSize="26sp"
+                android:textStyle="bold"
                 android:visibility="visible" />
 
             <LinearLayout
-                android:layout_below="@id/tvTitleVideo"
                 android:id="@+id/layoutTimeCate"
-                android:paddingLeft="@dimen/_10sdp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/tvTitleVideo"
                 android:orientation="horizontal"
+                android:paddingStart="@dimen/_10sdp"
                 android:visibility="visible">
 
                 <TextView
@@ -78,41 +77,64 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="12' trước"
-                    android:textSize="@dimen/_12sdp" />
+                    android:fontFamily="@font/helveticaneue"
+                    android:text="Date Create"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tvCategoryVideo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="Chính trị xã hội"
+                    android:layout_marginStart="4dp"
+                    android:fontFamily="@font/helveticaneue"
+                    android:text="Category"
                     android:textColor="@color/vtcBackground"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="14sp" />
 
 
             </LinearLayout>
 
             <TextView
+                android:id="@+id/tvDes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/layoutTimeCate"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:text="..."
+                android:textSize="18sp" />
+
+            <TextView
                 android:id="@+id/tvVideoLQ"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/_10sdp"
-                android:paddingBottom="@dimen/_5sdp"
+                android:layout_below="@id/tvDes"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:fontFamily="@font/helveticaneuebold"
                 android:text="Video liên quan"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_15sdp"
+                android:textSize="22sp"
                 android:textStyle="bold"
                 android:visibility="visible" />
 
+            <ProgressBar
+                android:id="@+id/pbLoading"
+                android:layout_width="50dp"
+                android:theme="@style/progressBarBlue"
+                android:layout_below="@id/tvVideoLQ"
+                android:layout_centerHorizontal="true"
+                android:layout_height="50dp" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvVideoNext"
-                android:layout_below="@+id/tvVideoLQ"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_below="@+id/tvVideoLQ"
                 android:nestedScrollingEnabled="false"
-                android:visibility="visible" />
+                android:visibility="invisible" />
         </RelativeLayout>
 
 
@@ -133,6 +155,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ellipsize="marquee"
+        android:fontFamily="@font/helveticaneue"
         android:marqueeRepeatLimit="marquee_forever"
         android:maxWidth="100dp"
         android:scrollHorizontally="true"

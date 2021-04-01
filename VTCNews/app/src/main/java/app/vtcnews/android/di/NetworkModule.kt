@@ -37,26 +37,26 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideMenuService(retrofit: Retrofit) : MenuService =
+    fun provideMenuService(retrofit: Retrofit): MenuService =
         retrofit.create(MenuService::class.java)
 
     @Provides
     @Singleton
-    fun provideArticleService(retrofit: Retrofit) : ArticleService =
+    fun provideArticleService(retrofit: Retrofit): ArticleService =
         retrofit.create(ArticleService::class.java)
 
     @Provides
     @Singleton
-    fun provideVideoService(retrofit: Retrofit) : VideoService =
+    fun provideVideoService(retrofit: Retrofit): VideoService =
         retrofit.create(VideoService::class.java)
-		
-	@Provides
-    @Singleton	
-    fun provideAudioService(retrofit: Retrofit) : AllPodcastService =
+
+    @Provides
+    @Singleton
+    fun provideAudioService(retrofit: Retrofit): AllPodcastService =
         retrofit.create(AllPodcastService::class.java)
 
     @Provides
     @Singleton
-    fun provideComment(retrofit: Retrofit) : CommentService=
+    fun provideComment(retrofit: Retrofit): CommentService =
         retrofit.create(CommentService::class.java)
 }

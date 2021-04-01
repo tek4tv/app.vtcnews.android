@@ -1,32 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:padding="@dimen/_10sdp"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:layout_marginRight="@dimen/_10sdp"
+    android:layout_marginTop="@dimen/_10sdp"
+    android:layout_marginLeft="@dimen/_10sdp">
 
     <TextView
         android:id="@+id/tvTimeDiffComment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="2 giờ trước" />
+        android:text="2 giờ trước"
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/tvCustomerName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="@dimen/_15sdp"
+        android:text="Tùng"
         android:textColor="@color/black"
-        android:text="Tùng" />
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvContentCM"
-        android:layout_marginBottom="@dimen/_8sdp"
-        android:layout_marginTop="@dimen/_8sdp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Cũng được thôi" />
+        android:layout_marginTop="5sp"
+        android:layout_marginBottom="@dimen/_8sdp"
+        android:text="Cũng được thôi"
+        android:textSize="14sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,64 +40,87 @@
 
         <ImageView
             android:id="@+id/icLike"
-            android:layout_width="@dimen/_15sdp"
-            android:layout_height="@dimen/_15sdp"
-            android:src="@drawable/icliked" />
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/iclike" />
 
         <TextView
-            android:layout_marginRight="@dimen/_5sdp"
-            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_gravity="center_vertical"
             android:id="@+id/tvCountLike"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
             android:text="6" />
 
         <TextView
+            android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/_10sdp"
-            android:text="thích" />
+            android:text="thích"
+            android:textSize="12sp" />
+
         <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center_vertical"
             android:layout_marginRight="@dimen/_5sdp"
-            android:layout_width="@dimen/_15sdp"
-            android:layout_height="@dimen/_15sdp"
-            android:src="@drawable/icsharecm"/>
+            android:src="@drawable/icsharecm" />
+
         <TextView
+            android:layout_gravity="center_vertical"
             android:id="@+id/tvReply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Trả lời"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-          />
+            android:textSize="12sp" />
 
 
     </LinearLayout>
+
     <LinearLayout
-        android:layout_marginTop="@dimen/_5sdp"
-        android:layout_width="match_parent"
         android:id="@+id/isHaveChild"
-
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
+        android:layout_marginTop="@dimen/_5sdp"
         android:orientation="horizontal">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Xem thêm"
             android:textColor="@color/blue"
-            android:text="Xem thêm"/>
+            android:textSize="12sp" />
+
         <TextView
+            android:id="@+id/tvCmtChildCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="3"
             android:layout_marginLeft="@dimen/_4sdp"
-            android:textColor="@color/blue"
             android:layout_marginRight="@dimen/_4sdp"
-            android:id="@+id/tvCmtChildCount"/>
-        <TextView
+            android:text="3"
             android:textColor="@color/blue"
+            android:textSize="12sp" />
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="phản hồi"/>
+            android:text="phản hồi"
+            android:textColor="@color/blue"
+            android:textSize="12sp" />
 
     </LinearLayout>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@drawable/commentlinedot"
+        android:layerType="software" />
 
 
 </LinearLayout>

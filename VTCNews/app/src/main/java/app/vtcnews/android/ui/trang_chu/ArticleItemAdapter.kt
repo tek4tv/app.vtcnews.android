@@ -13,7 +13,7 @@ import app.vtcnews.android.ui.trang_chu_sub_section.getDateDiff
 import com.squareup.picasso.Picasso
 
 class ArticleItemAdapter(private val listArticle: List<Article>) :
-    RecyclerView.Adapter<ArticleItemAdapter.ArticleItemViewHolder>() {
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     class ArticleItemViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         val img = v.findViewById(R.id.img_hot_article) as ImageView
         val txtTitle = v.findViewById(R.id.txt_hot_article_title) as TextView
@@ -27,48 +27,49 @@ class ArticleItemAdapter(private val listArticle: List<Article>) :
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): ArticleItemViewHolder {
+    ): RecyclerView.ViewHolder {
         val itemView =
             LayoutInflater.from(parent.context).inflate(R.layout.artice_item, parent, false)
         return ArticleItemViewHolder(itemView)
+
 
     }
 
     override fun getItemCount(): Int = listArticle.size
 
-    override fun onBindViewHolder(holder: ArticleItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        holder as ArticleItemViewHolder
         val article = listArticle[position]
         Picasso.get().load(article.imageCrop).into(holder.img)
 
         holder.txtTitle.text = article.title
 
         holder.itemArticle.setOnClickListener {
-            articleClickListener(article)}
-
-
-            when {
-                article.isPhotoArticle == 1L -> {
-                    holder.imgMedia.visibility = View.VISIBLE
-                    holder.imgMedia.setImageResource(R.drawable.ic_camera_24)
-                }
-                article.isVideoArticle == 1L -> {
-                    holder.imgMedia.visibility = View.VISIBLE
-                    holder.imgMedia.setImageResource(R.drawable.ic_videocam_24)
-                }
-                else -> {
-                    holder.imgMedia.visibility = View.GONE
-                }
-            }
-
-            holder.txtCategory.text = article.categoryName
-
-            holder.txtDate.text =
-                getDateDiff(
-                    article.publishedDate!!,
-                    holder.txtDate.context.applicationContext.resources
-                )
-
+            articleClickListener(article)
         }
+
+        when {
+            article.isPhotoArticle == 1L -> {
+                holder.imgMedia.visibility = View.VISIBLE
+                holder.imgMedia.setImageResource(R.drawable.ic_camera_24)
+            }
+            article.isVideoArticle == 1L -> {
+                holder.imgMedia.visibility = View.VISIBLE
+                holder.imgMedia.setImageResource(R.drawable.ic_videocam_24)
+            }
+            else -> {
+                holder.imgMedia.visibility = View.GONE
+            }
+        }
+
+        holder.txtCategory.text = article.categoryName
+
+        holder.txtDate.text =
+            getDateDiff(
+                article.publishedDate!!,
+                holder.txtDate.context.applicationContext.resources
+            )
     }
+}
 
 

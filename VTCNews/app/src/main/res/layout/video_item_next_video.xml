@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_marginStart="@dimen/_5sdp"
+    android:layout_marginBottom="15dp"
     android:id="@+id/itemVideoNext"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -17,14 +17,16 @@
             android:layout_width="170dp"
             android:layout_height="0dp"
             app:cardCornerRadius="4dp"
-            app:layout_constraintDimensionRatio="H, 16:9"
+            app:layout_constraintDimensionRatio="H, 3:2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+                android:background="@color/color_loading"
                 android:id="@+id/ivVideoNext"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+
             <ImageView
                 android:id="@+id/icItem"
                 android:layout_gravity="center"
@@ -41,8 +43,8 @@
         android:id="@+id/tvTitleNext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/_8sdp"
         android:text="TextView"
+        android:paddingTop="5dp"
         android:textColor="@color/colorTitle"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"

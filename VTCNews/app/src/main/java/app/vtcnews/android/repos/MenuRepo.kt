@@ -9,19 +9,18 @@ import javax.inject.Singleton
 
 @Singleton
 class MenuRepo @Inject constructor(private val menuService: MenuService) {
-
     var menuList = listOf<MenuItem>()
     var parentMenus = listOf<MenuItem>()
 
     suspend fun getMenuList(): Resource<List<MenuItem>> {
         val response = performNetworkCall { menuService.getMenuList() }
-
         if (response is Resource.Success) {
             menuList = response.data
             parentMenus =
-                menuList.filter { it.parentId == null && it.isShowMenu?:true }.sortedBy { it.orderMobile }
+                menuList.filter { it.parentId == null && it.orderMobile!! > 0 }
         }
 
         return response
     }
 }
+//&& it.isShowMenu?:true }.sortedBy { it.orderMobile }

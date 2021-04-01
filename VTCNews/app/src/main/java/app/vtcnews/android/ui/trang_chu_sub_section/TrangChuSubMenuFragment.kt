@@ -1,19 +1,16 @@
 package app.vtcnews.android.ui.trang_chu_sub_section
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import app.vtcnews.android.R
 import app.vtcnews.android.databinding.FragmentTrangChuSubSectionBinding
 import app.vtcnews.android.viewmodels.TrangChuSubMenuViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
-import java.lang.NullPointerException
 
 private const val ARG_PARAM1 = "param1"
 
@@ -22,8 +19,8 @@ class TrangChuSubMenuFragment : Fragment() {
 
     private var parentMenuId: Int = 0
     private val viewModel by viewModels<TrangChuSubMenuViewModel>()
-    private lateinit var vpAdapter : SubMenuStateAdapter
-    private lateinit var binding : FragmentTrangChuSubSectionBinding
+    private lateinit var vpAdapter: SubMenuStateAdapter
+    private lateinit var binding: FragmentTrangChuSubSectionBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -35,7 +32,7 @@ class TrangChuSubMenuFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentTrangChuSubSectionBinding.inflate(inflater,container,false)
+        binding = FragmentTrangChuSubSectionBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -56,35 +53,34 @@ class TrangChuSubMenuFragment : Fragment() {
         }
     }
 
-    private fun setupObservers()
-    {
+    private fun setupObservers() {
         viewModel.menuItem.observe(viewLifecycleOwner)
         {
-            if(it.isNotEmpty()) {
+            if (it.isNotEmpty()) {
                 binding.tvNodata.isVisible = false
-                vpAdapter.menuList = it
-            }
-            else
-            {
+                vpAdapter.menuList = it.filter { it.isShowMenu == true }
+                if (vpAdapter.menuList.size <= 0) {
+                    binding.tvNodata.isVisible = true
+                }
+            } else {
                 binding.tvNodata.isVisible = true
             }
         }
     }
 
-    private fun setupViewPager()
-    {
+    private fun setupViewPager() {
         vpAdapter = SubMenuStateAdapter(this)
         binding.vpSubSectionDetail.adapter = vpAdapter
+        binding.vpSubSectionDetail.offscreenPageLimit = 1
 
-        TabLayoutMediator(binding.tabMenuItem, binding.vpSubSectionDetail){
-            tab, pos->
+        TabLayoutMediator(binding.tabMenuItem, binding.vpSubSectionDetail) { tab, pos ->
             tab.text = viewModel.menuItem.value!![pos].title
         }.attach()
     }
 
     companion object {
         @JvmStatic
-        fun newInstance(parentMenuId:Int) =
+        fun newInstance(parentMenuId: Int) =
             TrangChuSubMenuFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_PARAM1, parentMenuId)

@@ -11,10 +11,6 @@ class OnClearFromReciverService : Service() {
         return START_NOT_STICKY
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
     override fun onTaskRemoved(rootIntent: Intent?) {
         stopSelf()
     }

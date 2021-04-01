@@ -8,45 +8,43 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import app.vtcnews.android.R
 import app.vtcnews.android.databinding.ArticeItemBinding
-import app.vtcnews.android.databinding.HotArticeHeaderBinding
+import app.vtcnews.android.databinding.ArticleMultiImgBinding
 import app.vtcnews.android.model.Article
+import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
 
 
 class ArticleAdapter : PagingDataAdapter<Article, RecyclerView.ViewHolder>(ArticleDiffCallback) {
     companion object {
-        private val TYPE_Normal = 1
-        private val TYPE_Lager = 2
+        private const val TYPE_Normal = 1
+        private const val TYPE_Lager = 2
     }
 
     var articleClickListener: (Article) -> Unit = {}
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItemViewType(position) == TYPE_Normal) {
-            (holder as ArticleHolder).bind(getItem(position)!!, articleClickListener)
-
-        }
-        else
-        {
+            (holder as ArticleHolder).bind(getItem(position)!!, articleClickListener, position)
+        } else {
             (holder as ArticleLagerHoder).bind(getItem(position)!!, articleClickListener)
         }
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if (viewType == TYPE_Normal) {
-            return ArticleHolder.from(parent)
+        return if (viewType == TYPE_Normal) {
+            ArticleHolder.from(parent)
         } else {
-            return ArticleLagerHoder.from(parent)
+            ArticleLagerHoder.from(parent)
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-
-//        if (position == 0 || position == 5 || position == 12) {
-//            return TYPE_Lager
-//
-//        } else {
-            return TYPE_Normal
-//        }
+        val article: Article = getItem(position)!!
+        return if (article.listURLImages != "") {
+            TYPE_Lager
+        } else {
+            TYPE_Normal
+        }
     }
 
 }
@@ -59,8 +57,9 @@ class ArticleHolder(private val binding: ArticeItemBinding) :
     private val txtDate = binding.txtHotArticleDate
     private val txtCategory = binding.txtHotArticleCategory
 
-    fun bind(article: Article, articleClickListener: (Article) -> Unit) {
-        Picasso.get().load(article.image169).into(img)
+    fun bind(article: Article, articleClickListener: (Article) -> Unit, position: Int) {
+        Picasso.get().load(article.image169).fit().centerCrop().noFade()
+            .memoryPolicy(MemoryPolicy.NO_CACHE).into(img)
 
         txtTitle.text = article.title
 
@@ -92,21 +91,31 @@ class ArticleHolder(private val binding: ArticeItemBinding) :
         fun from(parent: ViewGroup): ArticleHolder {
             val binding =
                 ArticeItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-
             return ArticleHolder(binding)
         }
     }
 }
 
-class ArticleLagerHoder(private val binding: HotArticeHeaderBinding) :
+class ArticleLagerHoder(private val binding: ArticleMultiImgBinding) :
     RecyclerView.ViewHolder(binding.root) {
-    private val img = binding.imgHotArticle
+    private val img1 = binding.ivArticle1
+    private val img2 = binding.ivArticle2
+    private val img3 = binding.ivArticle3
     private val txtTitle = binding.txtHotArticleTitle
     private val imgMedia = binding.imgHotArticleMediaType
     private val txtDate = binding.txtHotArticleDate
     private val txtCategory = binding.txtHotArticleCategory
     fun bind(article: Article, articleClickListener: (Article) -> Unit) {
-        Picasso.get().load(article.image169).into(img)
+        val listUrlImg = article.listURLImagesResize
+        val listUrlSplit: List<String> = listUrlImg!!.replace("[\"", "").replace("\"", "")
+            .replace("\"", "").replace("\\\"]", "").split(",")
+
+        Picasso.get().load(listUrlSplit[1]).fit().centerCrop().noFade()
+            .memoryPolicy(MemoryPolicy.NO_CACHE).into(img1)
+        Picasso.get().load(listUrlSplit[2]).fit().centerCrop().noFade()
+            .memoryPolicy(MemoryPolicy.NO_CACHE).into(img2)
+        Picasso.get().load(listUrlSplit[3]).fit().centerCrop().noFade()
+            .memoryPolicy(MemoryPolicy.NO_CACHE).into(img3)
 
         txtTitle.text = article.title
 
@@ -137,7 +146,7 @@ class ArticleLagerHoder(private val binding: HotArticeHeaderBinding) :
     companion object {
         fun from(parent: ViewGroup): ArticleLagerHoder {
             val binding =
-                HotArticeHeaderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                ArticleMultiImgBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
             return ArticleLagerHoder(binding)
         }

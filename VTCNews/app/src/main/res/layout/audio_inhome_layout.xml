@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/podcast">
+    android:background="@color/color_audio_section">
 
     <ImageView
         android:id="@+id/icVideo"
-        android:layout_width="@dimen/_25sdp"
-        android:layout_height="@dimen/_25sdp"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_30sdp"
         android:layout_margin="@dimen/_10sdp"
         android:src="@drawable/icaudiohome"
         app:layout_constraintBottom_toTopOf="@id/audio0"
@@ -23,10 +23,11 @@
         android:layout_margin="@dimen/_10sdp"
         android:text="@string/audio"
         android:textColor="#a3161d"
-        android:textSize="@dimen/_20sdp"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/icVideo"
         app:layout_constraintTop_toTopOf="parent" />
-
+    <!--    audio0-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/audio0"
         android:layout_width="match_parent"
@@ -52,32 +53,73 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
+            <ImageView
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_60sdp"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:src="@drawable/iconw" />
+
         </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
             android:text="Title"
             android:textColor="@color/colorTitle"
-            android:textSize="@dimen/_15sdp"
+            android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cvPodcast" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="120dp"
+            android:layout_height="35dp"
+            android:backgroundTint="@color/sachnoi"
+            app:cardCornerRadius="@dimen/_15sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:src="@drawable/icbook" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:text="Sách nói"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
         android:id="@+id/viewLine"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_1sdp"
+        android:layout_height="6dp"
         android:layout_margin="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginBottom="@dimen/_10sdp"
-        android:background="@color/black"
+        android:background="#eee1ac"
         app:layout_constraintTop_toBottomOf="@id/audio0" />
-
+    <!--    audio1-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/audio1"
         android:layout_width="match_parent"
@@ -92,6 +134,7 @@
             android:id="@+id/cardView4"
             android:layout_width="@dimen/_80sdp"
             android:layout_height="@dimen/_80sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -101,6 +144,13 @@
                 android:layout_height="match_parent"
                 android:src="@color/blue" />
 
+            <ImageView
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:src="@drawable/iconw" />
+
 
         </androidx.cardview.widget.CardView>
 
@@ -108,14 +158,47 @@
             android:id="@+id/tvAudio1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:padding="@dimen/_10sdp"
-            android:textStyle="bold"
-            android:text="Bài ca người giáo viên nhân dân"
+            android:layout_margin="@dimen/_10sdp"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:textColor="@color/black"
-            android:textSize="@dimen/_15sdp"
+            android:textSize="20sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/cardView4"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="120dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:backgroundTint="@color/amnhac"
+            app:cardCornerRadius="@dimen/_15sdp"
+            app:layout_constraintStart_toEndOf="@+id/cardView4"
+            app:layout_constraintTop_toBottomOf="@+id/tvAudio1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:src="@drawable/icmusic" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:text="Âm nhạc"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -126,9 +209,9 @@
         android:layout_margin="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginBottom="@dimen/_10sdp"
-        android:background="@color/black"
+        android:background="#eee1ac"
         app:layout_constraintTop_toBottomOf="@id/audio1" />
-
+    <!--    audio2-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/audio2"
         android:layout_width="match_parent"
@@ -153,6 +236,13 @@
                 android:layout_height="match_parent"
                 android:src="@color/blue" />
 
+            <ImageView
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:src="@drawable/iconw" />
+
 
         </androidx.cardview.widget.CardView>
 
@@ -160,14 +250,46 @@
             android:id="@+id/tvAudio2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:padding="@dimen/_10sdp"
-            android:textStyle="bold"
+            android:layout_margin="@dimen/_10sdp"
             android:text="Bài ca người giáo viên nhân dân"
             android:textColor="@color/black"
-            android:textSize="@dimen/_15sdp"
+            android:textSize="20sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/cardView3"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="120dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:backgroundTint="#d2bb6c"
+            app:cardCornerRadius="@dimen/_15sdp"
+            app:layout_constraintStart_toEndOf="@+id/cardView3"
+            app:layout_constraintTop_toBottomOf="@+id/tvAudio2">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:src="@drawable/icpcwhite" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:text="Podcast"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -178,28 +300,114 @@
         android:layout_margin="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginBottom="@dimen/_10sdp"
-        android:background="@color/black"
+        android:background="#eee1ac"
         app:layout_constraintTop_toBottomOf="@id/audio2" />
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <!--    audio3-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/audio5"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_margin="@dimen/_10sdp"
-        app:cardCornerRadius="@dimen/_6sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/viewLine3">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btXemThemPd"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/vtcBackground"
-            android:paddingLeft="@dimen/_30sdp"
-            android:paddingRight="@dimen/_30sdp"
-            android:text="Xem thêm"
-            android:textColor="@color/white" />
-    </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView5"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ivAudio3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@color/blue" />
+
+            <ImageView
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:src="@drawable/iconw" />
+
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/tvAudio3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10sdp"
+            android:text="Bài ca người giáo viên nhân dân"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/cardView5"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="120dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:backgroundTint="@color/sachnoi"
+            app:cardCornerRadius="@dimen/_15sdp"
+            app:layout_constraintStart_toEndOf="@+id/cardView5"
+            app:layout_constraintTop_toBottomOf="@+id/tvAudio3">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:src="@drawable/icbook" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:text="Sách nói"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/viewLine4"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:layout_margin="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:background="#eee1ac"
+        app:layout_constraintTop_toBottomOf="@id/audio5" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btXemThemPd"
+        android:layout_width="@dimen/_120sdp"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_margin="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:background="@drawable/custombuttonshowmoreaudio"
+        android:text="Xem thêm"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/viewLine4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

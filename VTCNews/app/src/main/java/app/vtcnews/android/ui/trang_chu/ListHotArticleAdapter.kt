@@ -12,9 +12,11 @@ import app.vtcnews.android.model.ItemChannel
 import app.vtcnews.android.ui.trang_chu_sub_section.getDateDiff
 import com.squareup.picasso.Picasso
 
-class ListHotArticleAdapter(val listItemChannel : List<ItemChannel>):RecyclerView.Adapter<ListHotArticleAdapter.HotArticleHolder>() {
-    var onClickItem:(ItemChannel) -> Unit = {}
-    class HotArticleHolder(v:View) : RecyclerView.ViewHolder(v) {
+class ListHotArticleAdapter(val listItemChannel: List<ItemChannel>) :
+    RecyclerView.Adapter<ListHotArticleAdapter.HotArticleHolder>() {
+    var onClickItem: (ItemChannel) -> Unit = {}
+
+    class HotArticleHolder(v: View) : RecyclerView.ViewHolder(v) {
         val ivArticle = v.findViewById<ImageView>(R.id.img_hot_article)
         val icType = v.findViewById<ImageView>(R.id.img_hot_article_media_type)
         val tvTitle = v.findViewById<TextView>(R.id.txt_hot_article_title)
@@ -34,7 +36,7 @@ class ListHotArticleAdapter(val listItemChannel : List<ItemChannel>):RecyclerVie
 //        Glide.with(holder.ivArticle)
 //            .load(ItemChannel.image169)
 //            .into(holder.ivArticle)
-        Picasso.get().load(ItemChannel.image169).into(holder.ivArticle)
+        Picasso.get().load(ItemChannel.image169).fit().noFade().into(holder.ivArticle)
 
         holder.tvTitle.text = ItemChannel.title
 
@@ -58,7 +60,10 @@ class ListHotArticleAdapter(val listItemChannel : List<ItemChannel>):RecyclerVie
 
         holder.tvCategory.text = ItemChannel.categoryName
 
-        holder.tvTimeDiff.text = getDateDiff(ItemChannel.publishedDate!!, holder.tvTimeDiff.context.applicationContext.resources)
+        holder.tvTimeDiff.text = getDateDiff(
+            ItemChannel.publishedDate!!,
+            holder.tvTimeDiff.context.applicationContext.resources
+        )
     }
 
     override fun getItemCount(): Int = listItemChannel.size

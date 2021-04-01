@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/_60sdp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="@dimen/_5sdp"
     android:orientation="vertical">
 
@@ -11,8 +12,8 @@
         android:layout_height="@dimen/_50sdp"
         android:orientation="horizontal"
         android:weightSum="3">
-
-        <RelativeLayout
+        <!--        //img player-->
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.5">
@@ -20,33 +21,61 @@
             <ImageView
                 android:id="@+id/ivChapter"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitXY" />
+                android:layout_height="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="H,1:1" />
 
             <ImageView
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:id="@+id/ivIsPlayChapter"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
                 android:layout_centerInParent="true"
                 android:src="@drawable/iconw"
                 android:visibility="invisible" />
-        </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <!--        title-->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingLeft="@dimen/_5sdp"
+            android:orientation="vertical">
 
             <TextView
+
                 android:id="@+id/tvTitleChapter"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:orientation="vertical"
-                android:padding="@dimen/_10sdp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:ellipsize="end"
+                android:orientation="vertical"
                 android:singleLine="true"
                 android:text="Không gia đình (C1)"
                 android:textColor="@color/text_color_titlelistchitiet"
+                android:textSize="@dimen/_15sdp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvAuthur"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:orientation="vertical"
+                android:singleLine="true"
+                android:text="Hector Malot"
+                android:textColor="#313131"
                 android:textSize="@dimen/_12sdp" />
+        </LinearLayout>
 
-
+        <!--        iconShare-->
         <ImageView
             android:id="@+id/btShare"
             android:layout_width="0dp"

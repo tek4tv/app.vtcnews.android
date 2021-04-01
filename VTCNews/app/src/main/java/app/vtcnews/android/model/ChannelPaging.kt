@@ -2,12 +2,12 @@ package app.vtcnews.android.model
 
 import com.squareup.moshi.Json
 
-data class ChannelPaging (
+data class ChannelPaging(
     @Json(name = "Info")
     val info: Info,
 
     @Json(name = "ThemeModel")
-    val themeModel: List<Any?> ? = null,
+    val themeModel: List<Any?>? = null,
 
     @Json(name = "Items")
     val items: List<ItemChannel>,
@@ -23,7 +23,8 @@ data class ChannelPaging (
 
     @Json(name = "TotalPage")
     val totalPage: Long? = null
-        )
+)
+
 data class Info(
     @Json(name = "Id")
     val id: Long,
@@ -40,6 +41,7 @@ data class Info(
     @Json(name = "ImageBannerMobileUrl")
     val imageBannerMobileURL: Any? = null
 )
+
 data class ItemChannel(
     @Json(name = "Id")
     val id: Int,

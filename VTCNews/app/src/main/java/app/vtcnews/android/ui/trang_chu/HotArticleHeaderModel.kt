@@ -18,7 +18,7 @@ abstract class HotArticleHeaderModel : EpoxyModelWithHolder<HotArticleViewHolder
     lateinit var hotArticle: Article
 
     @EpoxyAttribute
-    lateinit var articleClickListener : (Article) -> Unit
+    lateinit var articleClickListener: (Article) -> Unit
 
     override fun bind(holder: HotArticleViewHolder) {
         holder.apply {
@@ -38,8 +38,10 @@ abstract class HotArticleHeaderModel : EpoxyModelWithHolder<HotArticleViewHolder
 
             txtCategory.text = hotArticle.categoryName
 
-            //time: 2020-12-28T09:45:00
-            txtDate.text = getDateDiff(hotArticle.publishedDate!!, txtDate.context.applicationContext.resources)
+            txtDate.text = getDateDiff(
+                hotArticle.publishedDate!!,
+                txtDate.context.applicationContext.resources
+            )
 
             holder.root.setOnClickListener {
                 articleClickListener.invoke(hotArticle)
@@ -55,4 +57,5 @@ class HotArticleViewHolder : KotlinEpoxyHolder() {
     val txtDate by bind<TextView>(R.id.txt_hot_article_date)
     val txtCategory by bind<TextView>(R.id.txt_hot_article_category)
     val root by bind<View>(R.id.article_item_root)
+    val view by bind<View>(R.id.view)
 }

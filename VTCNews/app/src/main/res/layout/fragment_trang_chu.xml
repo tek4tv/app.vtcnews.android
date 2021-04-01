@@ -8,6 +8,16 @@
     android:background="@color/white"
     tools:context=".ui.trang_chu.TrangChuFragment">
 
+    <ProgressBar
+        android:id="@+id/pbLoading"
+        android:layout_width="50dp"
+        android:theme="@style/progressBarBlue"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="50dp" />
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_menus"
         style="@style/MyCustomTabLayout"
@@ -26,6 +36,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tab_menus">
+
         <com.airbnb.epoxy.EpoxyRecyclerView
             android:id="@+id/rv_trangchu"
             android:layout_width="match_parent"

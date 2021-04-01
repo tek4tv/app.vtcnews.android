@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string
+        name="ga_trackingId"
+        translatable="false">UA-2442143-5
+    </string>
+    <!-- Enable automatic Activity measurement -->
+    <bool name="ga_autoActivityTracking">true</bool>
+
+    <!-- The screen names that will appear in reports -->
+    <screenName name="app.vtcnews.android.MainActivity">
+        AnalyticsCountScreen
+    </screenName>
+</resources>

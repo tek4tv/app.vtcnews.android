@@ -9,8 +9,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import app.vtcnews.android.R
 import app.vtcnews.android.model.Article
-import app.vtcnews.android.model.Audio.AlbumPaging
-import app.vtcnews.android.model.Video
 import com.squareup.picasso.Picasso
 
 class VideoItemAdapter(private val listArticle: List<Article>) :
@@ -22,7 +20,8 @@ class VideoItemAdapter(private val listArticle: List<Article>) :
     override
     fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView =
-            LayoutInflater.from(parent.context).inflate(R.layout.video_item_next_video, parent, false)
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.video_item_next_video, parent, false)
         return ViewHolder(itemView)
     }
 
@@ -34,7 +33,7 @@ class VideoItemAdapter(private val listArticle: List<Article>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val article = listArticle[position]
         holder.icItem.setImageResource(R.drawable.icroundplay)
-        holder.tvTitleItem.setText(article.title)
+        holder.tvTitleItem.text = article.title
         Picasso.get().load(article.image169).fit().into(holder.ivVideo)
         holder.itemAudio.setOnClickListener {
             clickListen.invoke(article)

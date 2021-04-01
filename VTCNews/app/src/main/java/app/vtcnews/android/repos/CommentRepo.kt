@@ -11,9 +11,23 @@ import javax.inject.Singleton
 class CommentRepo @Inject constructor(
     val commentService: CommentService
 ) {
-    suspend fun getComment(id:Long,page:Int): Resource<Comment> = performNetworkCall {
-        commentService.getComment(id,page)
+    suspend fun getComment(id: Long, page: Int): Resource<Comment> = performNetworkCall {
+        commentService.getComment(id, page)
     }
-    suspend fun postComment(username:String,email:String,articleId : String,idCm:String,value:String):Resource<Long>
-    = performNetworkCall { commentService.postCommentQuery(username,email,articleId,idCm ,value) }
+
+    suspend fun postComment(
+        username: String,
+        email: String,
+        articleId: String,
+        idCm: String,
+        value: String
+    ): Resource<Long> = performNetworkCall {
+        commentService.postCommentQuery(
+            username,
+            email,
+            articleId,
+            idCm,
+            value
+        )
+    }
 }

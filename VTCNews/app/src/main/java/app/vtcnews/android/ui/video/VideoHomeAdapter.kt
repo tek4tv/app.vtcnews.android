@@ -27,7 +27,7 @@ class VideoHomeAdapter(private val listVideo: List<Video>) :
 
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoHomeAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView =
             LayoutInflater.from(parent.context).inflate(R.layout.video_item_layout, parent, false)
         return ViewHolder(itemView)
@@ -35,17 +35,21 @@ class VideoHomeAdapter(private val listVideo: List<Video>) :
 
     override fun getItemCount(): Int = listVideo.size
 
-    override fun onBindViewHolder(holder: VideoHomeAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val video = listVideo[position]
         holder.tvChannel.visibility = View.GONE
-        holder.tvTitleVideo.setText(video.title)
-        Picasso.get().load(video.image169_Large).fit().into(holder.ivVideo)
-        holder.tvCategoryVideo.setText(video.categoryName)
-        holder.tvTimeDiffVideo.setText(
-            getDateDiff(
-                video.publishedDate,
-                holder.tvTimeDiffVideo.context.resources
-            )
+        holder.tvTitleVideo.text = video.title
+        if (video.image430 != null) {
+            Picasso.get().load(video.image430).fit().noFade().centerCrop().into(holder.ivVideo)
+        } else {
+            Picasso.get().load(video.image169_Large).fit().noFade().centerCrop()
+                .into(holder.ivVideo)
+        }
+
+        holder.tvCategoryVideo.text = video.categoryName
+        holder.tvTimeDiffVideo.text = getDateDiff(
+            video.publishedDate,
+            holder.tvTimeDiffVideo.context.resources
         )
         holder.itemVideo.setOnClickListener(View.OnClickListener {
             clickListen.invoke(video)

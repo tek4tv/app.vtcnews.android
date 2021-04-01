@@ -2,7 +2,7 @@ package app.vtcnews.android.model
 
 import com.squareup.moshi.Json
 
-data class Video (
+data class Video(
     @Json(name = "Id")
     val id: Long,
 
@@ -76,24 +76,29 @@ data class Video (
     val image169_Large: String? = null,
 
     @Json(name = "image16_9")
-    val image169: String? = null
+    val image169: String? = null,
+    @Json(name = "ImageResize430x243")
+    val image430: String? = null
+
 )
+
 data class VideoDetail(
     @Json(name = "Id")
-    val id: Long ,
+    val id: Long,
 
     @Json(name = "ArticleId")
-    val articleID: Long ,
+    val articleID: Long,
 
     @Json(name = "FileId")
-    val fileID: Long ,
+    val fileID: Long,
 
     @Json(name = "VideoURL")
     val videoURL: String
 )
+
 data class ArticleVideo(
     @Json(name = "Id")
     var id: Long,
     @Json(name = "URL")
-    var url : String
+    var url: String
 )

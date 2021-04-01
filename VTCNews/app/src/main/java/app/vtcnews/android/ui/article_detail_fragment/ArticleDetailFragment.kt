@@ -2,55 +2,49 @@ package app.vtcnews.android.ui.article_detail_fragment
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.pm.ActivityInfo
-import android.content.res.Configuration
+import android.net.Uri
 import android.os.Bundle
-import android.view.*
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.webkit.WebSettings
-import android.widget.ImageView
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.view.GravityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.vtcnews.android.R
 import app.vtcnews.android.databinding.FragmentArticleDetailBinding
 import app.vtcnews.android.model.Article
 import app.vtcnews.android.model.ArticleDetail
-import app.vtcnews.android.model.ArticleVideo
-import app.vtcnews.android.ui.audio.AudioHomeFragment
 import app.vtcnews.android.ui.comment.CommentFragment
-import app.vtcnews.android.ui.share.ShareFragment
 import app.vtcnews.android.ui.trang_chu.ArticleItemAdapter
-import app.vtcnews.android.ui.trang_chu.TrangChuFragment
 import app.vtcnews.android.ui.trang_chu_sub_section.ArticlesFragment
 import app.vtcnews.android.ui.trang_chu_sub_section.getDateDiff
+import app.vtcnews.android.ui.video.FragmentChitietVideo
 import app.vtcnews.android.viewmodels.ArticleDetailViewModel
-import com.example.vtclive.Video.FragmentVideoPage
-import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.util.Util
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
 
 private const val ARG_PARAM1 = "param1"
 
 @AndroidEntryPoint
 class ArticleDetailFragment : Fragment() {
     private var articleId: Int = 0
-    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
     private lateinit var binding: FragmentArticleDetailBinding
-    private var curFrag = "home"
     private val viewModel by viewModels<ArticleDetailViewModel>()
-    private var player: SimpleExoPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,53 +60,26 @@ class ArticleDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentArticleDetailBinding.inflate(inflater, container, false)
-        toolbar = activity?.findViewById(R.id.toolbar)!!
+
+        //xoa frag video neu mo article
         val fragment = requireActivity().supportFragmentManager.findFragmentByTag("fragVideo")
         if (fragment != null) {
             requireActivity().supportFragmentManager.beginTransaction().remove(fragment).commit()
         }
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getArticleDetail()
-//      viewModel.getArticleByCategory(1, requireArguments().getLong("categoryId"))
+
+        //lay list cung chuyen muc
+        viewModel.getArticleByCategory(1, requireArguments().getLong("categoryId"))
         registerObservers()
         addCommentFrag()
+        addNewNews()
         buttonClick()
         binding.articleDetailRoot.isVisible = true
-        val param = binding.articleVideo.layoutParams
-        param.height = resources.getDimension(R.dimen._170sdp).toInt()
-        binding.articleVideo.layoutParams = param
-        view.isFocusableInTouchMode = true
-        view.requestFocus()
-        view.setOnKeyListener(View.OnKeyListener { view, i, keyEvent ->
-            if (i == KeyEvent.KEYCODE_BACK) {
-                val navBottom =
-                    activity?.findViewById<BottomNavigationView>(R.id.main_bottom_nav)
-                val orientation = resources.configuration.orientation
-                requireActivity().requestedOrientation =
-                    if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                        activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-                        navBottom?.isVisible = true
-                        toolbar.visibility = View.VISIBLE
-                        binding.articleDetailRoot.isVisible = true
-                        val param = binding.articleVideo.layoutParams
-                        param.height = resources.getDimension(R.dimen._170sdp).toInt()
-                        binding.articleVideo.layoutParams = param
-                        val r = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-                        r
-                    } else {
-                        val r = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-//                        activity?.onBackPressed()
-                        r
-                    }
-                true
-            }
-            false
-        })
     }
 
     private fun addCommentFrag() {
@@ -124,170 +91,45 @@ class ArticleDetailFragment : Fragment() {
             .commit()
     }
 
-
-    private fun setupNavDrawer() {
-        val drawerLayout = requireActivity().findViewById<DrawerLayout>(R.id.drawer_layout)
-        val mainNavDrawer = requireActivity().findViewById<NavigationView>(R.id.main_nav_drawer)
-        val mainBottomNav =
-            requireActivity().findViewById<BottomNavigationView>(R.id.main_bottom_nav)
-        val toggle = ActionBarDrawerToggle(
-            requireActivity(),
-            drawerLayout,
-            toolbar,
-            R.string.open_drawer,
-            R.string.close_drawer
-        )
-        toolbar.setNavigationIcon(R.drawable.ic_baseline_hambug)
-        drawerLayout.addDrawerListener(toggle)
-        requireActivity().actionBar?.setHomeButtonEnabled(true)
-        toggle.syncState()
-
-        mainNavDrawer.setNavigationItemSelectedListener {
-            when (it.itemId) {
-                R.id.item_nav_drawer_trang_chu -> {
-                    switchToTrangChu()
-                    mainBottomNav.selectedItemId = R.id.menuTrangChu
-                }
-
-                R.id.item_nav_drawer_trending -> {
-                    switchToTrending()
-                    mainBottomNav.selectedItemId = R.id.menuTrending
-                }
-
-                R.id.item_nav_drawer_audio -> {
-                    switchToAudio()
-                    mainBottomNav.selectedItemId = R.id.menuAudio
-                }
-                R.id.item_nav_drawer_video -> {
-                    switchToVideo()
-                    mainBottomNav.selectedItemId = R.id.menuVideo
-                }
-
-            }
-
-            drawerLayout.closeDrawer(GravityCompat.START)
-            true
-        }
+    private fun addNewNews() {
+        parentFragmentManager.beginTransaction()
+            .add(R.id.newNews_frag_holder, ArticlesFragment.newInstance(-1))
+            .commit()
     }
 
-    private fun switchToTrangChu() {
-        if (
-            curFrag == "home") {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_holder, TrangChuFragment.newInstance())
+    private fun buttonClick() {
+        binding.txtCategory.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(
+                    android.R.anim.slide_in_left,
+                    android.R.anim.slide_out_right,
+                    android.R.anim.slide_in_left,
+                    android.R.anim.slide_out_right
+                )
+                .add(
+                    R.id.fragment_holder,
+                    ArticleSameCategoryFragment.newInstance(
+                        requireArguments().getLong("categoryId").toInt()
+                    )
+                )
+                .addToBackStack(null)
                 .commit()
-            curFrag = "home"
-        } else {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
-                .replace(R.id.fragment_holder, TrangChuFragment.newInstance())
-                .commit()
-            curFrag = "home"
-        }
-
-    }
-
-    private fun switchToTrending() {
-
-        if (curFrag == "trending") return
-
-        requireActivity().supportFragmentManager.beginTransaction()
-            ?.setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
-            .replace(R.id.fragment_holder, ArticlesFragment.newInstance(-1))
-            .commit()
-        curFrag = "trending"
-
-    }
-
-    private fun switchToAudio() {
-
-
-        if (curFrag == "audio") return
-
-        requireActivity().supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
-            .replace(R.id.fragment_holder, AudioHomeFragment.newInstance())
-            .commit()
-        curFrag = "audio"
-
-    }
-
-    private fun switchToVideo() {
-
-        if (curFrag == "video") return
-
-        requireActivity().supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
-            .replace(R.id.fragment_holder, FragmentVideoPage.newInstance())
-            .commit()
-        curFrag = "video"
-
-    }
-
-    private fun switchToShare() {
-        if (curFrag == "share") return
-
-        requireActivity().supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
-            .replace(R.id.fragment_holder, ShareFragment.newInstance())
-            .commit()
-        curFrag = "share"
-
-    }
-
-
-    override fun onStop() {
-        super.onStop()
-        if (Util.SDK_INT >= 24) {
-            releasePlayer()
-        }
-
-    }
-
-    override fun onStart() {
-        super.onStart()
-        if (Util.SDK_INT >= 24) {
-            initPlayer()
         }
     }
-
-    override fun onResume() {
-        super.onResume()
-        if (Util.SDK_INT < 24) {
-            initPlayer()
-        }
-        val btPlay = activity?.findViewById<ImageView>(R.id.bt_exo_play)
-        if (player!!.isPlaying) {
-
-            player!!.pause()
-            btPlay?.setImageResource(R.drawable.ic_baseline_play_arrow)
-
-        } else {
-            player!!.play()
-            btPlay?.setImageResource(R.drawable.ic_baseline_pause)
-        }
-
-    }
-
-
-    override fun onPause() {
-        super.onPause()
-        if (Util.SDK_INT < 24) {
-            releasePlayer()
-        }
-    }
-
 
     private fun registerObservers() {
         viewModel.articleDetail.observe(viewLifecycleOwner)
         {
             if (it != null) {
-                binding.pb.visibility = View.GONE
                 binding.svContent.isVisible = true
                 populateArticleUi(it)
                 setupRvMoreArticle(it.relatedArticleList)
+                lifecycleScope.launch {
+                    delay(500)
+                    binding.btnShareArticle.isVisible = true
+                    binding.btnArticleLike.isVisible = true
+                }
             } else {
-                binding.pb.isVisible = true
                 binding.svContent.isVisible = false
             }
 
@@ -297,93 +139,110 @@ class ArticleDetailFragment : Fragment() {
             Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
         }
 
-        viewModel.articleVideos.observe(viewLifecycleOwner)
-        {
-            setupVideoList(it)
-        }
     }
 
 
     private fun setupRvMoreArticle(listArticle: List<Article>) {
-        val adapterMoreArticle = ArticleItemAdapter(listArticle.take(8))
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        binding.rvMoreArticle.adapter = adapterMoreArticle
-        binding.rvMoreArticle.layoutManager = layoutManager
+        //list lien quan/them thong tin
+        if (listArticle.isNotEmpty()) {
+            binding.tvThemThongTin.visibility = View.VISIBLE
+            val adapterMoreArticle = ArticleItemAdapter(listArticle)
+            val layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            binding.rvMoreArticle.adapter = adapterMoreArticle
+            binding.rvMoreArticle.layoutManager = layoutManager
+            binding.rvMoreArticle.setHasFixedSize(true)
 
-        adapterMoreArticle.articleClickListener =
-            { Article ->
-                parentFragmentManager.popBackStack()
-                openWith(parentFragmentManager, Article.id, Article.categoryID!!)
-            }
-    }
+            adapterMoreArticle.articleClickListener =
+                { it ->
+                    val fragmentManager = requireActivity().supportFragmentManager
+                    if (it.isVideoArticle == 1L) {
+                        val player = SimpleExoPlayer.Builder(requireContext()).build()
+                        player.release()
+                        viewModel.getVideoDetail(it.id.toLong()).observe(viewLifecycleOwner)
+                        { listVideoDetail ->
+                            if (listVideoDetail.isNotEmpty()) {
+                                if (requireActivity().supportFragmentManager.findFragmentByTag("fragVideo") != null) {
+                                    requireActivity().supportFragmentManager.popBackStack()
+                                }
+                                requireActivity().supportFragmentManager.beginTransaction()
+                                    .setCustomAnimations(
+                                        android.R.anim.slide_in_left,
+                                        android.R.anim.slide_out_right,
+                                        android.R.anim.slide_in_left,
+                                        android.R.anim.slide_out_right
+                                    )
+                                    .replace(
+                                        R.id.frame_player_podcast,
+                                        FragmentChitietVideo.newInstance(
+                                            it.title!!,
+                                            it.id.toLong(),
+                                            it.categoryID!!,
+                                            it.description!!,
+                                            it.categoryName!!,
+                                            it.publishedDate!!
+                                        ), "fragVideo"
+                                    ).addToBackStack(null).commit()
 
-    private fun setupVideoList(videoList: List<ArticleVideo>) {
-        viewModel.curVideo = videoList[0]
-        player?.clearMediaItems()
-        playVideo(videoList.first())
-        videoList.drop(1).forEach {
-            val mediaItem = MediaItem.fromUri("https://media.vtc.vn${it.url}")
-            player?.addMediaItem(mediaItem)
+                            } else {
+                                viewModel.articleId = it.id
+                                viewModel.getArticleDetailIsNull()
+                                viewModel.boolean.observe(viewLifecycleOwner)
+                                { isSucces ->
+                                    if (isSucces == true) {
+                                        ArticleDetailFragment.openWith(
+                                            parentFragmentManager,
+                                            it.id,
+                                            it.categoryID!!
+                                        )
+                                    } else {
+                                        val toast =
+                                            Toast.makeText(
+                                                context,
+                                                R.string.videoerr,
+                                                Toast.LENGTH_SHORT
+                                            )
+                                        toast.show()
+                                        lifecycleScope.launch()
+                                        {
+                                            delay(200)
+                                            toast.cancel()
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                    } else if (it.isVideoArticle == 0L) {
+                        openWith(fragmentManager, it.id, it.categoryID!!)
+                    }
+                }
+        } else {
+            binding.tvThemThongTin.visibility = View.GONE
         }
-    }
 
-    private fun initPlayer() {
-        player = SimpleExoPlayer.Builder(requireContext())
-            .build()
-        binding.articleVideo.player = player
-        player?.playWhenReady = true
-        playVideo(viewModel.curVideo)
-        binding.articleVideo.hideController()
-        player?.play()
-    }
 
-    private fun releasePlayer() {
-        if (player != null) {
-            viewModel.apply {
-                playbackPosition = player?.currentPosition!!
-                currentWindow = player?.currentWindowIndex!!
-            }
-            player?.release()
-            player = null
+        //list cung chuyen muc
+        val layoutManagerSameCate = LinearLayoutManager(
+            context,
+            LinearLayoutManager.VERTICAL,
+            false
+        )
+        viewModel.articleListByCategory.observe(viewLifecycleOwner)
+        {
+            var adapterSameArticle = ArticleItemAdapter(it.take(8))
+            binding.rvSameCategory.adapter = adapterSameArticle
+            binding.rvSameCategory.layoutManager = layoutManagerSameCate
+            binding.rvSameCategory.setHasFixedSize(true)
+            adapterSameArticle.articleClickListener =
+                { Article ->
+                    openWith(parentFragmentManager, Article.id, Article.categoryID!!)
+                }
+
         }
-    }
-
-    private fun playVideo(video: ArticleVideo?) {
-        if (video == null) return
-
-        if (video.id != viewModel.curVideo?.id)
-            viewModel.resetVideoParams()
-
-        val mediaItem = MediaItem.fromUri("https://media.vtc.vn${video.url}")
-        player?.apply {
-            setMediaItem(mediaItem)
-            seekTo(viewModel.currentWindow, viewModel.playbackPosition)
-            prepare()
-        }
-        viewModel.curVideo = video
     }
 
     private fun populateArticleUi(articleDetail: ArticleDetail) {
-        val videoList = getVideoList(articleDetail.detailData.content!!)
-
-        if (videoList.isNotEmpty()) {
-            val rootLayout = binding.articleDetailRoot
-            binding.articleVideo.visibility = View.VISIBLE
-
-            val rootConstraintSet = ConstraintSet()
-            rootConstraintSet.clone(rootLayout)
-
-            rootConstraintSet.connect(
-                R.id.txt_article_title,
-                ConstraintSet.TOP,
-                R.id.article_video,
-                ConstraintSet.BOTTOM
-            )
-
-            rootConstraintSet.applyTo(rootLayout)
-
-            loadVideo(videoList)
-        }
 
         binding.apply {
             val detailData = articleDetail.detailData
@@ -394,10 +253,48 @@ class ArticleDetailFragment : Fragment() {
             txtDescription.text = detailData.description
             txtArticleAuthor.text = detailData.author ?: ""
 
-            txtArticleTags.text =
-                articleDetail.listTag.fold("") { str, tag ->
-                    str.plus(tag.tagName ?: "").plus(", ")
+            binding.layoutTag.removeAllViews()
+            for (i in articleDetail.listTag.indices) {
+                val tvTag = TextView(context)
+                if (i == 0) {
+                    tvTag.text = articleDetail.listTag[0].tagName!!.trim()
+                } else {
+                    tvTag.text = ", ".plus(articleDetail.listTag[i].tagName).trim()
                 }
+
+                tvTag.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.blue
+                    )
+                )
+                tvTag.textSize = 16f
+
+                val params = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+
+                tvTag.layoutParams = params
+                binding.layoutTag.addView(tvTag)
+                tvTag.setOnClickListener {
+                    parentFragmentManager.beginTransaction()
+                        .setCustomAnimations(
+                            android.R.anim.slide_in_left,
+                            android.R.anim.slide_out_right,
+                            android.R.anim.slide_in_left,
+                            android.R.anim.slide_out_right
+                        )
+                        .add(
+                            R.id.fragment_holder,
+                            ListByTagFragment.newInstance(
+                                articleDetail.listTag[i].tagTitleWithoutUnicode!!
+                            )
+                        )
+                        .addToBackStack(null)
+                        .commit()
+                }
+            }
 
             btnArticleLike.text =
                 resources.getString(R.string.like, detailData.likeCount ?: 0L)
@@ -415,89 +312,108 @@ class ArticleDetailFragment : Fragment() {
             }
         }
 
-        displayContent(articleDetail.detailData.content)
+        displayContent(articleDetail.detailData.content!!)
     }
 
-    private fun loadVideo(videoList: List<String>) {
-        viewModel.getVideoList(videoList)
-    }
-
-    private fun getVideoList(data: String): List<String> {
-        val videoReg = Regex("<div.*?class=\"video-element\".*?>")
-        val videoIdReg = Regex("data-id=\".*?\"")
-        return videoReg.findAll(data).map {
-            videoIdReg.find(it.value)!!.value.drop(9).dropLast(1)
-        }.toList()
-    }
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun displayContent(data: String) {
-
-        val imgReg = Regex("<img .*?>")
-        val srcReg = Regex("data-src=\".*?\"")
-        val altReg = Regex(" alt=\".*?\"")
-        val imgTags = imgReg.replace(data) {
-            var res = "<img "
-            res += "${altReg.find(it.value)?.value}  ${srcReg.find(it.value)?.value?.drop(5)}>"
-            res
-        }
 
         binding.webContent.apply {
             settings.javaScriptEnabled = true
             settings.domStorageEnabled = true
             settings.loadsImagesAutomatically = true
+            settings.javaScriptCanOpenWindowsAutomatically = true
             settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
             settings.layoutAlgorithm = WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING
 
-            val imageStyle =
-                "<style>img{max-width:100%;height: auto; }</style>"
+            val imageStyle = "<style>" +
+                    ".img-fluid {max-width: 100%; height:auto;}" +
+                    "p{padding-left:10px;padding-right:10px;}" +
+                    ".expEdit {color:rgb(81, 81, 81);background:rgb(243, 243, 243);font-size: 14px;padding: 10px;line-height: 1.4;}" +
+                    "</style>"
 
-            loadData(
-                "$imageStyle $imgTags",
-                "text/html", "UTF-8",
-            )
-        }
-    }
-
-    private fun buttonClick() {
-        val navBottom = activity?.findViewById<BottomNavigationView>(R.id.main_bottom_nav)
-        val btPlay = activity?.findViewById<ImageView>(R.id.bt_exo_play)
-        val btFullsc = activity?.findViewById<ImageView>(R.id.bt_exo_fullscreen)
-        btFullsc?.setOnClickListener {
-            val orientation = resources.configuration.orientation
-            requireActivity().requestedOrientation =
-                if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                    activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-                    navBottom?.isVisible = true
-                    toolbar.visibility = View.VISIBLE
-                    binding.articleDetailRoot.isVisible = true
-                    val param = binding.articleVideo.layoutParams
-                    param.height = resources.getDimension(R.dimen._170sdp).toInt()
-                    binding.articleVideo.layoutParams = param
-                    val r = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-                    r
-                } else {
-                    activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-                    binding.articleDetailRoot.isVisible = false
-                    navBottom?.isVisible = false
-                    toolbar.visibility = View.GONE
-                    val param = binding.articleVideo.layoutParams
-                    param.height = ConstraintLayout.LayoutParams.MATCH_PARENT
-                    binding.articleVideo.layoutParams = param
-                    val r = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-                    r
+            val js = """
+             ${'$'}(".lazy").each(function () {
+                    ${'$'}(this).attr("src", ${'$'}(this).attr("data-src"));
+                    ${'$'}(this).removeAttr("data-src");
+                    ${'$'}(this).addClass('img-fluid');
+                });
+                
+                var dataId = ${'$'}(".video-element").data("id");
+                var text = '<div id="loadding" class="hidden d-flex justify-content-center" style="margin-bottom:60px; align-items:center">';
+                text + '=  < i class="demo-icon icon-spin5 animate-spin" ></i >';
+                text += '</div >';
+                ${'$'}(".video-element").html(text);
+                if (dataId) {
+                    if (dataId.length > 0) {
+                        var html = '';
+                        ${'$'}.ajax({
+                            url: "https://api.vtcnews.tek4tv.vn/api/home/video/GetVideoById?text=" + dataId,
+                            type: 'GET'
+                        }).done(function (data) {
+                            html += '<script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>';
+                            html += '<script src="https://vjs.zencdn.net/7.8.4/video.js"></script>'
+                            html += '<video id="my-video"';
+                            html += 'class="video-js lazy"';
+                            html += 'controls';
+                            html += ' preload="auto"';
+                            html += ' height="300" ';
+                            html += 'poster="MY_VIDEO_POSTER.jpg"';
+                            html += ' data-setup="{}" style="width:100%">';
+                            html += '  <source src="https://media.vtc.vn' + data[0].URL + '" type="video/mp4" />';
+                            html += '   <source src="MY_VIDEO.webm" type="video/webm" />';
+                            html += '</video> ';
+                            ${'$'}(".video-element").html(html);
+                        })
+                    }
                 }
-        }
-        btPlay!!.setOnClickListener {
-            if (player!!.isPlaying) {
-                player!!.pause()
-                btPlay.setImageResource(R.drawable.ic_baseline_play_arrow)
-            } else {
-                player!!.play()
-                btPlay.setImageResource(R.drawable.ic_baseline_pause)
+            """.trimIndent()
+            val script = """
+                <link href="https://vjs.zencdn.net/7.10.2/video-js.css" rel="stylesheet" />
+                <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.10/jquery.lazy.min.js"></script>
+                <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.10/jquery.lazy.plugins.min.js"></script>
+                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+                <script src="https://vjs.zencdn.net/7.10.2/video.min.js"></script>
+            """.trimIndent()
+            webViewClient = object : WebViewClient() {
+
+                override fun onPageFinished(view: WebView?, url: String?) {
+                    super.onPageFinished(view, url)
+                    evaluateJavascript(js, null)
+                }
+
+                override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+                    try {
+                        Log.i("url", "link:  $url")
+                        val browserIntent =
+                            Intent("android.intent.action.VIEW", Uri.parse(url))
+                        startActivity(browserIntent)
+                        loadData(
+                            "$imageStyle $script $data",
+                            "text/html", "UTF-8"
+                        )
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                    return false
+                }
+
+
             }
+            loadData(
+                "$imageStyle $script $data",
+                "text/html", "UTF-8"
+            )
+
+
         }
     }
+
 
     companion object {
         @JvmStatic
@@ -511,8 +427,13 @@ class ArticleDetailFragment : Fragment() {
 
         fun openWith(fragmentManager: FragmentManager, articleId: Int, categogyId: Long) {
             fragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
-                .add(R.id.fragment_holder, newInstance(articleId, categogyId), "article")
+                .setCustomAnimations(
+                    android.R.anim.slide_in_left,
+                    android.R.anim.slide_out_right,
+                    android.R.anim.slide_in_left,
+                    android.R.anim.slide_out_right
+                )
+                .replace(R.id.fragment_holder, newInstance(articleId, categogyId), "article")
                 .addToBackStack(null)
                 .commit()
         }

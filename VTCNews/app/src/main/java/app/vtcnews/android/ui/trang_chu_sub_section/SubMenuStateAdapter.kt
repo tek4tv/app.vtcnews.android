@@ -7,10 +7,10 @@ import app.vtcnews.android.model.MenuItem
 class SubMenuStateAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
     var menuList = listOf<MenuItem>()
-    set(value) {
-        field = value
-        notifyDataSetChanged()
-    }
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     override fun getItemCount(): Int = menuList.size
 

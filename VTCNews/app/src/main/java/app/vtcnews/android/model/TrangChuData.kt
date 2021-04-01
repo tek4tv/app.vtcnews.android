@@ -5,7 +5,9 @@ import app.vtcnews.android.model.Audio.AlbumPaging
 data class TrangChuData(
     var hotChannels: List<HotChannel> = listOf(),
     var hotArticles: List<Article> = listOf(),
-    var articlesSuggestionsHome : List<Article> = listOf(),
-    var videos : List<Video> = listOf(),
-    var audio : List<AlbumPaging> = listOf()
+    var articlesSuggestionsHome: List<Article> = listOf(),
+    var videos: List<Video> = listOf(),
+    var audioPD: List<AlbumPaging> = listOf(),
+    var audioMusic: List<AlbumPaging> = listOf(),
+    var audioBook: List<AlbumPaging> = listOf()
 )

@@ -16,13 +16,13 @@ import com.squareup.picasso.Picasso
 abstract class VideoSectionModel : EpoxyModelWithHolder<VideoSectionHolder>() {
 
     @EpoxyAttribute
-    var videoList : List<Video> = listOf()
+    var videoList: List<Video> = listOf()
 
     @EpoxyAttribute
-    var clickListener : (Video) -> Unit = {}
+    var clickListener: (Video) -> Unit = {}
 
     @EpoxyAttribute
-    var btClickListener : () -> Unit = {}
+    var btClickListener: () -> Unit = {}
 
     override fun bind(holder: VideoSectionHolder) {
         super.bind(holder)
@@ -51,22 +51,18 @@ abstract class VideoSectionModel : EpoxyModelWithHolder<VideoSectionHolder>() {
                 add(itemVideo3)
                 add(itemVideo4)
             }
-            itemVideo.forEachIndexed{index, constraintLayout ->
-                constraintLayout.setOnClickListener{
+            itemVideo.forEachIndexed { index, constraintLayout ->
+                constraintLayout.setOnClickListener {
                     clickListener.invoke(videoList[index])
                 }
             }
 
             imgs.forEachIndexed { index, imageView ->
-                val thumbUrl = if(index == 0) videoList[index].image169_Large
-                else videoList[index].image169
-//                Glide.with(imageView)
-//                    .load(thumbUrl!!)
-//                    .into(imageView)
-                Picasso.get().load(thumbUrl).into(imageView)
+                val thumbUrl = videoList[index].image169_Large
+                Picasso.get().load(thumbUrl).fit().noFade().centerCrop().into(imageView)
             }
-            btXemthem.setOnClickListener{
-               btClickListener.invoke()
+            btXemthem.setOnClickListener {
+                btClickListener.invoke()
             }
 
 
@@ -77,8 +73,7 @@ abstract class VideoSectionModel : EpoxyModelWithHolder<VideoSectionHolder>() {
     }
 }
 
-class VideoSectionHolder : KotlinEpoxyHolder()
-{
+class VideoSectionHolder : KotlinEpoxyHolder() {
     val imgVideoHeader by bind<ImageView>(R.id.img_video_header)
     val imgThumb1 by bind<ImageView>(R.id.img_thumb_1)
     val imgThumb2 by bind<ImageView>(R.id.img_thumb_2)

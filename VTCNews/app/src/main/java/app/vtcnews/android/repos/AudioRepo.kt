@@ -1,6 +1,5 @@
 package app.vtcnews.android.repos
 
-import androidx.lifecycle.MutableLiveData
 import app.vtcnews.android.model.Audio.*
 import app.vtcnews.android.network.Audio.AllPodcastService
 import app.vtcnews.android.network.Resource
@@ -11,7 +10,6 @@ import javax.inject.Singleton
 @Singleton
 class AudioRepo @Inject constructor(private val audioService: AllPodcastService) {
 
-    val listAllPodCast = MutableLiveData<List<AllPodCast>>()
     var listChannelPodcast = listOf<ChannelPodcast>()
     var listAlbumDetail = listOf<ListPodcast>()
     var listAlbumPaging = listOf<AlbumPaging>()
@@ -28,19 +26,17 @@ class AudioRepo @Inject constructor(private val audioService: AllPodcastService)
 
         if (respon is Resource.Success) {
             listChannelPodcast = respon.data
-
         }
 
         return respon
     }
 
-    suspend fun getAlbumPaging(channelid: Long): Resource<List<AlbumPaging>> {
+    suspend fun getAlbumPaging(channelid: Long, page: Int): Resource<MutableList<AlbumPaging>> {
         val res = performNetworkCall {
-            audioService.getAlbumPaging(channelid)
+            audioService.getAlbumPaging(channelid, page)
         }
 
-        if(res is Resource.Success)
-        {
+        if (res is Resource.Success) {
             listAlbumPaging = res.data
         }
         return res

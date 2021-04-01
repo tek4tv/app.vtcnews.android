@@ -34,9 +34,15 @@ class CommentFragViewModel @ViewModelInject constructor(
         }
     }
 
-    suspend fun postComment(username: String, email: String, articleId: String,idCm:String, value: String) {
-        when (val res = commentRepo.postComment(username, email, articleId,idCm, value)) {
-            is app.vtcnews.android.network.Resource.Success ->success.value = res.data.toLong()
+    suspend fun postComment(
+        username: String,
+        email: String,
+        articleId: String,
+        idCm: String,
+        value: String
+    ) {
+        when (val res = commentRepo.postComment(username, email, articleId, idCm, value)) {
+            is app.vtcnews.android.network.Resource.Success -> success.value = res.data.toLong()
             is app.vtcnews.android.network.Resource.Error -> error.value = res.message
         }
     }

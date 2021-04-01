@@ -6,5 +6,5 @@ import retrofit2.http.GET
 
 interface MenuService {
     @GET("home/news/menu")
-    suspend fun getMenuList() : Response<List<MenuItem>>
+    suspend fun getMenuList(): Response<List<MenuItem>>
 }

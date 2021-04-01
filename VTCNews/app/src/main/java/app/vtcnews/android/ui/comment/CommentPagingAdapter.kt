@@ -17,7 +17,7 @@ import app.vtcnews.android.ui.trang_chu_sub_section.getDateDiff
 class CommentPagingAdapter : PagingDataAdapter<CommentItem, CommentHoldel>(CommentDiffCallback) {
     var clickListener: (CommentItem) -> Unit = {}
     override fun onBindViewHolder(holder: CommentHoldel, position: Int) {
-        holder.bind(getItem(position)!!,clickListener)
+        holder.bind(getItem(position)!!, clickListener)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentHoldel {
@@ -37,14 +37,14 @@ object CommentDiffCallback : DiffUtil.ItemCallback<CommentItem>() {
 }
 
 class CommentHoldel(v: View) : RecyclerView.ViewHolder(v) {
-    val tvTimeDiffComment = v.findViewById(R.id.tvTimeDiffComment) as TextView
-    val tvCustomerName = v.findViewById(R.id.tvCustomerName) as TextView
-    val tvContent = v.findViewById(R.id.tvContentCM) as TextView
-    val tvCountLike = v.findViewById(R.id.tvCountLike) as TextView
-    val tvReply = v.findViewById(R.id.tvReply) as TextView
-    val icLike = v.findViewById(R.id.icLike) as ImageView
-    val isHaveChild = v.findViewById(R.id.isHaveChild) as LinearLayout
-    val tvCountChild = v.findViewById(R.id.tvCmtChildCount) as TextView
+    private val tvTimeDiffComment = v.findViewById(R.id.tvTimeDiffComment) as TextView
+    private val tvCustomerName = v.findViewById(R.id.tvCustomerName) as TextView
+    private val tvContent = v.findViewById(R.id.tvContentCM) as TextView
+    private val tvCountLike = v.findViewById(R.id.tvCountLike) as TextView
+    private val tvReply = v.findViewById(R.id.tvReply) as TextView
+    private val icLike = v.findViewById(R.id.icLike) as ImageView
+    private val isHaveChild = v.findViewById(R.id.isHaveChild) as LinearLayout
+    private val tvCountChild = v.findViewById(R.id.tvCmtChildCount) as TextView
     fun bind(commentItem: CommentItem, clickListener: (CommentItem) -> Unit) {
         tvTimeDiffComment.text =
             getDateDiff(commentItem.createdDate, tvTimeDiffComment.context.resources)

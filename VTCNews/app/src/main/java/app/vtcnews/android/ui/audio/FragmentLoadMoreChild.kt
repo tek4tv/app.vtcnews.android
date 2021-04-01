@@ -8,19 +8,22 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import app.vtcnews.android.R
 import app.vtcnews.android.databinding.FragmentLoadmorereBinding
+import app.vtcnews.android.model.Audio.AlbumPaging
 import app.vtcnews.android.viewmodels.AudioHomeFragViewModel
-import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class FragmentLoadMoreChild : Fragment() {
     val viewModel: AudioHomeFragViewModel by viewModels()
     lateinit var binding: FragmentLoadmorereBinding
+    private val albumPagingAdapter = AlbumPagingAdapter()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,48 +38,45 @@ class FragmentLoadMoreChild : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getAlbumPaging(requireArguments().getLong("id"))
+        viewModel.id = requireArguments().getLong("id")
+        val layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
+        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return when (position) {
+                    0 -> 2
+                    else -> 1
+                }
+            }
+        }
+        binding.rvPcChild.adapter = albumPagingAdapter
+        binding.rvPcChild.layoutManager = layoutManager
+        albumPagingAdapter.clickListen = { albumPaging: AlbumPaging, _ ->
+            requireActivity().supportFragmentManager.beginTransaction()
+                .add(
+                    R.id.fragment_holder,
+                    FragmentChiTietAudio.newInstance(
+                        albumPaging.id,
+                        albumPaging.channelID
+                    )
+                )
+                .addToBackStack(null).commit()
+        }
         setUpObser()
 
     }
 
-    fun setUpObser() {
-        val layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
-        viewModel.listAlbumPaging.observe(viewLifecycleOwner)
+    private fun setUpObser() {
+        viewModel.getAlbumPaging(requireArguments().getLong("id"), 1).observe(viewLifecycleOwner)
         {
-            val adapter = ItemAudioAdapter(it.drop(1))
-            if (it.isNotEmpty()) {
-                if (it.isNotEmpty()) {
-                    binding.tvNodata.visibility = View.GONE
-                    binding.tvTitle.text = it[0].name
-                    Picasso.get().load(it[0].image360360).into(binding.ivHeader)
-                    binding.itemHeaderPdChild.setOnClickListener { view ->
-                        requireActivity().supportFragmentManager.beginTransaction()
-                            .add(
-                                R.id.fragment_holder,
-                                FragmentChiTietAudio.newInstance(it[0].id)
-                            )
-                            .addToBackStack(null).commit()
-                    }
-                    binding.rvPcChild.adapter = adapter
-                    binding.rvPcChild.layoutManager = layoutManager
-                    adapter.clickListen = {
-                        requireActivity().supportFragmentManager.beginTransaction()
-                            .add(
-                                R.id.fragment_holder,
-                                FragmentChiTietAudio.newInstance(it.id)
-                            )
-                            .addToBackStack(null).commit()
-                    }
+            lifecycleScope.launch {
+                viewModel.pagingData.collectLatest { pagingda ->
+                    albumPagingAdapter.submitData(pagingda)
                 }
-            } else {
-                binding.tvNodata.visibility = View.VISIBLE
             }
         }
-
     }
 
-    fun setUpLayout() {
+    private fun setUpLayout() {
         when (arguments?.getString("trangthai")) {
             "Podcast" -> {
                 binding.backgroundLoadmorechild.setBackgroundColor(
@@ -107,27 +107,6 @@ class FragmentLoadMoreChild : Fragment() {
 
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (requireActivity().supportFragmentManager.findFragmentByTag("player") != null) {
-            val layout = requireActivity().findViewById<RecyclerView>(R.id.rvPcChild)
-            val param = layout.layoutParams as ViewGroup.MarginLayoutParams
-            param.setMargins(0, 0, 0, 200)
-            layout.layoutParams = param
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        if (requireActivity().supportFragmentManager.findFragmentByTag("player") != null) {
-            val layout = requireActivity().findViewById<RecyclerView>(R.id.rvPcChild)
-            val param = layout.layoutParams as ViewGroup.MarginLayoutParams
-            param.setMargins(0, 0, 0, 0)
-            layout.layoutParams = param
-        }
-
     }
 
     companion object {

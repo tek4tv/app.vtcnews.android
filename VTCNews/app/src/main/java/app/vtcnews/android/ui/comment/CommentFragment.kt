@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CommentFragment : Fragment() {
-    val viewModelCM: CommentFragViewModel by viewModels()
+    private val viewModelCM: CommentFragViewModel by viewModels()
     lateinit var binding: CommentFragmentLayoutBinding
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,10 +43,11 @@ class CommentFragment : Fragment() {
 
     }
 
-    fun setUpObser() {
+    private fun setUpObser() {
         val listParentCm = ArrayList<CommentItem>()
         viewModelCM.listIteamComment.observe(viewLifecycleOwner)
         {
+
             it.forEach { commentItem ->
                 if (commentItem.parentID == 0) {
                     listParentCm.add(commentItem)
@@ -63,7 +64,10 @@ class CommentFragment : Fragment() {
                     .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
                     .add(
                         R.id.fragment_holder,
-                        CommentReplyFragment.newInstance(commentItem)
+                        CommentReplyFragment.newInstance(
+                            commentItem,
+                            requireArguments().getLong("articleID")
+                        )
                     )
                     .addToBackStack(null).commit()
             }
@@ -72,10 +76,11 @@ class CommentFragment : Fragment() {
         viewModelCM.totalComment.observe(viewLifecycleOwner)
         {
             binding.tvTotalCm.text = it.toString()
+            binding.tvCountSubCm.text = (it - 3).toString()
         }
     }
 
-    fun buttonClick() {
+    private fun buttonClick() {
         binding.btShowmoreCm.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
@@ -90,7 +95,7 @@ class CommentFragment : Fragment() {
         }
     }
 
-    fun displayAlertDialog() {
+    private fun displayAlertDialog() {
         val inflater = layoutInflater
         val alertLayout: View = inflater.inflate(R.layout.custom_dialog_layout, null)
         val etFullName = alertLayout.findViewById<View>(R.id.etFullName) as EditText
@@ -103,51 +108,39 @@ class CommentFragment : Fragment() {
         val dialog = alert.create()
         dialog.show()
         btSend.setOnClickListener {
-            if (etFullName.text.toString() != "" && etEmail.text.toString() != "" &&
-                binding.etValueCm.text.toString() != ""
-            )
             lifecycleScope.launch {
-                    viewModelCM.postComment(
-                        etFullName.text.toString(),
-                        etEmail.text.toString(),
-                        requireArguments().getLong("articleID").toString(),
-                        "0",
-                        binding.etValueCm.text.toString()
-                    )
+                viewModelCM.postComment(
+                    etFullName.text.toString(),
+                    etEmail.text.toString(),
+                    requireArguments().getLong("articleID").toString(),
+                    "0",
+                    binding.etValueCm.text.toString()
+                )
 
-                    if (viewModelCM.success.value!! > 0) {
-                        displayDialogSucces()
-                        binding.etValueCm.setText("")
-                        dialog.hide()
-                    } else {
-                        Toast.makeText(
-                            context,
-                            "Bình luận không thành công, hãy thử lại",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        binding.etValueCm.setText("")
-                        dialog.hide()
-                    }
-                }else
-            {Toast.makeText(
-                context,
-                "Nội dung, tên, email không được để trống",
-                Toast.LENGTH_SHORT
-            ).show()}
+                if (viewModelCM.success.value!! > 0) {
+                    displayDialogSucces()
+                    binding.etValueCm.setText("")
+                    dialog.hide()
+                } else {
+                    Toast.makeText(
+                        context,
+                        "Bình luận không thành công, hãy thử lại",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    binding.etValueCm.setText("")
+                    dialog.hide()
+                }
             }
-
+        }
 
         btCancel.setOnClickListener {
             dialog.hide()
         }
 
 
-//        val back = ColorDrawable(Color.WHITE)
-//        val inset = InsetDrawable(back, 50,50,50,50)
-//       dialog.window?.setBackgroundDrawable(inset)
     }
 
-    fun displayDialogSucces() {
+    private fun displayDialogSucces() {
         val inflater = layoutInflater
         val alertLayout: View = inflater.inflate(R.layout.custom_dialog_cmsucces, null)
         val btClose = alertLayout.findViewById<Button>(R.id.btClose)

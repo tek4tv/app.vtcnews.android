@@ -8,7 +8,6 @@ import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.squareup.picasso.Picasso
-import java.util.*
 
 @EpoxyModelClass(layout = R.layout.artice_item)
 abstract class ArticleModel : EpoxyModelWithHolder<HotArticleViewHolder>() {
@@ -16,11 +15,13 @@ abstract class ArticleModel : EpoxyModelWithHolder<HotArticleViewHolder>() {
     lateinit var article: Article
 
     @EpoxyAttribute
-    lateinit var articleClickListener : (Article) -> Unit
+    var booleanEnd: Boolean = false
+
+    @EpoxyAttribute
+    lateinit var articleClickListener: (Article) -> Unit
 
     override fun bind(holder: HotArticleViewHolder) {
         holder.apply {
-
 
             Picasso.get().load(article.image169).into(img)
 
@@ -40,12 +41,20 @@ abstract class ArticleModel : EpoxyModelWithHolder<HotArticleViewHolder>() {
                 }
             }
 
+
             txtCategory.text = article.categoryName
 
-            txtDate.text = getDateDiff(article.publishedDate!!, txtDate.context.applicationContext.resources)
+            txtDate.text =
+                getDateDiff(article.publishedDate!!, txtDate.context.applicationContext.resources)
             holder.root.setOnClickListener {
                 articleClickListener.invoke(article)
+            }
+            if (booleanEnd) {
+                view.visibility = View.INVISIBLE
+            } else {
+                view.visibility = View.VISIBLE
             }
         }
     }
 }
+

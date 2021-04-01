@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "171141794290",
+    "project_id": "vtcapp-72d86",
+    "storage_bucket": "vtcapp-72d86.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:171141794290:android:f62377c577971004eec36b",
+        "android_client_info": {
+          "package_name": "app.vtcnews.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "171141794290-20qp6ree2r81jgdld5ivp2fcgrr5se42.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA32gtBdGEWTwDjkCh81NcTQKi2lAAMT18"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "171141794290-20qp6ree2r81jgdld5ivp2fcgrr5se42.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

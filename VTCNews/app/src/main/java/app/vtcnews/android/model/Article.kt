@@ -2,7 +2,7 @@ package app.vtcnews.android.model
 
 import com.squareup.moshi.Json
 
-data class Article (
+data class Article(
     @Json(name = "Id")
     val id: Int,
 
@@ -10,7 +10,7 @@ data class Article (
     val title: String? = null,
 
     @Json(name = "CategoryId")
-    val categoryID: Long?  = null,
+    val categoryID: Long? = null,
 
     @Json(name = "ImageUrl")
     val imageURL: String? = null,
@@ -28,7 +28,7 @@ data class Article (
     val publishedDate: String? = null,
 
     @Json(name = "ViewCount")
-    val viewCount: Long? =  null,
+    val viewCount: Long? = null,
 
     @Json(name = "Duration")
     val duration: Long? = null,
@@ -46,16 +46,16 @@ data class Article (
     val listVideoInfo: Any? = null,
 
     @Json(name = "IsPhotoArticle")
-    val isPhotoArticle: Long?  = null,
+    val isPhotoArticle: Long? = null,
 
     @Json(name = "IsVideoArticle")
-    val isVideoArticle: Long? =  null,
+    val isVideoArticle: Long? = null,
 
     @Json(name = "ListUrlImages")
     val listURLImages: String? = null,
 
     @Json(name = "LikeCount")
-    val likeCount: Long?  = null,
+    val likeCount: Long? = null,
 
     @Json(name = "Type")
     val type: Long? = null,
@@ -75,9 +75,15 @@ data class Article (
     @Json(name = "image16_9_large")
     val image169_Large: String? = null,
 
+    @Json(name = "Imgs")
+    val listURLImagesResize: String? = null,
+
     @Json(name = "image16_9")
     val image169: String? = null,
 
     @Json(name = "imagecrop")
-    val imageCrop: String? = null
+    val imageCrop: String? = null,
+    @Json(name = "ImageResize")
+    val imageResize: String? = null
+
 )

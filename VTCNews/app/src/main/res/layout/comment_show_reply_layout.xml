@@ -7,20 +7,22 @@
     android:orientation="vertical">
 
     <ScrollView
+        android:id="@+id/svCm"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
-        android:id="@+id/svCm"
         app:layout_constraintBottom_toTopOf="@+id/layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-        <LinearLayout
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/layoutCmItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -30,7 +32,8 @@
                     android:id="@+id/tvTimeDiffComment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2 giờ trước" />
+                    android:text="2 giờ trước"
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/tvCustomerName"
@@ -38,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:text="Tùng"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_15sdp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -47,7 +50,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:layout_marginBottom="@dimen/_8sdp"
-                    android:text="Cũng được thôi" />
+                    android:text="Cũng được thôi"
+                    android:textSize="14sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -56,8 +60,9 @@
 
                     <ImageView
                         android:id="@+id/icLike"
-                        android:layout_width="@dimen/_15sdp"
-                        android:layout_height="@dimen/_15sdp"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center_vertical"
                         android:src="@drawable/icliked" />
 
                     <TextView
@@ -72,11 +77,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/_10sdp"
-                        android:text="thích" />
+                        android:text="thích"
+                        android:textSize="12sp" />
 
                     <ImageView
-                        android:layout_width="@dimen/_15sdp"
-                        android:layout_height="@dimen/_15sdp"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginRight="@dimen/_5sdp"
                         android:src="@drawable/icsharecm" />
 
@@ -84,31 +91,39 @@
                         android:id="@+id/tvReply"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Trả lời" />
+                        android:text="Trả lời"
+                        android:textSize="12sp" />
 
 
                 </LinearLayout>
 
             </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvListReply"
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_20sdp" />
-        </LinearLayout>
+                android:layout_below="@+id/layoutCmItem"
+                android:layout_marginStart="@dimen/_20sdp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvListReply"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </RelativeLayout>
 
     </ScrollView>
 
     <LinearLayout
         android:id="@+id/layout"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/svCm"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/svCm">
 
         <EditText
             android:id="@+id/etValueCm"
@@ -120,7 +135,7 @@
             android:gravity="top"
             android:hint="Viết bình luận của bạn*"
             android:inputType="textMultiLine"
-            android:minHeight="@dimen/_60sdp"
+            android:minHeight="@dimen/_50sdp"
             android:padding="@dimen/_10sdp" />
 
         <Button
@@ -129,9 +144,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left"
             android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginBottom="10dp"
             android:backgroundTint="@color/vtcBackground"
             android:paddingLeft="@dimen/_30sdp"
             android:paddingRight="@dimen/_30sdp"

@@ -1,10 +1,7 @@
 package app.vtcnews.android.network
 
-import app.vtcnews.android.model.Article
+import app.vtcnews.android.model.*
 
-import app.vtcnews.android.model.ArticleDetail
-import app.vtcnews.android.model.ChannelPaging
-import app.vtcnews.android.model.HotChannel
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -39,4 +36,8 @@ interface ArticleService {
         @Path("page") page: Int,
         @Path("id") id: Long
     ): Response<ChannelPaging>
+
+    @GET("home/news/IndexTagOld/{tag}/{page}")
+    suspend fun getListByTag(@Path("tag") tag: String, @Path("page") page: Int): Response<TagModel>
+
 }

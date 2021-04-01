@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#101949">
+    android:background="@color/color_video_section">
 
     <ImageView
         android:id="@+id/icVideo"
-        android:layout_width="@dimen/_25sdp"
-        android:layout_height="@dimen/_25sdp"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_30sdp"
         android:layout_margin="@dimen/_10sdp"
         android:src="@drawable/icvideohome"
         app:layout_constraintBottom_toTopOf="@+id/itemVideoHeader"
@@ -23,7 +23,8 @@
         android:layout_margin="@dimen/_10sdp"
         android:text="@string/video"
         android:textColor="@color/white"
-        android:textSize="@dimen/_20sdp"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/icVideo"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,9 +32,7 @@
         android:id="@+id/itemVideoHeader"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_margin="@dimen/_10sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,13 +46,14 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             app:cardCornerRadius="4dp"
-            app:layout_constraintDimensionRatio="H, 16:9"
+            app:layout_constraintDimensionRatio="H,3:2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+                android:background="@color/color_loading"
                 android:id="@+id/img_video_header"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
@@ -67,28 +67,31 @@
         </androidx.cardview.widget.CardView>
 
         <TextView
-            android:maxLines="3"
-            android:ellipsize="end"
             android:id="@+id/txt_video_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginTop="10dp"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:textStyle="bold"
             android:text="TextView"
             android:textColor="@color/white"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/img_video_header_card"
             app:layout_constraintTop_toBottomOf="@+id/img_video_header_card" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
     <View
         android:id="@+id/view"
         android:layout_width="0dp"
-        android:layout_height="3dp"
+        android:layout_height="6dp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
         android:layout_marginTop="16dp"
         android:background="#66000000"
         app:layout_constraintEnd_toEndOf="parent"
@@ -97,13 +100,13 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/itemVideo1"
-        android:maxLines="3"
-        android:ellipsize="end"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:maxLines="3"
         app:layout_constraintEnd_toStartOf="@+id/itemVideo2"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread"
@@ -115,7 +118,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:cardCornerRadius="4dp"
-            app:layout_constraintDimensionRatio="H, 16:9"
+            app:layout_constraintDimensionRatio="H, 3:2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="spread"
@@ -123,6 +126,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+                android:background="@color/color_loading"
                 android:id="@+id/img_thumb_1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
@@ -138,13 +142,13 @@
         <TextView
             android:id="@+id/txt_video_title_1"
             android:layout_width="0dp"
-            android:maxLines="3"
-            android:ellipsize="end"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:maxLines="3"
             android:text="TextView"
             android:textColor="@color/white"
-            android:textSize="18sp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@+id/img_thumb_1_card"
             app:layout_constraintStart_toStartOf="@+id/img_thumb_1_card"
             app:layout_constraintTop_toBottomOf="@+id/img_thumb_1_card" />
@@ -166,13 +170,14 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:cardCornerRadius="4dp"
-            app:layout_constraintDimensionRatio="H, 16:9"
+            app:layout_constraintDimensionRatio="H,3:2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+                android:background="@color/color_loading"
                 android:id="@+id/img_thumb_2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
@@ -188,13 +193,13 @@
         <TextView
             android:id="@+id/txt_video_title_2"
             android:layout_width="0dp"
-            android:maxLines="3"
-            android:ellipsize="end"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:maxLines="3"
             android:text="TextView"
             android:textColor="@color/white"
-            android:textSize="18sp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@+id/img_thumb_2_card"
             app:layout_constraintStart_toStartOf="@+id/img_thumb_2_card"
             app:layout_constraintTop_toBottomOf="@+id/img_thumb_2_card" />
@@ -218,7 +223,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:cardCornerRadius="4dp"
-            app:layout_constraintDimensionRatio="H, 16:9"
+            app:layout_constraintDimensionRatio="H,3:2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="spread"
@@ -226,6 +231,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+                android:background="@color/color_loading"
                 android:id="@+id/img_thumb_3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
@@ -241,14 +247,14 @@
         <TextView
             android:id="@+id/txt_video_title_3"
             android:layout_width="0dp"
-            android:maxLines="3"
-            android:ellipsize="end"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
+            android:ellipsize="end"
+            android:maxLines="3"
             android:text="TextView"
             android:textColor="@color/white"
-            android:textSize="18sp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@+id/img_thumb_3_card"
             app:layout_constraintStart_toStartOf="@+id/img_thumb_3_card"
             app:layout_constraintTop_toBottomOf="@+id/img_thumb_3_card" />
@@ -270,13 +276,14 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:cardCornerRadius="4dp"
-            app:layout_constraintDimensionRatio="H, 16:9"
+            app:layout_constraintDimensionRatio="H,3:2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+                android:background="@color/color_loading"
                 android:id="@+id/img_thumb_4"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
@@ -293,39 +300,32 @@
         <TextView
             android:id="@+id/txt_video_title_4"
             android:layout_width="0dp"
-            android:maxLines="3"
-            android:ellipsize="end"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:maxLines="3"
             android:text="TextView"
             android:textColor="@color/white"
-            android:textSize="18sp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@+id/img_thumb_4_card"
             app:layout_constraintStart_toStartOf="@+id/img_thumb_4_card"
             app:layout_constraintTop_toBottomOf="@+id/img_thumb_4_card" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btXemThemVideo"
+        android:layout_width="@dimen/_120sdp"
+        android:layout_height="@dimen/_35sdp"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginBottom="@dimen/_10sdp"
+        android:background="@drawable/custombuttonshowmorevideo"
+        android:text="Xem Thêm"
+        android:textColor="@color/white"
         app:cardCornerRadius="@dimen/_6sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/itemVideo4">
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btXemThemVideo"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#0A1032"
-            android:paddingLeft="@dimen/_30sdp"
-            android:paddingRight="@dimen/_30sdp"
-            android:text="Xem Thêm"
-            android:textColor="@color/white" />
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintTop_toBottomOf="@id/itemVideo4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,7 +2,7 @@ package app.vtcnews.android.model.Audio
 
 import com.squareup.moshi.Json
 
-data class PodcastInfo (
+data class PodcastInfo(
     @Json(name = "Id")
     val id: Long,
 

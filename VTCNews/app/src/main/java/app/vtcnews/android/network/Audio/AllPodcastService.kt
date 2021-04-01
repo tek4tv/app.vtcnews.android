@@ -10,14 +10,17 @@ import retrofit2.http.Path
 
 interface AllPodcastService {
     @GET("podcast/GetAllPodcast")
-    suspend fun getAllPodcast():Response<List<AllPodCast>>
+    suspend fun getAllPodcast(): Response<List<AllPodCast>>
 
     @GET("podcast/ChannelByPodcast/{Id}")
-    suspend fun getChannelPodcast(@Path("Id")id:Long):Response<List<ChannelPodcast>>
+    suspend fun getChannelPodcast(@Path("Id") id: Long): Response<List<ChannelPodcast>>
 
-    @GET("podcast/GetAlbumPaging/chanId/{ChannelId}/pageIndex/1")
-    suspend fun getAlbumPaging(@Path("ChannelId")channelid:Long) : Response<List<AlbumPaging>>
+    @GET("podcast/GetAlbumPaging/chanId/{ChannelId}/pageIndex/{page}")
+    suspend fun getAlbumPaging(
+        @Path("ChannelId") channelid: Long,
+        @Path("page") page: Int
+    ): Response<MutableList<AlbumPaging>>
 
     @GET("podcast/AlbumDetail/{Id}")
-    suspend fun getAlbumDetail(@Path("Id")id:Long) : Response<AlbumDetail>
+    suspend fun getAlbumDetail(@Path("Id") id: Long): Response<AlbumDetail>
 }

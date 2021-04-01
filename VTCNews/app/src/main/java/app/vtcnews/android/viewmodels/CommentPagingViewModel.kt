@@ -13,10 +13,10 @@ import app.vtcnews.android.repos.CommentRepo
 
 class CommentPagingViewModel @ViewModelInject constructor(private var commentRepo: CommentRepo) :
     ViewModel() {
-    var id : Long = 0
+    var id: Long = 0
         set(value) {
             field = value
-            dataSource = CommentPagingSource(commentRepo,id)
+            dataSource = CommentPagingSource(commentRepo, id)
         }
     var dataSource: PagingSource<Int, CommentItem>? = null
     val pagingData = Pager(

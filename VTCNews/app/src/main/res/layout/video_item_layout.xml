@@ -16,23 +16,27 @@
                 android:id="@+id/ivVideo"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:src="@color/colorButton"
+                android:background="@color/color_loading"
                 app:layout_constraintBottom_toTopOf="parent"
                 app:layout_constraintDimensionRatio="H,16:9"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
             <ImageView
                 android:id="@+id/icPlay"
-                android:layout_width="@dimen/_50sdp"
-                android:layout_height="@dimen/_50sdp"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_60sdp"
                 android:src="@drawable/icroundplay"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
+                android:fontFamily="@font/helveticaneue"
                 android:id="@+id/tvChannel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -40,14 +44,15 @@
                 android:text="Chuyên đề"
                 android:background="@color/backroundArticle"
                 android:textStyle="bold"
-                android:textSize="@dimen/_12sdp"
+                android:textSize="12sp"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
+            android:fontFamily="@font/helveticaneue"
             android:id="@+id/tvTitleVideo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,7 +62,7 @@
             android:paddingTop="@dimen/_5sdp"
             android:text="Ngăm vẻ đẹp của trái đất qua 100GB ảnh của NASA"
             android:textColor="@color/colorTitle"
-            android:textSize="@dimen/_18sdp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -66,8 +71,7 @@
             android:orientation="horizontal"
             android:paddingBottom="@dimen/_10sdp"
             android:paddingLeft="@dimen/_10sdp"
-            android:paddingRight="@dimen/_10sdp"
-            android:paddingTop="@dimen/_5sdp">
+            android:paddingRight="@dimen/_10sdp">
 
             <TextView
                 android:id="@+id/tvTimeDiff"
@@ -76,7 +80,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="@dimen/_5sdp"
                 android:text="12' trước"
-                android:textSize="@dimen/_12sdp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/tvCategoryVideo"
@@ -85,17 +89,15 @@
                 android:layout_gravity="center_vertical"
                 android:text="Chính trị xã hội"
                 android:textColor="@color/vtcBackground"
-                android:textSize="@dimen/_12sdp" />
+                android:textSize="12sp" />
 
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_height="6dp"
             android:layout_marginTop="@dimen/_8sdp"
-            android:layout_marginRight="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_10sdp"
-            android:background="@color/text_color_titlelistchitiet" />
+            android:background="#e5e5e5" />
     </LinearLayout>
 </layout>

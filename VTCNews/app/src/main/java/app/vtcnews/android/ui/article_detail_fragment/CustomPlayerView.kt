@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
-import android.view.View
 import com.google.android.exoplayer2.ui.PlayerView
 
 class CustomPlayerView @JvmOverloads constructor(
@@ -12,7 +11,7 @@ class CustomPlayerView @JvmOverloads constructor(
 ) : PlayerView(context, attrs, defStyleAttr) {
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        if(!isControllerVisible)
+        if (!isControllerVisible)
             showController()
         else
             hideController()

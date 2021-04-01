@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    //hamburg
+    <dimen name="image_width">22dp</dimen>
+    <dimen name="image_height">15dp</dimen>
+    //search
+    <dimen name="search_width">18dp</dimen>
+    <dimen name="search_height">18dp</dimen>
+    //tag size
+    <dimen name="tag_size">16dp</dimen>
+    <dimen name="tag_margintop">8dp</dimen>
+</resources>

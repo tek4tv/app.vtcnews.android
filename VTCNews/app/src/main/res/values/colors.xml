@@ -9,7 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="red">#a3161d</color>
     <color name="gray">#A9A9A9</color>
-    <color name="light_gray">#D3D3D3</color>
+    <color name="light_gray">#f3f3f3</color>
     //Background
     <color name="podcast">#fff9cc</color>
     <color name="sachnoi">#fe6f61</color>
@@ -20,14 +20,32 @@
     <color name="colorButtonBorder">#eee1ac</color>
     <color name="vtcBackground">#a3161d</color>
 
+    //Home
+    <color name="color_audio_section">#fffacc</color>
+    <color name="color_video_section">#1c2041</color>
+    <color name="color_hotchannel_section">#e39908</color>
+    <color name="color_navbottom">#f9f9f9</color>
+    <color name="color_noti_bar">#92030b</color>
+
+    //loading
+    <color name="color_loading">#e5e5e5</color>
+
+
     //chi tiet audio
     <color name="backgroundchitietaudio">#1f2342</color>
     <color name="backgroundlistchitiet">#fff7cc</color>
     <color name="text_color_titlelistchitiet">#655603</color>
+    //article
 
     //video
-    <color name="colorTimeDiff">#D2C6C4C4</color>
+    <color name="colorTimeDiff">#c1c1c1c1</color>
+    <color name="colorCategory">#a3161d</color>
+    <color name="colorViewline">#e5e5e5e5</color>
     <color name="blue">#1877f2</color>
     //channel
     <color name="backroundArticle">#61000000</color>
+
+    //bottom nav
+    <color name="badgecolor">#f3ab0b</color>
+
 </resources>

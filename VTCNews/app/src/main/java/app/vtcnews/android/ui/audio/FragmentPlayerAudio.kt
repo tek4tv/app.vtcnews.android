@@ -12,11 +12,9 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.media.session.MediaSessionCompat
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatButton
 import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -29,9 +27,8 @@ import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.lang.NullPointerException
 import javax.inject.Inject
-import kotlin.math.log
+
 
 @AndroidEntryPoint
 class FragmentPlayerAudio : Fragment() {
@@ -50,11 +47,9 @@ class FragmentPlayerAudio : Fragment() {
     ): View? {
         binding = FragmentPlayerAudioBinding.inflate(layoutInflater, container, false)
         val fragment = requireActivity().supportFragmentManager.findFragmentByTag("fragVideo")
-        if(fragment != null)
-        {
+        if (fragment != null) {
             requireActivity().supportFragmentManager.beginTransaction().remove(fragment).commit()
         }
-
         return binding.root
     }
 
@@ -63,15 +58,25 @@ class FragmentPlayerAudio : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.tvTitleChapter.text = requireArguments().getString("name")
         binding.tvTitleChapter.isSelected = true
+        if (requireArguments().getString("authur") != "") {
+            binding.tvAuthur.text = requireArguments().getString("authur")
+        }
         Picasso.get().load(requireArguments().getString("urlIMG")).into(binding.ivChapter)
-        mediaPlayer = MediaPlayer.create(
-            requireActivity(),
-            Uri.parse("https://media.vtc.vn/" + requireArguments().getString("urlMp3"))
-        )
+        val urlMp3 = requireArguments().getString("urlMp3")!!
+        if (urlMp3.startsWith("/")) {
+            mediaPlayer = MediaPlayer.create(
+                requireActivity(),
+                Uri.parse("https://media.vtc.vn/" + urlMp3)
+            )
+        } else {
+            mediaPlayer = MediaPlayer.create(
+                requireActivity(),
+                Uri.parse(urlMp3)
+            )
+        }
         mediaPlayer.start()
         listPodcast = audioRepo.listAlbumDetail
         buttonClick()
-        changeLayoutPDHome()
 
         val listPodcast = audioRepo.listAlbumDetail
         currntPos = requireArguments().getInt("curent")
@@ -101,16 +106,16 @@ class FragmentPlayerAudio : Fragment() {
                         binding.tvTitleChapter.text = listPodcast[currntPos].name
                         mediaPlayer.start()
                         if (!mediaPlayer.isPlaying) {
-                            binding.ibPlay.setImageResource(R.drawable.ic_play_arrow)
+                            binding.ibPlay.setImageResource(R.drawable.play)
                         } else {
-                            binding.ibPlay.setImageResource(R.drawable.ic_pause)
+                            binding.ibPlay.setImageResource(R.drawable.pause)
                         }
 
                     }
                     "actionplay" -> {
                         if (mediaPlayer.isPlaying) {
                             mediaPlayer.pause()
-                            binding.ibPlay.setImageResource(R.drawable.ic_play_arrow)
+                            binding.ibPlay.setImageResource(R.drawable.play)
                             CreatNotifi(
                                 listPodcast,
                                 R.drawable.ic_play_arrow,
@@ -120,7 +125,7 @@ class FragmentPlayerAudio : Fragment() {
 
                         } else {
                             mediaPlayer.start()
-                            binding.ibPlay.setImageResource(R.drawable.ic_pause)
+                            binding.ibPlay.setImageResource(R.drawable.pause)
                             CreatNotifi(
                                 listPodcast,
                                 R.drawable.ic_pause,
@@ -144,9 +149,9 @@ class FragmentPlayerAudio : Fragment() {
                         binding.tvTitleChapter.text = listPodcast[currntPos].name
                         mediaPlayer.start()
                         if (!mediaPlayer.isPlaying) {
-                            binding.ibPlay.setImageResource(R.drawable.ic_play_arrow)
+                            binding.ibPlay.setImageResource(R.drawable.play)
                         } else {
-                            binding.ibPlay.setImageResource(R.drawable.ic_pause)
+                            binding.ibPlay.setImageResource(R.drawable.pause)
                         }
                     }
                 }
@@ -189,7 +194,7 @@ class FragmentPlayerAudio : Fragment() {
                 intentPlay,
                 PendingIntent.FLAG_UPDATE_CURRENT
             )
-            val drw_play = R.drawable.ic_play_arrow
+            //val drw_play = R.drawable.ic_play_arrow
             //next
             val pendingIntenNext: PendingIntent?
             val drw_next: Int
@@ -231,49 +236,32 @@ class FragmentPlayerAudio : Fragment() {
                     .setMediaSession(mediaSessionCompat.sessionToken)
             ).setPriority(NotificationManager.IMPORTANCE_DEFAULT)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            mbuild.setDefaults(0)
-//            mbuild.setDefaults(Notification.DEFAULT_LIGHTS or Notification.DEFAULT_SOUND)
-            mbuild.setVibrate(longArrayOf(0))
-
             notificationManager.notify(1, mbuild.build())
         }
 
 
     }
 
-    fun createChannel() {
+    private fun createChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel =
-                NotificationChannel("1", "PC Player", NotificationManager.IMPORTANCE_LOW
+                NotificationChannel(
+                    "1", "PC Player", NotificationManager.IMPORTANCE_LOW
                 )
             channel.enableVibration(false)
             notificationManager =
                 requireActivity().getSystemService(NotificationManager::class.java)
-//            channel.enableVibration(false)
             notificationManager.createNotificationChannel(channel)
         }
     }
 
 
-    fun changeLayoutPDHome() {
-        try {
-            val btLoadmore = activity?.findViewById<AppCompatButton>(R.id.btLoadMore)
-            val param = btLoadmore?.layoutParams as ViewGroup.MarginLayoutParams
-            param.setMargins(0, 0, 0, 200)
-            btLoadmore.layoutParams = param
-        }
-        catch (e:NullPointerException)
-        {
-            Log.e("audioButtonMargin", "Err :" + e.message  )
-        }
-    }
-
-    fun buttonClick() {
+    private fun buttonClick() {
         binding.apply {
             ibPlay.setOnClickListener(View.OnClickListener {
                 if (mediaPlayer.isPlaying) {
                     mediaPlayer.pause()
-                    ibPlay.setImageResource(R.drawable.ic_play_arrow)
+                    ibPlay.setImageResource(R.drawable.play)
                     CreatNotifi(
                         listPodcast,
                         R.drawable.ic_play_arrow,
@@ -283,7 +271,7 @@ class FragmentPlayerAudio : Fragment() {
 
                 } else {
                     mediaPlayer.start()
-                    ibPlay.setImageResource(R.drawable.ic_pause)
+                    ibPlay.setImageResource(R.drawable.pause)
                     CreatNotifi(
                         listPodcast,
                         R.drawable.ic_pause,
@@ -309,11 +297,11 @@ class FragmentPlayerAudio : Fragment() {
                 tvTitleChapter.text = listPodcast[currntPos].name
                 mediaPlayer.start()
                 if (!mediaPlayer.isPlaying) {
-                    ibPlay.setImageResource(R.drawable.ic_play_arrow)
+                    ibPlay.setImageResource(R.drawable.play)
                 } else {
-                    ibPlay.setImageResource(R.drawable.ic_pause)
+                    ibPlay.setImageResource(R.drawable.pause)
                 }
-                CreatNotifi(listPodcast, R.drawable.ic_pause, currntPos, listPodcast.size)
+                CreatNotifi(listPodcast, R.drawable.pause, currntPos, listPodcast.size)
 
             }
             ibPre.setOnClickListener {
@@ -332,11 +320,11 @@ class FragmentPlayerAudio : Fragment() {
                 tvTitleChapter.text = listPodcast[currntPos].name
                 mediaPlayer.start()
                 if (!mediaPlayer.isPlaying) {
-                    ibPlay.setImageResource(R.drawable.ic_play_arrow)
+                    ibPlay.setImageResource(R.drawable.play)
                 } else {
-                    ibPlay.setImageResource(R.drawable.ic_pause)
+                    ibPlay.setImageResource(R.drawable.pause)
                 }
-                CreatNotifi(listPodcast, R.drawable.ic_pause, currntPos, listPodcast.size)
+                CreatNotifi(listPodcast, R.drawable.pause, currntPos, listPodcast.size)
             }
             binding.ibClose.setOnClickListener(View.OnClickListener {
                 mediaPlayer.stop()
@@ -351,7 +339,13 @@ class FragmentPlayerAudio : Fragment() {
     }
 
     companion object {
-        fun newInstance(urlmp3: String, name: String, urlimg: String, position: Int) =
+        fun newInstance(
+            urlmp3: String,
+            name: String,
+            urlimg: String,
+            position: Int,
+            authur: String
+        ) =
             FragmentPlayerAudio().apply {
                 arguments = Bundle().apply {
                     putString("urlMp3", urlmp3)
@@ -359,6 +353,7 @@ class FragmentPlayerAudio : Fragment() {
                     putString("urlIMG", urlimg)
                     putString("urlIMG", urlimg)
                     putInt("curent", position)
+                    putString("authur", authur)
                 }
             }
 
@@ -371,60 +366,18 @@ class FragmentPlayerAudio : Fragment() {
         requireActivity().supportFragmentManager.beginTransaction()
             .setCustomAnimations(0, R.anim.exit_to_right, 0, R.anim.exit_to_right)
             .remove(this@FragmentPlayerAudio).commit()
-        try {
-            val backgroundPC = activity?.findViewById<AppCompatButton>(R.id.btLoadMore)
-            val param = backgroundPC?.layoutParams as ViewGroup.MarginLayoutParams
-            param.setMargins(0, 0, 0, 50)
-            backgroundPC.layoutParams = param
-        }
-        catch (e : NullPointerException)
-        {
-            Log.e("audioPdNull", "IsNull:" + e.message)
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            notificationManager.cancelAll()
-        }
-        requireActivity().unregisterReceiver(broadcastReceiver)
-//        requireActivity().unregisterReceiver(broadcastReceiver)
-
-//        if(requireActivity().supportFragmentManager.findFragmentByTag("player") != null)
-//        {
-//            val layout = requireActivity().findViewById<RecyclerView>(R.id.rvPcChild)
-//            val param2 = layout.layoutParams as ViewGroup.MarginLayoutParams
-//            param.setMargins(0,0,0,0)
-//            layout.layoutParams = param2
-//        }
-
-
+        (requireActivity() as MainActivity).unregisterReceiver(broadcastReceiver)
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        mediaPlayer.release()
-        requireActivity().supportFragmentManager.beginTransaction()
-            .setCustomAnimations(0, R.anim.exit_to_right, 0, R.anim.exit_to_right)
-            .remove(this@FragmentPlayerAudio).commit()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        mediaPlayer.stop()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            notificationManager.cancelAll()
-        }
-        requireActivity().supportFragmentManager.beginTransaction()
-            .setCustomAnimations(0, R.anim.exit_to_right, 0, R.anim.exit_to_right)
-            .remove(this@FragmentPlayerAudio).commit()
-    }
 
     override fun onResume() {
         super.onResume()
         if (!mediaPlayer.isPlaying) {
             mediaPlayer.pause()
-            binding.ibPlay.setImageResource(R.drawable.ic_play_arrow)
+            binding.ibPlay.setImageResource(R.drawable.play)
         } else {
             mediaPlayer.start()
-            binding.ibPlay.setImageResource(R.drawable.ic_pause)
+            binding.ibPlay.setImageResource(R.drawable.pause)
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             createChannel()

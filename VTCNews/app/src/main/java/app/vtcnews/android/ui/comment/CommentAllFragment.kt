@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import app.vtcnews.android.R
 import app.vtcnews.android.databinding.CommentTotalLayoutBinding
 import app.vtcnews.android.viewmodels.CommentPagingViewModel
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -20,8 +19,8 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class CommentAllFragment : Fragment() {
     lateinit var binding: CommentTotalLayoutBinding
-    val viewModelPaging: CommentPagingViewModel by viewModels()
-    val cmpaginAdapter = CommentPagingAdapter()
+    private val viewModelPaging: CommentPagingViewModel by viewModels()
+    private val cmpaginAdapter = CommentPagingAdapter()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,7 +43,10 @@ class CommentAllFragment : Fragment() {
                 .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
                 .add(
                     R.id.fragment_holder,
-                    CommentReplyFragment.newInstance(commentItem)
+                    CommentReplyFragment.newInstance(
+                        commentItem,
+                        requireArguments().getLong("articleId")
+                    )
                 )
                 .addToBackStack(null).commit()
         }
@@ -63,33 +65,6 @@ class CommentAllFragment : Fragment() {
             }
         }
     }
-
-//    fun setUpObser() {
-//        val listParentCm = ArrayList<CommentItem>()
-//        viewModelCM.listIteamComment.observe(viewLifecycleOwner)
-//        {
-//            it.forEach { commentItem ->
-//                if (commentItem.parentID == 0) {
-//                    listParentCm.add(commentItem)
-//                }
-//            }
-//            val adapter = CommentItemParentAdapter(listParentCm)
-//            val layoutManager =
-//                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-//            binding.rvTotalComment.adapter = adapter
-//            binding.rvTotalComment.layoutManager = layoutManager
-//
-//            adapter.clickListener = { commentItem ->
-//                requireActivity().supportFragmentManager.beginTransaction()
-//                    .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
-//                    .replace(
-//                        R.id.fragment_holder,
-//                        CommentReplyFragment.newInstance(commentItem)
-//                    )
-//                    .addToBackStack(null).commit()
-//            }
-//        }
-//    }
 
     companion object {
         fun newInstance(articleId: Long) = CommentAllFragment().apply {

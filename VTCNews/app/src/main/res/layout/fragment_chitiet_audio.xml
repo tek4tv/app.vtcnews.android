@@ -2,33 +2,36 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        android:orientation="vertical">
+        android:fillViewport="true">
 
-        <androidx.core.widget.NestedScrollView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fillViewport="true">
+            android:layout_height="match_parent">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/card_img_audio"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/backgroundchitietaudio"
                 android:orientation="vertical">
 
                 <com.google.android.material.card.MaterialCardView
-                    android:layout_width="@dimen/_180sdp"
-                    android:layout_height="@dimen/_180sdp"
+                    android:id="@+id/materialCardView"
+                    android:layout_width="@dimen/_200sdp"
+                    android:layout_height="@dimen/_200sdp"
                     android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
-                    android:layout_marginRight="@dimen/_10sdp"
-                    android:layout_marginBottom="@dimen/_20sdp"
-                    app:cardCornerRadius="6dp">
+                    android:layout_marginTop="25dp"
+                    app:cardCornerRadius="@dimen/_8sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvTitleChiTiet"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <RelativeLayout
+                        android:id="@+id/layoutDes"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
@@ -36,6 +39,7 @@
                             android:id="@+id/ivChitiet"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:background="@color/color_loading"
                             android:scaleType="fitXY" />
 
                         <ImageView
@@ -46,14 +50,126 @@
                     </RelativeLayout>
                 </com.google.android.material.card.MaterialCardView>
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="60dp"
+                    android:orientation="vertical"
+                    app:layout_constraintStart_toEndOf="@id/materialCardView"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <!--                    Tha tym-->
+                    <LinearLayout
+                        android:id="@+id/btHeart"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <RelativeLayout
+                            android:backgroundTint="#fe6f61"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/circle"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_centerInParent="true"
+                                android:src="@drawable/ic_tim" />
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/tvHeartCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:text="0"
+                            android:textSize="16sp"
+                            android:layout_marginStart="4dp"
+                            android:layout_gravity="center_vertical" />
+                    </LinearLayout>
+                    <!--                    Comment-->
+                    <LinearLayout
+                        android:id="@+id/btCommentAudio"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <RelativeLayout
+                            android:backgroundTint="#f3ab0b"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/circle"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_centerInParent="true"
+                                android:src="@drawable/ic_cmt_white" />
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/tvCmCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:text="0"
+                            android:textSize="16sp"
+                            android:layout_marginStart="4dp"
+                            android:layout_gravity="center_vertical" />
+                    </LinearLayout>
+                    <!--                    Chia se-->
+                    <LinearLayout
+                        android:id="@+id/btShareAudio"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <RelativeLayout
+                            android:backgroundTint="#32529f"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/circle"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_centerInParent="true"
+                                android:src="@drawable/ic_share_white" />
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/tvShareCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:text="0"
+                            android:textSize="16sp"
+                            android:layout_marginStart="4dp"
+                            android:layout_gravity="center_vertical" />
+                    </LinearLayout>
+
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/tvTitleChiTiet"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/helveticaneuebold"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_20sdp" />
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_10sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/materialCardView" />
 
                 <TextView
                     android:id="@+id/tvTacGia"
@@ -61,29 +177,42 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_10sdp"
+                    android:fontFamily="@font/helveticaneue"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_15sdp" />
+                    android:textSize="13sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvTitleChiTiet" />
 
                 <com.borjabravo.readmoretextview.ReadMoreTextView
                     android:id="@+id/tvThongtin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_10sdp"
+                    android:fontFamily="@font/helveticaneue"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_15sdp"
+                    android:textSize="15sp"
                     app:colorClickableText="#d69819"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvTacGia"
                     app:showTrimExpandedText="true"
                     app:trimCollapsedText="@string/text_readmore"
                     app:trimExpandedText="@string/text_hide"
-                    app:trimLines="3"
-                    app:trimMode="trimModeLine" />
+                    app:trimLength="150"
+                    app:trimMode="trimModeLength" />
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cvListPD"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_300sdp"
-                    android:layout_margin="@dimen/_10sdp"
-                    app:cardCornerRadius="8dp">
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_25sdp"
+                    app:cardCornerRadius="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvThongtin">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -95,19 +224,23 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_10sdp"
+                            android:fontFamily="@font/helveticaneue"
                             android:gravity="center"
                             android:text="Danh sách chương"
                             android:textColor="@color/colorTitle"
-                            android:textSize="@dimen/_20sdp" />
+                            android:textSize="19sp"
+                            android:textStyle="bold" />
+
                         <TextView
+                            android:id="@+id/tvNoChapter"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:textSize="@dimen/_15sdp"
-                            android:id="@+id/tvNoChapter"
-                            android:visibility="gone"
                             android:layout_marginTop="@dimen/_10sdp"
-                            android:text="Danh sách chương đang được cập nhật"/>
+                            android:gravity="center"
+                            android:text="Danh sách chương đang được cập nhật"
+                            android:textSize="@dimen/_15sdp"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rvListChapter"
@@ -119,11 +252,34 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
             <!--End Main Content-->
+            <TextView
+                android:id="@+id/tvListSameCategory"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/helveticaneuebold"
+                android:text="@string/txt_same_category_aduio"
+                android:textColor="@color/black"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/card_img_audio" />
 
-        </androidx.core.widget.NestedScrollView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvSameCategory"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvListSameCategory" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
 
 </layout>

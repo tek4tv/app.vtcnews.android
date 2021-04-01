@@ -10,44 +10,46 @@ import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.joinAll
 
 @EpoxyModelClass(layout = R.layout.chuyen_de_nong_layout)
 abstract class HotChannelModel : EpoxyModelWithHolder<HotChannelHolder>() {
     @EpoxyAttribute
-    lateinit var channels : Pair<HotChannel, HotChannel>
+    lateinit var channels: Pair<HotChannel, HotChannel>
+
     @EpoxyAttribute
-    var onClickListener:(HotChannel)->Unit={}
+    var onClickListener: (HotChannel) -> Unit = {}
+
     @EpoxyAttribute
-    var onHeaderClick:()->Unit={}
+    var onHeaderClick: () -> Unit = {}
     override fun bind(holder: HotChannelHolder) {
         super.bind(holder)
 
         Picasso.get()
             .load(channels.first.image169)
+            .fit().noFade()
             .into(holder.img1)
         holder.txtTitle1.text = channels.first.title
 
         Picasso.get()
             .load(channels.second.image169)
+            .fit().noFade()
             .into(holder.img2)
         holder.txtTitle2.text = channels.second.title
 
-        holder.itemChannel1.setOnClickListener{
+        holder.itemChannel1.setOnClickListener {
             onClickListener.invoke(channels.first)
         }
-        holder.itemChannel2.setOnClickListener{
+        holder.itemChannel2.setOnClickListener {
             onClickListener.invoke(channels.second)
         }
 
-        holder.titleHeader.setOnClickListener{
+        holder.titleHeader.setOnClickListener {
             onHeaderClick.invoke()
         }
     }
 }
 
-class HotChannelHolder : KotlinEpoxyHolder()
-{
+class HotChannelHolder : KotlinEpoxyHolder() {
     val img1 by bind<ImageView>(R.id.img_hot_channel1)
     val img2 by bind<ImageView>(R.id.img_hot_channel2)
 

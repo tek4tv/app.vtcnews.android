@@ -13,10 +13,9 @@ import kotlinx.coroutines.withContext
 class TrangChuSubMenuViewModel @ViewModelInject constructor(
     private val menuRepo: MenuRepo
 ) : ViewModel() {
-    val menuItem  = MutableLiveData<List<MenuItem>>()
+    val menuItem = MutableLiveData<List<MenuItem>>()
 
-    fun getMenuItem(parentMenuId : Int)
-    {
+    fun getMenuItem(parentMenuId: Int) {
         viewModelScope.launch {
             var r = listOf<MenuItem>()
             withContext(Dispatchers.Default)

@@ -4,9 +4,8 @@
     <item
         android:width="230dp"
         android:height="70dp"
-        android:gravity="center">
-        <bitmap
-            android:src="@drawable/logovtc" />
-
+        android:top="250dp"
+        android:gravity="center_horizontal">
+        <bitmap android:src="@drawable/logovtcnewswhite" />
     </item>
 </layer-list>

@@ -19,6 +19,7 @@
     //chitietalbum podcast
     <string name="text_readmore"> Xem thêm</string>
     <string name="text_hide"> Ẩn bớt</string>
+    <string name="txt_same_category_aduio">Audio cùng thể loại</string>
 
     <string name="open_drawer">Opened drawer</string>
     <string name="close_drawer">Closed drawer</string>
@@ -37,14 +38,17 @@
     //article detail
     <string name="like">Thích %d</string>
     <string name="morearticle">Thêm thông tin</string>
+    <string name="txt_same_category">Cùng chuyên mục</string>
 
     //comment
     <string name="comment">Bình luận</string>
 
-    //MainActivity
+    //Error
     <string name="nointernet">Không lấy được dữ liệu</string>
     <string name="noData">Dữ liệu đang được cập nhật</string>
     <string name="noOption">Chức năng đang được cập nhật</string>
+    <string name="videoerr">Video lỗi, không thể mở</string>
+    <string name="audioerr">Audio lỗi, không thể mở</string>
 
     //comment
 

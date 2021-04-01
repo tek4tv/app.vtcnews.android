@@ -42,7 +42,7 @@ class ListHotArticleFragment : Fragment() {
                 ArticleDetailFragment.openWith(
                     parentFragmentManager,
                     itemChannel.id,
-                    itemChannel.categoryID!!
+                    itemChannel.categoryID
                 )
             }
         }

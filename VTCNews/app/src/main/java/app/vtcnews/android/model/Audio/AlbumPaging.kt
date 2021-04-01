@@ -2,7 +2,7 @@ package app.vtcnews.android.model.Audio
 
 import com.squareup.moshi.Json
 
-data class AlbumPaging (
+data class AlbumPaging(
     @Json(name = "Id")
     val id: Long,
 

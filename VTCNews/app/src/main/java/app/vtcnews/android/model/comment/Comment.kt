@@ -3,7 +3,7 @@ package app.vtcnews.android.model.comment
 import com.squareup.moshi.Json
 import java.io.Serializable
 
-data class Comment (
+data class Comment(
     @Json(name = "CurrentPage")
     val currentPage: Int? = null,
 
@@ -25,6 +25,7 @@ data class Comment (
     @Json(name = "Items")
     val items: List<CommentItem>
 )
+
 data class CommentItem(
     @Json(name = "Id")
     var id: Long,

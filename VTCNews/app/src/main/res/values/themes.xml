@@ -1,5 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
 
     <style name="Theme.VTCNews" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -12,29 +11,27 @@
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/color_noti_bar</item>
         <!-- Customize your theme here. -->
+        <item name="fontFamily">@font/helveticaneue</item>
         <item name="actionBarSize">40dp</item>
     </style>
 
     <style name="MainActivity" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="windowActionBar">false</item>
+        <item name="android:windowContentTransitions">true</item>
         <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/red</item>
         <item name="colorPrimaryVariant">@color/red</item>
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorSecondary">@color/teal_200</item>
+        <item name="fontFamily">@font/helveticaneue</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/color_noti_bar</item>
         <!-- Customize your theme here. -->
-        <item name="actionBarSize">40dp</item>
-    </style>
-
-    <style name="ArticleTitle" parent="TextAppearance.MaterialComponents.Headline6">
-        <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">18sp</item>
+        <item name="actionBarSize">50dp</item>
     </style>
 
     <style name="ToolbarTheme" parent="Theme.VTCNews">
@@ -46,12 +43,15 @@
         <item name="android:background">#a3161d</item>
         <item name="tabTextAppearance">@style/MyCustomTabText</item>
         <item name="tabIndicatorColor">#FFFFFF</item>
-        <item name="tabIndicatorHeight">@dimen/_3sdp</item>
+        <item name="fontFamily">@font/helveticaneue</item>
+        <item name="tabIndicatorHeight">4dp</item>
     </style>
+
     <style name="MyCustomTabText" parent="TextAppearance.AppCompat.Button">
-    <item name="android:textSize">@dimen/_15sdp</item>
-    <item name="android:textAllCaps">false</item>
-    <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="fontFamily">@font/helveticaneue</item>
+        <item name="android:textColor">#FFFFFF</item>
     </style>
 
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
@@ -59,6 +59,8 @@
     </style>
 
     <style name="progressBarBlue" parent="@style/Theme.AppCompat">
-        <item name="colorAccent">@color/vtcBackground</item>
+        <item name="android:windowBackground">@drawable/splash_background</item>
     </style>
+
+
 </resources>

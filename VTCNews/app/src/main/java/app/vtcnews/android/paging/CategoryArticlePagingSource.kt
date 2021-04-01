@@ -5,9 +5,9 @@ import app.vtcnews.android.model.Article
 import app.vtcnews.android.network.Resource
 import app.vtcnews.android.repos.ArticleRepo
 
-class CategoryArticlePagingSource (
+class CategoryArticlePagingSource(
     private val articleRepo: ArticleRepo,
-    private val categoryId : Int
+    private val categoryId: Int
 ) : PagingSource<Int, Article>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Article> {
         val page = params.key ?: 1

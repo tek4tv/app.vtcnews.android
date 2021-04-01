@@ -5,7 +5,7 @@ import app.vtcnews.android.model.HotChannel
 import app.vtcnews.android.network.Resource
 import app.vtcnews.android.repos.ArticleRepo
 
-class ChannelArticlePagingSource(val articleRepo: ArticleRepo) : PagingSource<Int,HotChannel>() {
+class ChannelArticlePagingSource(val articleRepo: ArticleRepo) : PagingSource<Int, HotChannel>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, HotChannel> {
         val page = params.key ?: 1
         return when (val res = articleRepo.getListChannel(page)) {

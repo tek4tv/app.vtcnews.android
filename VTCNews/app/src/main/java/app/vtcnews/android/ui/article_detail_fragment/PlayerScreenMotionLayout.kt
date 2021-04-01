@@ -9,6 +9,7 @@ import android.view.View
 import androidx.constraintlayout.motion.widget.MotionLayout
 import app.vtcnews.android.R
 import com.google.android.exoplayer2.ui.PlayerView
+
 //stolen
 class PlayerScreenMotionLayout(
     context: Context,

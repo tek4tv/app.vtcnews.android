@@ -3,22 +3,22 @@
 
     <item
         android:id="@+id/menuTrangChu"
-        android:icon="@drawable/ic_baseline_home_24"
+        android:icon="@drawable/ic_home_grey"
         android:title="@string/trang_chu" />
     <item
         android:id="@+id/menuTrending"
-        android:icon="@drawable/icnews"
+        android:icon="@drawable/ic_tinmoi_grey"
         android:title="@string/tin_moi" />
     <item
         android:id="@+id/menuVideo"
-        android:icon="@drawable/icvideo"
+        android:icon="@drawable/ic_video_grey"
         android:title="@string/video" />
     <item
         android:id="@+id/menuAudio"
-        android:icon="@drawable/icaudio"
+        android:icon="@drawable/ic_audio_grey"
         android:title="@string/audio" />
-    <item android:title="@string/chia_se"
+    <item
+        android:title="@string/chia_se"
         android:id="@+id/menuShare"
-        android:icon="@drawable/icperson"
-        />
+        android:icon="@drawable/ic_canhan_grey" />
 </menu>

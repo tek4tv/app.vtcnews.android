@@ -27,11 +27,15 @@ class TrangChuController : TypedEpoxyController<TrangChuData>() {
             articleClickListener(articleClickListener)
         }
 
+
         data.hotArticles.drop(1).forEach { hotArticle ->
             article {
                 id(hotArticle.id)
                 article(hotArticle)
                 articleClickListener(articleClickListener)
+                if (hotArticle == data.hotArticles[6]) {
+                    booleanEnd(true)
+                }
             }
         }
 
@@ -55,6 +59,10 @@ class TrangChuController : TypedEpoxyController<TrangChuData>() {
                     id(firstArticles[i].id)
                     article(firstArticles[i])
                     articleClickListener(articleClickListener)
+                    if (i == 2) {
+                        booleanEnd(true)
+                    }
+
                 }
             }
         }
@@ -73,14 +81,19 @@ class TrangChuController : TypedEpoxyController<TrangChuData>() {
                     id(firstArticles[i].id)
                     article(firstArticles[i])
                     articleClickListener(articleClickListener)
+                    if (i == 5) {
+                        booleanEnd(true)
+                    }
                 }
             }
         }
 
-        if (data.audio.isNotEmpty()) {
+        if (data.audioBook.isNotEmpty() && data.audioMusic.isNotEmpty() && data.audioPD.isNotEmpty()) {
             audioSection {
                 id("audioSection")
-                listAudio(data.audio)
+                listAudioBook(data.audioBook)
+                listAudioMusic(data.audioMusic)
+                listAudioPd(data.audioPD)
                 clickListener(audioClickListener)
                 btClickListener(btXemThemAudioClickListener)
             }
@@ -90,8 +103,12 @@ class TrangChuController : TypedEpoxyController<TrangChuData>() {
             article {
                 id(it.id)
                 article(it)
+                booleanEnd(false)
                 articleClickListener(articleClickListener)
             }
         }
+
+
     }
+
 }

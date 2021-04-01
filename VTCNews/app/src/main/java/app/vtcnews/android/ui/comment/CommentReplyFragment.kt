@@ -7,11 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -20,15 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import app.vtcnews.android.R
 import app.vtcnews.android.databinding.CommentShowReplyLayoutBinding
 import app.vtcnews.android.model.comment.CommentItem
-import app.vtcnews.android.ui.audio.AudioHomeFragment
-import app.vtcnews.android.ui.share.ShareFragment
-import app.vtcnews.android.ui.trang_chu.TrangChuFragment
-import app.vtcnews.android.ui.trang_chu_sub_section.ArticlesFragment
 import app.vtcnews.android.ui.trang_chu_sub_section.getDateDiff
 import app.vtcnews.android.viewmodels.CommentFragViewModel
-import com.example.vtclive.Video.FragmentVideoPage
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -48,23 +37,24 @@ class CommentReplyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val cmItem: CommentItem = requireArguments().getSerializable("parentCmt") as CommentItem
-        binding.tvCustomerName.setText(cmItem.customerName)
-        binding.tvContentCM.setText(cmItem.content)
-        binding.tvTimeDiffComment.setText(getDateDiff(cmItem.createdDate, resources))
-        binding.tvCountLike.setText(cmItem.countLike.toString())
+        binding.tvCustomerName.text = cmItem.customerName
+        binding.tvContentCM.text = cmItem.content
+        binding.tvTimeDiffComment.text = getDateDiff(cmItem.createdDate, resources)
+        binding.tvCountLike.text = cmItem.countLike.toString()
         val parentId = cmItem.id
-        viewModelCM.getComment(parentId, 1)
+        viewModelCM.getComment(requireArguments().getLong("articleID"), 1)
+        viewModelCM.getComment(requireArguments().getLong("articleID"), 2)
+        viewModelCM.getComment(requireArguments().getLong("articleID"), 3)
+        viewModelCM.getComment(requireArguments().getLong("articleID"), 4)
         setUpObser(parentId)
-
         binding.btComment.setOnClickListener {
             displayAlertDialog(parentId)
         }
 
     }
 
-    fun setUpObser(parentId: Long) {
+    private fun setUpObser(parentId: Long) {
         val listChildCm = ArrayList<CommentItem>()
-
         viewModelCM.listIteamComment.observe(viewLifecycleOwner)
         {
             it.forEach { commentItem ->
@@ -81,7 +71,7 @@ class CommentReplyFragment : Fragment() {
         }
     }
 
-    fun displayAlertDialog(idParent: Long) {
+    private fun displayAlertDialog(idParent: Long) {
         val inflater = layoutInflater
         val alertLayout: View = inflater.inflate(R.layout.custom_dialog_layout, null)
         val etFullName = alertLayout.findViewById<View>(R.id.etFullName) as EditText
@@ -139,7 +129,7 @@ class CommentReplyFragment : Fragment() {
 //       dialog.window?.setBackgroundDrawable(inset)
     }
 
-    fun displayDialogSucces() {
+    private fun displayDialogSucces() {
         val inflater = layoutInflater
         val alertLayout: View = inflater.inflate(R.layout.custom_dialog_cmsucces, null)
         val btClose = alertLayout.findViewById<Button>(R.id.btClose)
@@ -154,9 +144,10 @@ class CommentReplyFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(commentItem: CommentItem) = CommentReplyFragment().apply {
+        fun newInstance(commentItem: CommentItem, articleId: Long) = CommentReplyFragment().apply {
             arguments = Bundle().apply {
                 putSerializable("parentCmt", commentItem)
+                putLong("articleID", articleId)
             }
         }
     }

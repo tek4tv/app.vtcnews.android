@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.trang_chu_sub_section.TrangChuSubMenuFragment" >
+    android:background="@color/white"
+    tools:context=".ui.trang_chu_sub_section.TrangChuSubMenuFragment">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_menu_item"
@@ -13,7 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:tabMode="scrollable"
-        app:tabGravity="center"/>
+        app:tabGravity="center" />
+
     <TextView
         android:layout_width="wrap_content"
         android:text="@string/noData"
@@ -23,7 +25,7 @@
         android:textColor="@color/vtcBackground"
         android:layout_margin="@dimen/_10sdp"
         android:layout_gravity="center"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:layout_marginTop="@dimen/_10sdp"
